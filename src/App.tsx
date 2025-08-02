@@ -1,37 +1,33 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import appLogo from '/favicon.svg'
+import { useState, useEffect } from 'react';
 import PWABadge from './PWABadge.tsx'
-import './App.css'
+import logo from '../public/icon.svg';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setProgress((prev) => (prev >= 100 ? 0 : prev + 1));
+    }, 50);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={appLogo} className="logo" alt="my-app-react logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className='flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4'>
+        <img src={logo} alt='Logo' className='w-32 h-32' />
+        <div className='w-full max-w-md h-4 bg-gray-300 rounded-full overflow-hidden mt-4'>
+          <div
+            className='h-full bg-[#FF5050] transition-all duration-100'
+            style={{ width: `${progress}%` }}
+          ></div>
+        
+        </div>
       </div>
-      <h1>my-app-react</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
       <PWABadge />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
