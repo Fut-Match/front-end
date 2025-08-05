@@ -1,51 +1,65 @@
-import React, { useState } from 'react';
-import { Menu, Home, Play,  LogOut, X, AlertTriangle } from 'lucide-react';
-import { Screen } from '../App';
-import icon from '../../public/icon.svg';
-import CustomButton from './ui/customButton';
+import { AlertTriangle, Home, LogOut, Menu, Play, X } from 'lucide-react'
+import type React from 'react'
+import { useState } from 'react'
+import icon from '../../public/icon.svg'
+import type { Screen } from '../App'
+import CustomButton from './ui/customButton'
 
 interface HeaderProps {
-  currentScreen: Screen;
-  onNavigate: (screen: Screen) => void;
-  onLogout: () => void;
+  currentScreen: Screen
+  onNavigate: (screen: Screen) => void
+  onLogout: () => void
 }
 
-const Header: React.FC<HeaderProps> = ({ currentScreen, onNavigate, onLogout }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showLogoutModal, setShowLogoutModal] = useState(false);
+const Header: React.FC<HeaderProps> = ({
+  currentScreen,
+  onNavigate,
+  onLogout,
+}) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [showLogoutModal, setShowLogoutModal] = useState(false)
 
   //intens para adicionar mais tarde
-    // { screen: 'teams' as Screen, label: 'Times', description: 'Organize grupos de jogadores', icon: Users },
-    // { screen: 'ranking' as Screen, label: 'Ranking', description: 'Classificação dos jogadores', icon: Trophy },
-    // { screen: 'feed' as Screen, label: 'Feed Social', description: 'Atividades dos amigos', icon: MessageSquare },
-    // { screen: 'profile' as Screen, label: 'Meu Perfil', description: 'Suas estatísticas detalhadas', icon: User },
-    // { screen: 'history' as Screen, label: 'Histórico', description: 'Resultados e análises', icon: BarChart3 },
-    // { screen: 'challenges' as Screen, label: 'Desafios', description: 'Conquistas e objetivos', icon: Star },
+  // { screen: 'teams' as Screen, label: 'Times', description: 'Organize grupos de jogadores', icon: Users },
+  // { screen: 'ranking' as Screen, label: 'Ranking', description: 'Classificação dos jogadores', icon: Trophy },
+  // { screen: 'feed' as Screen, label: 'Feed Social', description: 'Atividades dos amigos', icon: MessageSquare },
+  // { screen: 'profile' as Screen, label: 'Meu Perfil', description: 'Suas estatísticas detalhadas', icon: User },
+  // { screen: 'history' as Screen, label: 'Histórico', description: 'Resultados e análises', icon: BarChart3 },
+  // { screen: 'challenges' as Screen, label: 'Desafios', description: 'Conquistas e objetivos', icon: Star },
 
   const menuItems = [
-    { screen: 'home' as Screen, label: 'Home', description: 'Seu perfil e estatísticas', icon: Home },
-    { screen: 'myMatches' as Screen, label: 'Partida Atual', description: 'Gerenciar partida em andamento', icon: Play },
-  
-  ];
+    {
+      screen: 'home' as Screen,
+      label: 'Home',
+      description: 'Seu perfil e estatísticas',
+      icon: Home,
+    },
+    {
+      screen: 'myMatches' as Screen,
+      label: 'Partida Atual',
+      description: 'Gerenciar partida em andamento',
+      icon: Play,
+    },
+  ]
 
   const handleMenuClick = (screen: Screen) => {
-    onNavigate(screen);
-    setIsMenuOpen(false);
-  };
+    onNavigate(screen)
+    setIsMenuOpen(false)
+  }
 
   const handleLogoutClick = () => {
-    setShowLogoutModal(true);
-  };
+    setShowLogoutModal(true)
+  }
 
   const confirmLogout = () => {
-    setShowLogoutModal(false);
-    setIsMenuOpen(false);
-    onLogout();
-  };
+    setShowLogoutModal(false)
+    setIsMenuOpen(false)
+    onLogout()
+  }
 
   const cancelLogout = () => {
-    setShowLogoutModal(false);
-  };
+    setShowLogoutModal(false)
+  }
 
   return (
     <>
@@ -58,10 +72,9 @@ const Header: React.FC<HeaderProps> = ({ currentScreen, onNavigate, onLogout }) 
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
-          
+
           {/* Empty center space */}
           <div></div>
-          
         </div>
       </header>
 
@@ -69,8 +82,11 @@ const Header: React.FC<HeaderProps> = ({ currentScreen, onNavigate, onLogout }) 
       {isMenuOpen && (
         <div className="fixed inset-0 z-40">
           {/* Invisible overlay for closing */}
-          <div className="absolute inset-0" onClick={() => setIsMenuOpen(false)}></div>
-          
+          <div
+            className="absolute inset-0"
+            onClick={() => setIsMenuOpen(false)}
+          ></div>
+
           <div
             className="fixed top-0 left-0 w-80 h-full bg-white shadow-2xl z-50 overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
@@ -83,15 +99,17 @@ const Header: React.FC<HeaderProps> = ({ currentScreen, onNavigate, onLogout }) 
               >
                 <X size={20} />
               </button>
-              
+
               <div className="flex items-center space-x-3 mb-4">
                 <img src={icon} alt="FutMatch" className="h-10 w-10" />
                 <div>
                   <h3 className="text-xl font-semibold">FUTMATCH</h3>
-                  <p className="text-orange-100 text-sm">Gerenciamento de Partidas</p>
+                  <p className="text-orange-100 text-sm">
+                    Gerenciamento de Partidas
+                  </p>
                 </div>
               </div>
-              
+
               {/* User Info */}
               <div className="flex items-center space-x-3 bg-white/10 rounded-lg p-3">
                 <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
@@ -99,7 +117,9 @@ const Header: React.FC<HeaderProps> = ({ currentScreen, onNavigate, onLogout }) 
                 </div>
                 <div className="flex-1">
                   <div className="font-medium">Usuário</div>
-                  <div className="text-sm text-orange-100">usuario@email.com</div>
+                  <div className="text-sm text-orange-100">
+                    usuario@email.com
+                  </div>
                 </div>
                 <div className="bg-green-400 text-green-900 text-xs px-2 py-1 rounded-full font-medium">
                   Online
@@ -111,9 +131,9 @@ const Header: React.FC<HeaderProps> = ({ currentScreen, onNavigate, onLogout }) 
             <div className="p-4">
               <div className="space-y-1">
                 {menuItems.map((item, index) => {
-                  const IconComponent = item.icon;
-                  const isActive = currentScreen === item.screen;
-                  
+                  const IconComponent = item.icon
+                  const isActive = currentScreen === item.screen
+
                   return (
                     <button
                       key={`${item.screen}-${index}`}
@@ -124,17 +144,23 @@ const Header: React.FC<HeaderProps> = ({ currentScreen, onNavigate, onLogout }) 
                           : 'hover:bg-gray-50 text-gray-700'
                       }`}
                     >
-                      <div className={`p-2 rounded-lg mr-4 ${
-                        isActive ? 'bg-[#F2442E] text-white' : 'bg-gray-100 text-gray-600'
-                      }`}>
+                      <div
+                        className={`p-2 rounded-lg mr-4 ${
+                          isActive
+                            ? 'bg-[#F2442E] text-white'
+                            : 'bg-gray-100 text-gray-600'
+                        }`}
+                      >
                         <IconComponent size={18} />
                       </div>
                       <div className="flex-1 text-left">
                         <div className="font-medium">{item.label}</div>
-                        <div className="text-xs text-gray-500">{item.description}</div>
+                        <div className="text-xs text-gray-500">
+                          {item.description}
+                        </div>
                       </div>
                     </button>
-                  );
+                  )
                 })}
 
                 {/* Separator */}
@@ -150,7 +176,9 @@ const Header: React.FC<HeaderProps> = ({ currentScreen, onNavigate, onLogout }) 
                   </div>
                   <div className="flex-1 text-left">
                     <div className="font-medium">Sair</div>
-                    <div className="text-xs text-gray-500">Desconectar da conta</div>
+                    <div className="text-xs text-gray-500">
+                      Desconectar da conta
+                    </div>
                   </div>
                 </button>
               </div>
@@ -167,9 +195,12 @@ const Header: React.FC<HeaderProps> = ({ currentScreen, onNavigate, onLogout }) 
               <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <AlertTriangle className="h-8 w-8 text-yellow-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Confirmar Saída</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                Confirmar Saída
+              </h3>
               <p className="text-gray-600">
-                Tem certeza que deseja sair do FutMatch? Você precisará fazer login novamente para acessar sua conta.
+                Tem certeza que deseja sair do FutMatch? Você precisará fazer
+                login novamente para acessar sua conta.
               </p>
             </div>
 
@@ -197,7 +228,7 @@ const Header: React.FC<HeaderProps> = ({ currentScreen, onNavigate, onLogout }) 
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

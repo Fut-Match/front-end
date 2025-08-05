@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
-import { Plus, Calendar, Clock, Users, MapPin, ArrowLeft, } from 'lucide-react';
-import CustomButton from '../../components/ui/customButton';
-import { Screen } from '../../App';
+import { ArrowLeft, Calendar, Clock, MapPin, Plus, Users } from 'lucide-react'
+import type React from 'react'
+import { useState } from 'react'
+import type { Screen } from '../../App'
+import CustomButton from '../../components/ui/customButton'
 
 interface MyMatchesScreenProps {
-  onNavigate: (screen: Screen) => void;
-  onSelectMatch: (match: any) => void;
+  onNavigate: (screen: Screen) => void
+  onSelectMatch: (match: any) => void
 }
 
-const MyMatchesScreen: React.FC<MyMatchesScreenProps> = ({ onNavigate, onSelectMatch }) => {
-  const [inviteToken, setInviteToken] = useState('');
+const MyMatchesScreen: React.FC<MyMatchesScreenProps> = ({
+  onNavigate,
+  onSelectMatch,
+}) => {
+  const [inviteToken, setInviteToken] = useState('')
 
   // Mock data for matches
   const matches = [
@@ -23,7 +27,7 @@ const MyMatchesScreen: React.FC<MyMatchesScreenProps> = ({ onNavigate, onSelectM
       playersPerTeam: 5,
       confirmedPlayers: 8,
       totalSlots: 10,
-      isAdmin: true
+      isAdmin: true,
     },
     {
       id: 2,
@@ -35,7 +39,7 @@ const MyMatchesScreen: React.FC<MyMatchesScreenProps> = ({ onNavigate, onSelectM
       playersPerTeam: 4,
       confirmedPlayers: 6,
       totalSlots: 8,
-      isAdmin: false
+      isAdmin: false,
     },
     {
       id: 3,
@@ -47,54 +51,54 @@ const MyMatchesScreen: React.FC<MyMatchesScreenProps> = ({ onNavigate, onSelectM
       playersPerTeam: 5,
       confirmedPlayers: 10,
       totalSlots: 10,
-      isAdmin: false
-    }
-  ];
+      isAdmin: false,
+    },
+  ]
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'aguardando':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+        return 'bg-yellow-100 text-yellow-800 border-yellow-200'
       case 'em_andamento':
-        return 'bg-green-100 text-green-800 border-green-200';
+        return 'bg-green-100 text-green-800 border-green-200'
       case 'finalizada':
-        return 'bg-gray-100 text-gray-800 border-gray-200';
+        return 'bg-gray-100 text-gray-800 border-gray-200'
       default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
+        return 'bg-gray-100 text-gray-800 border-gray-200'
     }
-  };
+  }
 
   const getStatusText = (status: string) => {
     switch (status) {
       case 'aguardando':
-        return 'Aguardando';
+        return 'Aguardando'
       case 'em_andamento':
-        return 'Em andamento';
+        return 'Em andamento'
       case 'finalizada':
-        return 'Finalizada';
+        return 'Finalizada'
       default:
-        return 'Desconhecido';
+        return 'Desconhecido'
     }
-  };
+  }
 
   const handleMatchClick = (match: any) => {
-    onSelectMatch(match);
+    onSelectMatch(match)
     if (match.status === 'aguardando' && match.isAdmin) {
-      onNavigate('matchControl');
+      onNavigate('matchControl')
     } else if (match.status === 'em_andamento') {
-      onNavigate('liveMatch');
+      onNavigate('liveMatch')
     } else if (match.status === 'finalizada') {
-      onNavigate('matchSummary');
+      onNavigate('matchSummary')
     }
-  };
+  }
 
   const handleJoinByToken = () => {
     if (inviteToken.trim()) {
       // Simulate joining a match by token
-      alert(`Entrando na partida com token: ${inviteToken}`);
-      setInviteToken('');
+      alert(`Entrando na partida com token: ${inviteToken}`)
+      setInviteToken('')
     }
-  };
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 pb-20">
@@ -106,7 +110,6 @@ const MyMatchesScreen: React.FC<MyMatchesScreenProps> = ({ onNavigate, onSelectM
         >
           <ArrowLeft className="h-5 w-5" />
         </button>
-       
       </div>
 
       {/* Create Match Button */}
@@ -124,7 +127,9 @@ const MyMatchesScreen: React.FC<MyMatchesScreenProps> = ({ onNavigate, onSelectM
 
       {/* Join by Token */}
       <div className="mb-6 p-4 bg-white rounded-lg shadow-sm">
-        <h3 className="font-medium text-gray-900 mb-3">Entrar com Token/Link</h3>
+        <h3 className="font-medium text-gray-900 mb-3">
+          Entrar com Token/Link
+        </h3>
         <div className="flex space-x-2">
           <input
             type="text"
@@ -163,7 +168,9 @@ const MyMatchesScreen: React.FC<MyMatchesScreenProps> = ({ onNavigate, onSelectM
                     </span>
                   )}
                 </div>
-                <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(match.status)}`}>
+                <span
+                  className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(match.status)}`}
+                >
                   {getStatusText(match.status)}
                 </span>
               </div>
@@ -200,7 +207,9 @@ const MyMatchesScreen: React.FC<MyMatchesScreenProps> = ({ onNavigate, onSelectM
                 <div className="w-full bg-gray-200 rounded-full h-2">
                   <div
                     className="bg-[#F2442E] h-2 rounded-full"
-                    style={{ width: `${(match.confirmedPlayers / match.totalSlots) * 100}%` }}
+                    style={{
+                      width: `${(match.confirmedPlayers / match.totalSlots) * 100}%`,
+                    }}
                   ></div>
                 </div>
               </div>
@@ -213,8 +222,12 @@ const MyMatchesScreen: React.FC<MyMatchesScreenProps> = ({ onNavigate, onSelectM
           <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
             <Users className="h-8 w-8 text-gray-400" />
           </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">Nenhuma partida encontrada</h3>
-          <p className="text-gray-600 mb-6">Crie sua primeira partida ou participe de uma existente</p>
+          <h3 className="text-lg font-medium text-gray-900 mb-2">
+            Nenhuma partida encontrada
+          </h3>
+          <p className="text-gray-600 mb-6">
+            Crie sua primeira partida ou participe de uma existente
+          </p>
 
           <div className="space-y-3 max-w-xs mx-auto">
             <CustomButton
@@ -229,7 +242,7 @@ const MyMatchesScreen: React.FC<MyMatchesScreenProps> = ({ onNavigate, onSelectM
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default MyMatchesScreen;
+export default MyMatchesScreen

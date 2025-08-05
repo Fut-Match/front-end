@@ -1,41 +1,44 @@
-import React, { useState } from 'react';
-import { Eye, EyeOff, Mail, Lock, User, Camera } from 'lucide-react';
-import CustomButton from '../../components/ui/customButton';
-import icon from '../../../public/icon.svg';
+import { Camera, Eye, EyeOff, Lock, Mail, User } from 'lucide-react'
+import type React from 'react'
+import { useState } from 'react'
+import icon from '../../../public/icon.svg'
+import CustomButton from '../../components/ui/customButton'
 
 interface RegisterScreenProps {
-  onNavigateToLogin: () => void;
+  onNavigateToLogin: () => void
 }
 
-const RegisterScreen: React.FC<RegisterScreenProps> = ({ onNavigateToLogin }) => {
+const RegisterScreen: React.FC<RegisterScreenProps> = ({
+  onNavigateToLogin,
+}) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
-  });
-  const [showPassword, setShowPassword] = useState(false);
-  const [profileImage, setProfileImage] = useState<string | null>(null);
+  })
+  const [showPassword, setShowPassword] = useState(false)
+  const [profileImage, setProfileImage] = useState<string | null>(null)
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
+    setFormData((prev) => ({ ...prev, [field]: value }))
+  }
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    const file = e.target.files?.[0]
     if (file) {
-      const reader = new FileReader();
+      const reader = new FileReader()
       reader.onload = (e) => {
-        setProfileImage(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
+        setProfileImage(e.target?.result as string)
+      }
+      reader.readAsDataURL(file)
     }
-  };
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     // Simulate registration and redirect to login
-    onNavigateToLogin();
-  };
+    onNavigateToLogin()
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex flex-col justify-center px-6 py-8">
@@ -45,7 +48,9 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ onNavigateToLogin }) =>
           <div className="flex justify-center mb-4">
             <img src={icon} alt="FutMatch" className="h-16 w-16" />
           </div>
-          <h1 className="text-2xl font-semibold text-gray-900 mb-2">Criar Conta</h1>
+          <h1 className="text-2xl font-semibold text-gray-900 mb-2">
+            Criar Conta
+          </h1>
           <p className="text-gray-600">Junte-se à comunidade FutMatch</p>
         </div>
 
@@ -56,7 +61,11 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ onNavigateToLogin }) =>
             <div className="relative">
               <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden border-4 border-white shadow-lg">
                 {profileImage ? (
-                  <img src={profileImage} alt="Profile" className="w-full h-full object-cover" />
+                  <img
+                    src={profileImage}
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                  />
                 ) : (
                   <User className="h-8 w-8 text-gray-400" />
                 )}
@@ -80,7 +89,10 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ onNavigateToLogin }) =>
 
           {/* Name Field */}
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
               Nome
             </label>
             <div className="relative">
@@ -101,7 +113,10 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ onNavigateToLogin }) =>
 
           {/* Email Field */}
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
               E-mail
             </label>
             <div className="relative">
@@ -122,7 +137,10 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ onNavigateToLogin }) =>
 
           {/* Password Field */}
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
               Senha
             </label>
             <div className="relative">
@@ -179,7 +197,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ onNavigateToLogin }) =>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default RegisterScreen;
+export default RegisterScreen

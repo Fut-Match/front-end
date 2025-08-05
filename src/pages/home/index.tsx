@@ -1,26 +1,27 @@
-import React from 'react';
-import { Target, Award, Users, Shield, Trophy, Star, } from 'lucide-react';
-import { Screen } from '.././../App';
-import { ImageWithFallback } from '../../../public/figma';
-import playerIconImage from '../../../public/favicon.svg';
+import { Award, Shield, Star, Target, Trophy, Users } from 'lucide-react'
+import type React from 'react'
+import playerIconImage from '../../../public/favicon.svg'
+import { ImageWithFallback } from '../../../public/figma'
+import type { Screen } from '.././../App'
 
 interface HomeScreenProps {
-  onNavigate: (screen: Screen) => void;
+  onNavigate: (screen: Screen) => void
 }
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
   // Mock user data
   const userData = {
     name: 'João Silva',
-    photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
+    photo:
+      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
     stats: {
       goals: 24,
       assists: 12,
       matches: 18,
-      tackles: 67
+      tackles: 67,
     },
-    rating: 87
-  };
+    rating: 87,
+  }
 
   // Conquistas deixar para mais tarde
   // const achievements = [
@@ -70,21 +71,20 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
       description: 'Veja suas partidas ativas',
       icon: Users,
       action: () => onNavigate('myMatches'),
-      color: 'bg-[#F2442E]'
+      color: 'bg-[#F2442E]',
     },
     {
       title: 'Histórico',
       description: 'Revisar partidas antigas',
       icon: Trophy,
       action: () => onNavigate('history'),
-      color: 'bg-gray-800'
-    }
-  ];
+      color: 'bg-gray-800',
+    },
+  ]
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 pb-20">
       {/* Discrete Page Title */}
-
 
       {/* FIFA-style Player Card */}
       <div className="mb-6">
@@ -95,7 +95,11 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
           <div className="absolute -left-5 -bottom-5 h-20 w-20 rounded-full bg-white/10"></div>
           {/* Player Icon Background */}
           <div className="absolute right-4 top-4 opacity-10">
-            <img src={playerIconImage} alt="Player Icon" className="h-16 w-16" />
+            <img
+              src={playerIconImage}
+              alt="Player Icon"
+              className="h-16 w-16"
+            />
           </div>
 
           <div className="relative z-10">
@@ -125,8 +129,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
                 <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-2">
                   <Target className="h-4 w-4 text-white" />
                 </div>
-                <div className="text-xs text-gray-300 uppercase tracking-wide mb-1">GOLS</div>
-                <div className="text-lg font-bold text-white">{userData.stats.goals}</div>
+                <div className="text-xs text-gray-300 uppercase tracking-wide mb-1">
+                  GOLS
+                </div>
+                <div className="text-lg font-bold text-white">
+                  {userData.stats.goals}
+                </div>
               </div>
 
               {/* Assists */}
@@ -134,8 +142,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
                 <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-2">
                   <Users className="h-4 w-4 text-white" />
                 </div>
-                <div className="text-xs text-gray-300 uppercase tracking-wide mb-1">ASSISTÊNCIAS</div>
-                <div className="text-lg font-bold text-white">{userData.stats.assists}</div>
+                <div className="text-xs text-gray-300 uppercase tracking-wide mb-1">
+                  ASSISTÊNCIAS
+                </div>
+                <div className="text-lg font-bold text-white">
+                  {userData.stats.assists}
+                </div>
               </div>
 
               {/* Tackles */}
@@ -143,8 +155,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
                 <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-2">
                   <Shield className="h-4 w-4 text-white" />
                 </div>
-                <div className="text-xs text-gray-300 uppercase tracking-wide mb-1">DESARMES</div>
-                <div className="text-lg font-bold text-white">{userData.stats.tackles}</div>
+                <div className="text-xs text-gray-300 uppercase tracking-wide mb-1">
+                  DESARMES
+                </div>
+                <div className="text-lg font-bold text-white">
+                  {userData.stats.tackles}
+                </div>
               </div>
 
               {/* Matches */}
@@ -152,7 +168,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
                 <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center mx-auto mb-2">
                   <Trophy className="h-4 w-4 text-white" />
                 </div>
-                <div className="text-xs text-gray-300 uppercase tracking-wide mb-1">MVPS</div>
+                <div className="text-xs text-gray-300 uppercase tracking-wide mb-1">
+                  MVPS
+                </div>
                 <div className="text-lg font-bold text-white">7</div>
               </div>
 
@@ -161,8 +179,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
                 <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-2">
                   <Award className="h-4 w-4 text-white" />
                 </div>
-                <div className="text-xs text-gray-300 uppercase tracking-wide mb-1">VITÓRIAS</div>
-                <div className="text-lg font-bold text-white">{userData.stats.matches}</div>
+                <div className="text-xs text-gray-300 uppercase tracking-wide mb-1">
+                  VITÓRIAS
+                </div>
+                <div className="text-lg font-bold text-white">
+                  {userData.stats.matches}
+                </div>
               </div>
 
               {/* Average Rating */}
@@ -170,7 +192,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
                 <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center mx-auto mb-2">
                   <Star className="h-4 w-4 text-white" />
                 </div>
-                <div className="text-xs text-gray-300 uppercase tracking-wide mb-1">NOTA MÉDIA</div>
+                <div className="text-xs text-gray-300 uppercase tracking-wide mb-1">
+                  NOTA MÉDIA
+                </div>
                 <div className="text-lg font-bold text-white">8.2</div>
               </div>
             </div>
@@ -180,10 +204,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
 
       {/* Quick Actions */}
       <div className="mb-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-3">Ações Rápidas</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-3">
+          Ações Rápidas
+        </h3>
         <div className="grid grid-cols-1 gap-3">
           {quickActions.map((action, index) => {
-            const IconComponent = action.icon;
+            const IconComponent = action.icon
             return (
               <button
                 key={index}
@@ -198,7 +224,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
                   <p className="text-sm text-gray-600">{action.description}</p>
                 </div>
               </button>
-            );
+            )
           })}
         </div>
       </div>
@@ -258,9 +284,8 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
           })}
         </div>
       </div> */}
-
     </div>
-  );
-};
+  )
+}
 
-export default HomeScreen;
+export default HomeScreen

@@ -1,13 +1,26 @@
-import React, { useState } from 'react';
-import { Calendar, Clock, MapPin, Upload, Copy, Share2, Check, Target, ArrowLeft } from 'lucide-react';
-import CustomButton from '../../components/ui/customButton';
-import { Screen } from '../../App';
+import {
+  ArrowLeft,
+  Calendar,
+  Check,
+  Clock,
+  Copy,
+  MapPin,
+  Share2,
+  Target,
+  Upload,
+} from 'lucide-react'
+import type React from 'react'
+import { useState } from 'react'
+import type { Screen } from '../../App'
+import CustomButton from '../../components/ui/customButton'
 
 interface CreateMatchScreenProps {
-  onNavigate: (screen: Screen) => void;
+  onNavigate: (screen: Screen) => void
 }
 
-const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({ onNavigate }) => {
+const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({
+  onNavigate,
+}) => {
   const [formData, setFormData] = useState({
     name: '',
     playersPerTeam: '5',
@@ -19,52 +32,52 @@ const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({ onNavigate }) => 
     date: '',
     time: '',
     matchType: 'normal' as 'normal' | 'race_to_5',
-  });
-  const [matchImage, setMatchImage] = useState<string | null>(null);
-  const [showInviteModal, setShowInviteModal] = useState(false);
-  const [inviteToken] = useState('ABC123XYZ'); // Mock token
-  const [inviteLink] = useState(`https://futmatch.app/join/${inviteToken}`);
-  const [copied, setCopied] = useState(false);
+  })
+  const [matchImage, setMatchImage] = useState<string | null>(null)
+  const [showInviteModal, setShowInviteModal] = useState(false)
+  const [inviteToken] = useState('ABC123XYZ') // Mock token
+  const [inviteLink] = useState(`https://futmatch.app/join/${inviteToken}`)
+  const [copied, setCopied] = useState(false)
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
+    setFormData((prev) => ({ ...prev, [field]: value }))
+  }
 
   const handleCriteriaChange = (criteria: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       endCriteria: prev.endCriteria.includes(criteria)
-        ? prev.endCriteria.filter(c => c !== criteria)
-        : [...prev.endCriteria, criteria]
-    }));
-  };
+        ? prev.endCriteria.filter((c) => c !== criteria)
+        : [...prev.endCriteria, criteria],
+    }))
+  }
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    const file = e.target.files?.[0]
     if (file) {
-      const reader = new FileReader();
+      const reader = new FileReader()
       reader.onload = (e) => {
-        setMatchImage(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
+        setMatchImage(e.target?.result as string)
+      }
+      reader.readAsDataURL(file)
     }
-  };
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     // Simulate match creation
-    setShowInviteModal(true);
-  };
+    setShowInviteModal(true)
+  }
 
   const copyToClipboard = async (text: string) => {
     try {
-      await navigator.clipboard.writeText(text);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      await navigator.clipboard.writeText(text)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
     } catch (err) {
-      console.error('Failed to copy text: ', err);
+      console.error('Failed to copy text: ', err)
     }
-  };
+  }
 
   const shareInvite = async () => {
     if (navigator.share) {
@@ -73,29 +86,30 @@ const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({ onNavigate }) => 
           title: 'Convite para Partida - FutMatch',
           text: `Você foi convidado para a partida "${formData.name}"!`,
           url: inviteLink,
-        });
+        })
       } catch (err) {
-        console.error('Error sharing: ', err);
+        console.error('Error sharing: ', err)
       }
     } else {
-      copyToClipboard(inviteLink);
+      copyToClipboard(inviteLink)
     }
-  };
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 pb-20">
-         <div className="flex items-center mb-6">
+      <div className="flex items-center mb-6">
         <button
           onClick={() => onNavigate('myMatches')}
           className="p-2 hover:bg-gray-100 rounded-lg transition-colors mr-3"
         >
           <ArrowLeft className="h-5 w-5" />
         </button>
-       
       </div>
       {/* Discrete Page Title */}
       <div className="mb-6">
-        <h1 className="text-lg font-medium text-gray-700 text-center">⚽ Criar Partida</h1>
+        <h1 className="text-lg font-medium text-gray-700 text-center">
+          ⚽ Criar Partida
+        </h1>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -121,7 +135,9 @@ const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({ onNavigate }) => 
           </label>
           <select
             value={formData.playersPerTeam}
-            onChange={(e) => handleInputChange('playersPerTeam', e.target.value)}
+            onChange={(e) =>
+              handleInputChange('playersPerTeam', e.target.value)
+            }
             className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F2442E] focus:border-[#F2442E] outline-none"
           >
             <option value="3">3v3</option>
@@ -137,11 +153,27 @@ const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({ onNavigate }) => 
           </label>
           <div className="space-y-3">
             {[
-              { value: 'tempo', label: 'Tempo', description: 'Partida termina quando o tempo acabar' },
-              { value: 'gols', label: 'Gols', description: 'Partida termina quando um time atingir X gols' },
-              { value: 'ambos', label: 'Ambos', description: 'Termina por tempo OU por gols (primeiro que acontecer)' }
+              {
+                value: 'tempo',
+                label: 'Tempo',
+                description: 'Partida termina quando o tempo acabar',
+              },
+              {
+                value: 'gols',
+                label: 'Gols',
+                description: 'Partida termina quando um time atingir X gols',
+              },
+              {
+                value: 'ambos',
+                label: 'Ambos',
+                description:
+                  'Termina por tempo OU por gols (primeiro que acontecer)',
+              },
             ].map((criteria) => (
-              <label key={criteria.value} className="flex items-start p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
+              <label
+                key={criteria.value}
+                className="flex items-start p-3 border rounded-lg cursor-pointer hover:bg-gray-50"
+              >
                 <input
                   type="checkbox"
                   checked={formData.endCriteria.includes(criteria.value)}
@@ -149,8 +181,12 @@ const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({ onNavigate }) => 
                   className="h-4 w-4 text-[#F2442E] focus:ring-[#F2442E] border-gray-300 rounded mt-1"
                 />
                 <div className="ml-3">
-                  <div className="font-medium text-gray-900">{criteria.label}</div>
-                  <div className="text-sm text-gray-600">{criteria.description}</div>
+                  <div className="font-medium text-gray-900">
+                    {criteria.label}
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    {criteria.description}
+                  </div>
                 </div>
               </label>
             ))}
@@ -158,7 +194,8 @@ const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({ onNavigate }) => 
         </div>
 
         {/* Goals to Win - Show when goals criteria is selected */}
-        {(formData.endCriteria.includes('gols') || formData.endCriteria.includes('ambos')) && (
+        {(formData.endCriteria.includes('gols') ||
+          formData.endCriteria.includes('ambos')) && (
           <div className="bg-white rounded-lg p-4 shadow-sm">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               <div className="flex items-center space-x-2">
@@ -177,13 +214,15 @@ const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({ onNavigate }) => 
               required
             />
             <p className="text-sm text-gray-500 mt-1">
-              Partida termina quando um time atingir {formData.goalsToWin || 'X'} gols
+              Partida termina quando um time atingir{' '}
+              {formData.goalsToWin || 'X'} gols
             </p>
           </div>
         )}
 
         {/* Game Time - Show when time criteria is selected */}
-        {(formData.endCriteria.includes('tempo') || formData.endCriteria.includes('ambos')) && (
+        {(formData.endCriteria.includes('tempo') ||
+          formData.endCriteria.includes('ambos')) && (
           <div className="bg-white rounded-lg p-4 shadow-sm">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Tempo de Jogo
@@ -199,12 +238,14 @@ const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({ onNavigate }) => 
               <option value="20">20 minutos</option>
               <option value="outro">Outro</option>
             </select>
-            
+
             {formData.gameTime === 'outro' && (
               <input
                 type="number"
                 value={formData.customTime}
-                onChange={(e) => handleInputChange('customTime', e.target.value)}
+                onChange={(e) =>
+                  handleInputChange('customTime', e.target.value)
+                }
                 className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F2442E] focus:border-[#F2442E] outline-none"
                 placeholder="Tempo em minutos"
                 min="1"
@@ -255,7 +296,7 @@ const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({ onNavigate }) => 
                 />
               </div>
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Horário
@@ -284,7 +325,11 @@ const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({ onNavigate }) => 
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-[#F2442E] transition-colors">
             {matchImage ? (
               <div className="space-y-3">
-                <img src={matchImage} alt="Match preview" className="max-h-32 mx-auto rounded-lg" />
+                <img
+                  src={matchImage}
+                  alt="Match preview"
+                  className="max-h-32 mx-auto rounded-lg"
+                />
                 <button
                   type="button"
                   onClick={() => setMatchImage(null)}
@@ -299,12 +344,14 @@ const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({ onNavigate }) => 
                 <div className="text-sm text-gray-600">
                   <button
                     type="button"
-                    onClick={() => document.getElementById('image-upload')?.click()}
+                    onClick={() =>
+                      document.getElementById('image-upload')?.click()
+                    }
                     className="text-[#F2442E] hover:text-[#d63a2a]"
                   >
                     Clique para enviar
-                  </button>
-                  {' '}ou arraste uma imagem
+                  </button>{' '}
+                  ou arraste uma imagem
                 </div>
               </div>
             )}
@@ -337,14 +384,20 @@ const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({ onNavigate }) => 
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Check className="h-8 w-8 text-green-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Partida Criada!</h3>
-              <p className="text-gray-600">Compartilhe o convite com seus amigos</p>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                Partida Criada!
+              </h3>
+              <p className="text-gray-600">
+                Compartilhe o convite com seus amigos
+              </p>
             </div>
 
             <div className="space-y-4">
               {/* Token */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Token</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Token
+                </label>
                 <div className="flex space-x-2">
                   <input
                     type="text"
@@ -363,7 +416,9 @@ const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({ onNavigate }) => 
 
               {/* Link */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Link</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Link
+                </label>
                 <div className="flex space-x-2">
                   <input
                     type="text"
@@ -397,11 +452,11 @@ const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({ onNavigate }) => 
                   <Share2 className="h-4 w-4 mr-2" />
                   Compartilhar Convite
                 </CustomButton>
-                
+
                 <CustomButton
                   onClick={() => {
-                    setShowInviteModal(false);
-                    onNavigate('myMatches');
+                    setShowInviteModal(false)
+                    onNavigate('myMatches')
                   }}
                   variant="outline"
                   size="md"
@@ -415,7 +470,7 @@ const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({ onNavigate }) => 
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default CreateMatchScreen;
+export default CreateMatchScreen

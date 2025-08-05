@@ -1,37 +1,41 @@
-import { VitePWA } from 'vite-plugin-pwa';
-import { defineConfig } from 'vite'
+import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite';
+import { defineConfig } from 'vite'
+import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss(), VitePWA({
-    registerType: 'prompt',
-    injectRegister: false,
+  plugins: [
+    react(),
+    tailwindcss(),
+    VitePWA({
+      registerType: 'prompt',
+      injectRegister: false,
 
-    pwaAssets: {
-      disabled: false,
-      config: true,
-    },
+      pwaAssets: {
+        disabled: false,
+        config: true,
+      },
 
-    manifest: {
-      name: 'my-app-react',
-      short_name: 'my-app-react',
-      description: 'my-app-react',
-      theme_color: '#ffffff',
-    },
+      manifest: {
+        name: 'my-app-react',
+        short_name: 'my-app-react',
+        description: 'my-app-react',
+        theme_color: '#ffffff',
+      },
 
-    workbox: {
-      globPatterns: ['**/*.{js,css,html,svg,png,ico}'],
-      cleanupOutdatedCaches: true,
-      clientsClaim: true,
-    },
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,svg,png,ico}'],
+        cleanupOutdatedCaches: true,
+        clientsClaim: true,
+      },
 
-    devOptions: {
-      enabled: false,
-      navigateFallback: 'index.html',
-      suppressWarnings: true,
-      type: 'module',
-    },
-  })],
+      devOptions: {
+        enabled: false,
+        navigateFallback: 'index.html',
+        suppressWarnings: true,
+        type: 'module',
+      },
+    }),
+  ],
 })
