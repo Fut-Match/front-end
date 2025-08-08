@@ -187,6 +187,6 @@ A aplicação está configurada como PWA com:
 
 ---
 
-**Versão:** 0.0.0  
+**Versão:** 0.0.2
 **Licença:** Privada  
 **Autor:** Fut-Match Team
