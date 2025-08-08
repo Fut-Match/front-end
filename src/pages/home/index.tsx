@@ -20,7 +20,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
       matches: 18,
       tackles: 67,
     },
-    rating: 87,
+    rating: 25,
   }
 
   // Conquistas deixar para mais tarde

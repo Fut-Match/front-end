@@ -1,4 +1,4 @@
-import { AlertTriangle, Home, LogOut, Menu, Play, X } from 'lucide-react'
+import { AlertTriangle, Home, LogOut, Menu, Play, Users, X } from 'lucide-react'
 import type React from 'react'
 import { useState } from 'react'
 import icon from '../../public/icon.svg'
@@ -23,7 +23,6 @@ const Header: React.FC<HeaderProps> = ({
   // { screen: 'teams' as Screen, label: 'Times', description: 'Organize grupos de jogadores', icon: Users },
   // { screen: 'ranking' as Screen, label: 'Ranking', description: 'Classificação dos jogadores', icon: Trophy },
   // { screen: 'feed' as Screen, label: 'Feed Social', description: 'Atividades dos amigos', icon: MessageSquare },
-  // { screen: 'profile' as Screen, label: 'Meu Perfil', description: 'Suas estatísticas detalhadas', icon: User },
   // { screen: 'history' as Screen, label: 'Histórico', description: 'Resultados e análises', icon: BarChart3 },
   // { screen: 'challenges' as Screen, label: 'Desafios', description: 'Conquistas e objetivos', icon: Star },
 
@@ -40,6 +39,12 @@ const Header: React.FC<HeaderProps> = ({
       description: 'Gerenciar partida em andamento',
       icon: Play,
     },
+      { screen: 'profile' as Screen, 
+        label: 'Meu Perfil',
+        description: 'Suas estatísticas detalhadas',
+        icon: Users,
+        },
+
   ]
 
   const handleMenuClick = (screen: Screen) => {
