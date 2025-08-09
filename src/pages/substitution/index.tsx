@@ -19,7 +19,6 @@ interface SubstitutionScreenProps {
 
 const SubstitutionScreen: React.FC<SubstitutionScreenProps> = ({
   onNavigate,
-  match,
 }) => {
   const [selectedPlayerOut, setSelectedPlayerOut] = useState<any>(null)
   const [selectedPlayerIn, setSelectedPlayerIn] = useState<any>(null)
