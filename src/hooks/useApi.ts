@@ -47,8 +47,7 @@ export const useHealthCheck = () => {
     queryKey: ['health'],
     queryFn: async () => {
       const healthUrl =
-        import.meta.env.VITE_HEALTH_CHECK_URL ||
-        'https://back-end-production-c28b.up.railway.app/health'
+        import.meta.env.VITE_HEALTH_CHECK_URL || 'http://localhost:3001/health'
       const response = await fetch(healthUrl)
 
       if (!response.ok) {
