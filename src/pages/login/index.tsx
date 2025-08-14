@@ -1,7 +1,6 @@
 import { Eye, EyeOff, Lock, Mail } from 'lucide-react'
 import type React from 'react'
 import { useState } from 'react'
-import icon from '../../../public/icon.svg'
 import CustomButton from '../../components/ui/customButton'
 
 interface LoginScreenProps {
@@ -29,7 +28,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
         {/* Logo Section */}
         <div className="text-center mb-12">
           <div className="flex justify-center mb-6">
-            <img src={icon} alt="FutMatch" className="h-24 w-24" />
+            <img src="/icon.svg" alt="FutMatch" className="h-24 w-24" />
           </div>
           <h1 className="text-3xl font-semibold text-gray-900 mb-2">
             Bem-vindo ao FutMatch

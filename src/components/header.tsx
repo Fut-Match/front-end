@@ -1,7 +1,15 @@
-import { AlertTriangle, Home, LogOut, Menu, Play, Users, X } from 'lucide-react'
+import {
+  Activity,
+  AlertTriangle,
+  Home,
+  LogOut,
+  Menu,
+  Play,
+  Users,
+  X,
+} from 'lucide-react'
 import type React from 'react'
 import { useState } from 'react'
-import icon from '../../public/icon.svg'
 import type { Screen } from '../App'
 import CustomButton from './ui/customButton'
 
@@ -39,12 +47,18 @@ const Header: React.FC<HeaderProps> = ({
       description: 'Gerenciar partida em andamento',
       icon: Play,
     },
-      { screen: 'profile' as Screen, 
-        label: 'Meu Perfil',
-        description: 'Suas estatísticas detalhadas',
-        icon: Users,
-        },
-
+    {
+      screen: 'profile' as Screen,
+      label: 'Meu Perfil',
+      description: 'Suas estatísticas detalhadas',
+      icon: Users,
+    },
+    {
+      screen: 'status' as Screen,
+      label: 'Status da API',
+      description: 'Verificar status do back-end',
+      icon: Activity,
+    },
   ]
 
   const handleMenuClick = (screen: Screen) => {
@@ -106,7 +120,7 @@ const Header: React.FC<HeaderProps> = ({
               </button>
 
               <div className="flex items-center space-x-3 mb-4">
-                <img src={icon} alt="FutMatch" className="h-10 w-10" />
+                <img src="/icon.svg" alt="FutMatch" className="h-10 w-10" />
                 <div>
                   <h3 className="text-xl font-semibold">FUTMATCH</h3>
                   <p className="text-orange-100 text-sm">
