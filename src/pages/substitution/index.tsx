@@ -12,16 +12,25 @@ import { useState } from 'react'
 import type { Screen } from '../../App'
 import CustomButton from '../../components/ui/customButton'
 
+interface Player {
+  id: number
+  name: string
+  position: string
+  avatar: string
+  stamina: number
+}
+
 interface SubstitutionScreenProps {
   onNavigate: (screen: Screen) => void
-  match?: any
 }
 
 const SubstitutionScreen: React.FC<SubstitutionScreenProps> = ({
   onNavigate,
 }) => {
-  const [selectedPlayerOut, setSelectedPlayerOut] = useState<any>(null)
-  const [selectedPlayerIn, setSelectedPlayerIn] = useState<any>(null)
+  const [selectedPlayerOut, setSelectedPlayerOut] = useState<Player | null>(
+    null
+  )
+  const [selectedPlayerIn, setSelectedPlayerIn] = useState<Player | null>(null)
   const [activeTeam, setActiveTeam] = useState<'team1' | 'team2'>('team1')
 
   // Mock data para jogadores
@@ -196,6 +205,7 @@ const SubstitutionScreen: React.FC<SubstitutionScreenProps> = ({
       {/* Team Selection */}
       <div className="flex bg-white rounded-lg p-1 mb-6 shadow-sm">
         <button
+          type="button"
           onClick={() => setActiveTeam('team1')}
           className={`flex-1 py-2 px-4 rounded-md transition-colors text-sm ${
             activeTeam === 'team1'
@@ -206,6 +216,7 @@ const SubstitutionScreen: React.FC<SubstitutionScreenProps> = ({
           Time A
         </button>
         <button
+          type="button"
           onClick={() => setActiveTeam('team2')}
           className={`flex-1 py-2 px-4 rounded-md transition-colors text-sm ${
             activeTeam === 'team2'
@@ -274,10 +285,17 @@ const SubstitutionScreen: React.FC<SubstitutionScreenProps> = ({
 
         <div className="p-4 space-y-3">
           {currentPlaying.map((player) => (
-            <div
+            <button
+              type="button"
               key={player.id}
               onClick={() => setSelectedPlayerOut(player)}
-              className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-colors ${
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  setSelectedPlayerOut(player)
+                }
+              }}
+              className={`w-full flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-colors text-left ${
                 selectedPlayerOut?.id === player.id
                   ? 'border-red-500 bg-red-50'
                   : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
@@ -305,7 +323,7 @@ const SubstitutionScreen: React.FC<SubstitutionScreenProps> = ({
                   <UserX className="h-5 w-5 text-red-600" />
                 )}
               </div>
-            </div>
+            </button>
           ))}
         </div>
       </div>
@@ -322,10 +340,17 @@ const SubstitutionScreen: React.FC<SubstitutionScreenProps> = ({
         <div className="p-4 space-y-3">
           {currentBench.length > 0 ? (
             currentBench.map((player) => (
-              <div
+              <button
+                type="button"
                 key={player.id}
                 onClick={() => setSelectedPlayerIn(player)}
-                className={`flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-colors ${
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    setSelectedPlayerIn(player)
+                  }
+                }}
+                className={`w-full flex items-center justify-between p-3 rounded-lg border cursor-pointer transition-colors text-left ${
                   selectedPlayerIn?.id === player.id
                     ? 'border-green-500 bg-green-50'
                     : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
@@ -351,7 +376,7 @@ const SubstitutionScreen: React.FC<SubstitutionScreenProps> = ({
                     <UserCheck className="h-5 w-5 text-green-600" />
                   )}
                 </div>
-              </div>
+              </button>
             ))
           ) : (
             <div className="text-center py-8 text-gray-500">
