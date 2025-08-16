@@ -117,6 +117,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
           <p className="text-gray-600">
             Não tem uma conta?{' '}
             <button
+              type="button"
               onClick={onNavigateToRegister}
               className="text-[#F2442E] hover:text-[#d63a2a] font-medium transition-colors "
             >

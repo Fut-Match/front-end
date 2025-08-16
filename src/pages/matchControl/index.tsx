@@ -94,6 +94,7 @@ const MatchControlScreen: React.FC<MatchControlScreenProps> = ({
       <div className="text-center mb-6">
         <div className="flex items-center mb-6">
           <button
+            type="button"
             onClick={() => onNavigate('myMatches')}
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors mr-3"
           >

@@ -3,6 +3,7 @@ import { useState } from 'react'
 //Componentes
 import Header from './components/header.tsx'
 import PWABadge from './PWABadge.tsx'
+import ConfirmEmailScreen from './pages/confirmEmail/index.tsx'
 import CreateMatchScreen from './pages/createMatch/index.tsx'
 import HistoryScreen from './pages/historyMatch/index.tsx'
 import HomeScreen from './pages/home/index.tsx'
@@ -30,6 +31,7 @@ export type Screen =
   | 'matchSummary'
   | 'profile'
   | 'status'
+  | 'confirmEmail'
 
 function App() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('login')
@@ -65,7 +67,17 @@ function App() {
         )
       case 'register':
         return (
-          <RegisterScreen onNavigateToLogin={() => setCurrentScreen('login')} />
+          <RegisterScreen
+            onNavigateToConfirmEmail={() => setCurrentScreen('confirmEmail')}
+            onNavigateToLogin={() => setCurrentScreen('login')}
+          />
+        )
+      case 'confirmEmail':
+        return (
+          <ConfirmEmailScreen
+            onNavigate={navigateToScreen}
+            onlogin={handleLogin}
+          />
         )
       case 'home':
         return <HomeScreen onNavigate={navigateToScreen} />
@@ -106,6 +118,7 @@ function App() {
             match={selectedMatch}
           />
         )
+
       case 'profile':
         return <PlayerProfileScreen onNavigate={navigateToScreen} />
       case 'status':

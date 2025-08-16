@@ -5,9 +5,11 @@ import CustomButton from '../../components/ui/customButton'
 
 interface RegisterScreenProps {
   onNavigateToLogin: () => void
+  onNavigateToConfirmEmail: () => void
 }
 
 const RegisterScreen: React.FC<RegisterScreenProps> = ({
+  onNavigateToConfirmEmail,
   onNavigateToLogin,
 }) => {
   const [formData, setFormData] = useState({
@@ -36,23 +38,12 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     // Simulate registration and redirect to login
-    onNavigateToLogin()
+    onNavigateToConfirmEmail()
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex flex-col justify-center px-6 py-8">
       <div className="max-w-md mx-auto w-full">
-        {/* Logo Section */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <img src="/icon.svg" alt="FutMatch" className="h-16 w-16" />
-          </div>
-          <h1 className="text-2xl font-semibold text-gray-900 mb-2">
-            Criar Conta
-          </h1>
-          <p className="text-gray-600">Junte-se à comunidade FutMatch</p>
-        </div>
-
         {/* Registration Form */}
         <form onSubmit={handleSubmit} className="space-y-5">
           {/* Profile Photo Upload */}
@@ -168,6 +159,29 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
               </button>
             </div>
           </div>
+          {/* Cofirm Password Field */}
+          <div>
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Confirmar Senha
+            </label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Lock className="h-5 w-5 text-gray-400" />
+              </div>
+              <input
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                value={formData.password}
+                onChange={(e) => handleInputChange('password', e.target.value)}
+                className="block w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F2442E] focus:border-[#F2442E] outline-none transition-colors"
+                placeholder="••••••••"
+                required
+              />
+            </div>
+          </div>
 
           {/* Submit Button */}
           <div className="pt-4">
@@ -177,7 +191,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
               size="lg"
               fullWidth
             >
-              Cadastrar
+              Proximo
             </CustomButton>
           </div>
         </form>
@@ -187,6 +201,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({
           <p className="text-gray-600">
             Já tem uma conta?{' '}
             <button
+              type="button"
               onClick={onNavigateToLogin}
               className="text-[#F2442E] hover:text-[#d63a2a] font-medium transition-colors"
             >
