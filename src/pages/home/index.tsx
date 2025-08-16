@@ -240,6 +240,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
             const IconComponent = action.icon
             return (
               <button
+                type="button"
                 key={index}
                 onClick={action.action}
                 className="flex items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
