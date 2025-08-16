@@ -1,5 +1,15 @@
-import { Award, Shield, Star, Target, Trophy, Users } from 'lucide-react'
+import {
+  Award,
+  Eye,
+  EyeOff,
+  Shield,
+  Star,
+  Target,
+  Trophy,
+  Users,
+} from 'lucide-react'
 import type React from 'react'
+import { useState } from 'react'
 import playerIconImage from '../../../public/favicon.svg'
 import { ImageWithFallback } from '../../../public/figma'
 import type { Screen } from '.././../App'
@@ -9,6 +19,7 @@ interface HomeScreenProps {
 }
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
+  const [showInfo, setShowInfo] = useState(false)
   // Mock user data
   const userData = {
     name: 'João Silva',
@@ -123,81 +134,98 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onNavigate }) => {
             </div>
 
             {/* Stats Layout */}
-            <div className="grid grid-cols-6 gap-2">
-              {/* Goals */}
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 text-center">
-                <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <Target className="h-4 w-4 text-white" />
-                </div>
-                <div className="text-xs text-gray-300 uppercase tracking-wide mb-1">
-                  GOLS
-                </div>
-                <div className="text-lg font-bold text-white">
-                  {userData.stats.goals}
-                </div>
-              </div>
-
-              {/* Assists */}
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 text-center">
-                <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <Users className="h-4 w-4 text-white" />
-                </div>
-                <div className="text-xs text-gray-300 uppercase tracking-wide mb-1">
-                  ASSISTÊNCIAS
-                </div>
-                <div className="text-lg font-bold text-white">
-                  {userData.stats.assists}
-                </div>
-              </div>
-
-              {/* Tackles */}
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 text-center">
-                <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <Shield className="h-4 w-4 text-white" />
-                </div>
-                <div className="text-xs text-gray-300 uppercase tracking-wide mb-1">
-                  DESARMES
-                </div>
-                <div className="text-lg font-bold text-white">
-                  {userData.stats.tackles}
-                </div>
-              </div>
-
-              {/* Matches */}
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 text-center">
-                <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <Trophy className="h-4 w-4 text-white" />
-                </div>
-                <div className="text-xs text-gray-300 uppercase tracking-wide mb-1">
-                  MVPS
-                </div>
-                <div className="text-lg font-bold text-white">7</div>
-              </div>
-
-              {/* Victories */}
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 text-center">
-                <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <Award className="h-4 w-4 text-white" />
-                </div>
-                <div className="text-xs text-gray-300 uppercase tracking-wide mb-1">
-                  VITÓRIAS
-                </div>
-                <div className="text-lg font-bold text-white">
-                  {userData.stats.matches}
-                </div>
-              </div>
-
-              {/* Average Rating */}
-              <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 text-center">
-                <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <Star className="h-4 w-4 text-white" />
-                </div>
-                <div className="text-xs text-gray-300 uppercase tracking-wide mb-1">
-                  NOTA MÉDIA
-                </div>
-                <div className="text-lg font-bold text-white">8.2</div>
-              </div>
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setShowInfo(!showInfo)}
+                className="absolute bottom-3 right-0 p-2 text-gray-400 hover:text-white transition"
+              >
+                {showInfo ? (
+                  <EyeOff className="h-5 w-5" />
+                ) : (
+                  <Eye className="h-5 w-5" />
+                )}
+              </button>
             </div>
+
+            {/* Conteúdo das estatísticas */}
+            {showInfo && (
+              <div className="grid grid-cols-2 gap-2 mt-8">
+                {/* Goals */}
+                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 text-center">
+                  <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                    <Target className="h-4 w-4 text-white" />
+                  </div>
+                  <div className="text-xs text-gray-300 uppercase tracking-wide mb-1">
+                    GOLS
+                  </div>
+                  <div className="text-lg font-bold text-white">
+                    {userData.stats.goals}
+                  </div>
+                </div>
+
+                {/* Assists */}
+                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 text-center">
+                  <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                    <Users className="h-4 w-4 text-white" />
+                  </div>
+                  <div className="text-xs text-gray-300 uppercase tracking-wide mb-1">
+                    ASSISTÊNCIAS
+                  </div>
+                  <div className="text-lg font-bold text-white">
+                    {userData.stats.assists}
+                  </div>
+                </div>
+
+                {/* Tackles */}
+                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 text-center">
+                  <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                    <Shield className="h-4 w-4 text-white" />
+                  </div>
+                  <div className="text-xs text-gray-300 uppercase tracking-wide mb-1">
+                    DESARMES
+                  </div>
+                  <div className="text-lg font-bold text-white">
+                    {userData.stats.tackles}
+                  </div>
+                </div>
+
+                {/* MVPS */}
+                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 text-center">
+                  <div className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                    <Trophy className="h-4 w-4 text-white" />
+                  </div>
+                  <div className="text-xs text-gray-300 uppercase tracking-wide mb-1">
+                    MVPS
+                  </div>
+                  <div className="text-lg font-bold text-white">7</div>
+                </div>
+
+                {/* Victories */}
+                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 text-center">
+                  <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                    <Award className="h-4 w-4 text-white" />
+                  </div>
+                  <div className="text-xs text-gray-300 uppercase tracking-wide mb-1">
+                    VITÓRIAS
+                  </div>
+                  <div className="text-lg font-bold text-white">
+                    {userData.stats.matches}
+                  </div>
+                </div>
+
+                {/* Average Rating */}
+                <div className="bg-white/10 backdrop-blur-sm rounded-lg p-3 text-center">
+                  <div className="w-8 h-8 bg-indigo-500 rounded-full flex items-center justify-center mx-auto mb-2">
+                    <Star className="h-4 w-4 text-white" />
+                  </div>
+                  <div className="text-xs text-gray-300 uppercase tracking-wide mb-1">
+                    NOTA MÉDIA
+                  </div>
+                  <div className="text-lg font-bold text-white">8.2</div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
