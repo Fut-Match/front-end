@@ -37,30 +37,9 @@ const ConfirmEmailScreen: React.FC<confirmEmailProps> = ({
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 flex flex-col justify-center px-4 sm:px-6 py-8">
-      <div className="flex items-center mb-6">
-        {/*  Button to go back to previous screen  */}
-        <button
-          type="button"
-          onClick={() => onNavigate('register')}
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors mr-3 flex items-center justify-center"
-        >
-          <ArrowLeft className="h-5 w-5" textAnchor="middle" />
-          Voltar
-        </button>
-      </div>
+      <div className="flex items-center mb-6"></div>
 
       <div className="max-w-md mx-auto w-full">
-        {/* Logo png */}
-        <div className="text-center mb-12">
-          <div className="flex justify-center mb-6">
-            <img
-              src="/icon.svg"
-              alt="FutMatch"
-              className="h-20 w-20 sm:h-24 sm:w-24"
-            />
-          </div>
-        </div>
-
         <h2 className="text-xl sm:text-2xl font-bold text-center mb-6">
           Confirmar Email
         </h2>

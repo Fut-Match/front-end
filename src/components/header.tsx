@@ -86,6 +86,7 @@ const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center justify-between px-4 py-3">
           {/* Menu Button */}
           <button
+            type="button"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
           >
@@ -107,28 +108,11 @@ const Header: React.FC<HeaderProps> = ({
           ></div>
 
           <div
-            className="fixed top-0 left-0 w-80 h-full bg-white shadow-2xl z-50 overflow-y-auto"
+            className="fixed top-15 left-0 w-80 h-full bg-white shadow-2xl z-50 overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header with Gradient */}
             <div className="bg-gradient-to-r from-[#F2442E] to-orange-500 p-6 text-white relative">
-              <button
-                onClick={() => setIsMenuOpen(false)}
-                className="absolute top-4 right-4 p-2 hover:bg-white/20 rounded-lg transition-colors"
-              >
-                <X size={20} />
-              </button>
-
-              <div className="flex items-center space-x-3 mb-4">
-                <img src="/icon.svg" alt="FutMatch" className="h-10 w-10" />
-                <div>
-                  <h3 className="text-xl font-semibold">FUTMATCH</h3>
-                  <p className="text-orange-100 text-sm">
-                    Gerenciamento de Partidas
-                  </p>
-                </div>
-              </div>
-
               {/* User Info */}
               <div className="flex items-center space-x-3 bg-white/10 rounded-lg p-3">
                 <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
@@ -155,6 +139,7 @@ const Header: React.FC<HeaderProps> = ({
 
                   return (
                     <button
+                      type="button"
                       key={`${item.screen}-${index}`}
                       onClick={() => handleMenuClick(item.screen)}
                       className={`w-full flex items-center p-4 rounded-lg transition-colors relative ${
@@ -187,6 +172,7 @@ const Header: React.FC<HeaderProps> = ({
 
                 {/* Logout Button */}
                 <button
+                  type="button"
                   onClick={handleLogoutClick}
                   className="w-full flex items-center p-4 rounded-lg transition-colors hover:bg-red-50 text-gray-700 hover:text-red-600"
                 >
