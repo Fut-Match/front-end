@@ -80,6 +80,21 @@ const Header: React.FC<HeaderProps> = ({
     setShowLogoutModal(false)
   }
 
+  const getPageName = (screen: Screen): string => {
+    switch (screen) {
+      case 'home':
+        return 'Home'
+      case 'myMatches':
+        return 'Partida Atual'
+      case 'profile':
+        return 'Meu Perfil'
+      case 'status':
+        return 'Status da API'
+      default:
+        return ''
+    }
+  }
+
   return (
     <>
       <header className="fixed top-0 left-0 right-0 bg-white shadow-md z-50">
@@ -88,9 +103,10 @@ const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="flex gap-2 p-2 hover:bg-gray-100 rounded-lg text-lg font-medium  text-gray-700  transition-colors  "
           >
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            <p>{getPageName(currentScreen)}</p>
           </button>
 
           {/* Empty center space */}
@@ -102,30 +118,29 @@ const Header: React.FC<HeaderProps> = ({
       {isMenuOpen && (
         <div className="fixed inset-0 z-40">
           {/* Invisible overlay for closing */}
-          <div
+          <button
+            type="button"
             className="absolute inset-0"
             onClick={() => setIsMenuOpen(false)}
-          ></div>
+          ></button>
 
-          <div
-            className="fixed top-15 left-0 w-80 h-full bg-white shadow-2xl z-50 overflow-y-auto"
+          <button
+            type="button"
+            className="fixed top-0 left-0 w-full sm:w-80 h-full bg-white shadow-2xl z-50 overflow-y-auto transform transition-transform duration-300"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header with Gradient */}
             <div className="bg-gradient-to-r from-[#F2442E] to-orange-500 p-6 text-white relative">
-              {/* User Info */}
-              <div className="flex items-center space-x-3 bg-white/10 rounded-lg p-3">
-                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                  <span className="text-lg font-semibold">U</span>
-                </div>
-                <div className="flex-1">
-                  <div className="font-medium">Usuário</div>
-                  <div className="text-sm text-orange-100">
-                    usuario@email.com
-                  </div>
-                </div>
-                <div className="bg-green-400 text-green-900 text-xs px-2 py-1 rounded-full font-medium">
-                  Online
+              <button
+                type="button"
+                onClick={() => setIsMenuOpen(false)}
+                className="absolute top-2 right-4 p-2 hover:bg-white/20 rounded-lg transition-colors"
+              ></button>
+
+              <div className="top-0 flex items-center space-x-2 mb-1 justify-center">
+                <img src="/icon.svg" alt="FutMatch" className="h-10 w-10" />
+                <div>
+                  <h3 className="text-xl font-semibold">FUTMATCH</h3>
                 </div>
               </div>
             </div>
@@ -188,7 +203,7 @@ const Header: React.FC<HeaderProps> = ({
                 </button>
               </div>
             </div>
-          </div>
+          </button>
         </div>
       )}
 
