@@ -1,3 +1,4 @@
+//Bibliotecas
 import {
   Activity,
   AlertTriangle,
@@ -11,6 +12,7 @@ import {
 } from 'lucide-react'
 import type React from 'react'
 import { useState } from 'react'
+//Componentes
 import type { Screen } from '../App'
 import CustomButton from './ui/customButton'
 
