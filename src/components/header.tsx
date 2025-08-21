@@ -1,6 +1,7 @@
 import {
   Activity,
   AlertTriangle,
+  ArrowLeft,
   Home,
   LogOut,
   Menu,
@@ -90,8 +91,74 @@ const Header: React.FC<HeaderProps> = ({
         return 'Meu Perfil'
       case 'status':
         return 'Status da API'
+      case 'history':
+        return 'Histórico'
       default:
         return ''
+    }
+  }
+
+  // Renderizar Arrow Icon página secundária
+  const renderArrowIcon = (screen: Screen) => {
+    switch (screen) {
+      case 'createMatch':
+        return (
+          <button
+            type="button"
+            onClick={() => {
+              onNavigate('myMatches')
+              setIsMenuOpen(false)
+            }}
+            className="flex items-center"
+          >
+            <ArrowLeft size={18} className="mr-2" />
+            Voltar
+          </button>
+        )
+      case 'matchControl':
+        return (
+          <button
+            type="button"
+            onClick={() => {
+              onNavigate('myMatches')
+              setIsMenuOpen(false)
+            }}
+            className="flex items-center"
+          >
+            <ArrowLeft size={18} className="mr-2" />
+            Voltar
+          </button>
+        )
+      case 'liveMatch':
+        return (
+          <button
+            type="button"
+            onClick={() => {
+              onNavigate('matchControl')
+              setIsMenuOpen(false)
+            }}
+            className="flex items-center"
+          >
+            <ArrowLeft size={18} className="mr-2" />
+            Voltar
+          </button>
+        )
+      case 'matchSummary':
+        return (
+          <button
+            type="button"
+            onClick={() => {
+              onNavigate('history')
+              setIsMenuOpen(false)
+            }}
+            className="flex items-center"
+          >
+            <ArrowLeft size={18} className="mr-2" />
+            Voltar
+          </button>
+        )
+      default:
+        return null
     }
   }
 
@@ -103,9 +170,10 @@ const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="flex gap-2 p-2 hover:bg-gray-100 rounded-lg text-lg font-medium  text-gray-700  transition-colors  "
+            className="flex gap-2 p-2 hover:bg-gray-100 rounded-lg text-lg font-medium text-gray-700 transition-colors"
           >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {renderArrowIcon(currentScreen) ||
+              (isMenuOpen ? <X size={24} /> : <Menu size={24} />)}
             <p>{getPageName(currentScreen)}</p>
           </button>
 
