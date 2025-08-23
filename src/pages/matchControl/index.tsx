@@ -1,4 +1,4 @@
-import { ArrowLeft, Play, Settings, Shuffle, UserCheck } from 'lucide-react'
+import { Play, Settings, Shuffle, UserCheck } from 'lucide-react'
 import type React from 'react'
 import { useState } from 'react'
 import { ImageWithFallback } from '../../../public/figma'
@@ -92,15 +92,6 @@ const MatchControlScreen: React.FC<MatchControlScreenProps> = ({
     <div className="min-h-screen bg-gray-50 p-4 pb-20">
       {/* Page Header */}
       <div className="text-center mb-6">
-        <div className="flex items-center mb-6">
-          <button
-            type="button"
-            onClick={() => onNavigate('myMatches')}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors mr-3"
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </button>
-        </div>
         <div className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-4 px-6 rounded-xl shadow-lg">
           <h1 className="text-2xl font-bold">Controle da Partida</h1>
           <p className="text-yellow-100">

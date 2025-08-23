@@ -281,6 +281,7 @@ const HistoryScreen: React.FC<HistoryScreenProps> = ({
         <div className="flex space-x-2 overflow-x-auto pb-2">
           {filterOptions.map((option) => (
             <button
+              type="button"
               key={option.value}
               onClick={() => setActiveFilter(option.value)}
               className={`px-3 py-1 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${

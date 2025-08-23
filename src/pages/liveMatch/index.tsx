@@ -1,5 +1,4 @@
 import {
-  ArrowLeft,
   Crown,
   Flame,
   Pause,
@@ -268,15 +267,6 @@ const LiveMatchScreen: React.FC<LiveMatchScreenProps> = ({
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 pb-20">
-      {/* Discrete Page Title */}
-      <div className="flex items-center mb-6">
-        <button
-          onClick={() => onNavigate('matchControl')}
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors mr-3"
-        >
-          <ArrowLeft className="h-5 w-5" />
-        </button>
-      </div>
       <div className="mb-6">
         <h1 className="text-lg font-medium text-gray-700 text-center">
           ⚽ Partida ao Vivo
@@ -312,6 +302,7 @@ const LiveMatchScreen: React.FC<LiveMatchScreenProps> = ({
             </div>
             <div className="flex justify-center space-x-2">
               <button
+                type="button"
                 onClick={() => setIsRunning(!isRunning)}
                 className="p-3 bg-[#F2442E] text-white rounded-lg hover:bg-[#d63a2a] transition-colors"
                 disabled={time === 0}
@@ -323,6 +314,7 @@ const LiveMatchScreen: React.FC<LiveMatchScreenProps> = ({
                 )}
               </button>
               <button
+                type="button"
                 onClick={resetTimer}
                 className="p-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
               >
@@ -420,6 +412,7 @@ const LiveMatchScreen: React.FC<LiveMatchScreenProps> = ({
                 {/* Larger Action Buttons */}
                 <div className="grid grid-cols-3 gap-3">
                   <button
+                    type="button"
                     onClick={() => addGoal(player.id, 1)}
                     className="flex flex-col items-center justify-center p-4 bg-green-100 rounded-lg hover:bg-green-200 transition-colors border-2 border-green-300 hover:border-green-400"
                   >
@@ -429,6 +422,7 @@ const LiveMatchScreen: React.FC<LiveMatchScreenProps> = ({
                     </span>
                   </button>
                   <button
+                    type="button"
                     onClick={() => addAssist(player.id)}
                     className="flex flex-col items-center justify-center p-4 bg-blue-100 rounded-lg hover:bg-blue-200 transition-colors border-2 border-blue-300 hover:border-blue-400"
                   >
@@ -438,6 +432,7 @@ const LiveMatchScreen: React.FC<LiveMatchScreenProps> = ({
                     </span>
                   </button>
                   <button
+                    type="button"
                     onClick={() => addTackle(player.id)}
                     className="flex flex-col items-center justify-center p-4 bg-purple-100 rounded-lg hover:bg-purple-200 transition-colors border-2 border-purple-300 hover:border-purple-400"
                   >
@@ -484,6 +479,7 @@ const LiveMatchScreen: React.FC<LiveMatchScreenProps> = ({
                 {/* Larger Action Buttons */}
                 <div className="grid grid-cols-3 gap-3">
                   <button
+                    type="button"
                     onClick={() => addGoal(player.id, 2)}
                     className="flex flex-col items-center justify-center p-4 bg-green-100 rounded-lg hover:bg-green-200 transition-colors border-2 border-green-300 hover:border-green-400"
                   >
@@ -493,6 +489,7 @@ const LiveMatchScreen: React.FC<LiveMatchScreenProps> = ({
                     </span>
                   </button>
                   <button
+                    type="button"
                     onClick={() => addAssist(player.id)}
                     className="flex flex-col items-center justify-center p-4 bg-blue-100 rounded-lg hover:bg-blue-200 transition-colors border-2 border-blue-300 hover:border-blue-400"
                   >
@@ -502,6 +499,7 @@ const LiveMatchScreen: React.FC<LiveMatchScreenProps> = ({
                     </span>
                   </button>
                   <button
+                    type="button"
                     onClick={() => addTackle(player.id)}
                     className="flex flex-col items-center justify-center p-4 bg-purple-100 rounded-lg hover:bg-purple-200 transition-colors border-2 border-purple-300 hover:border-purple-400"
                   >
@@ -543,6 +541,7 @@ const LiveMatchScreen: React.FC<LiveMatchScreenProps> = ({
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-3">
                 <button
+                  type="button"
                   onClick={() => setSubstitutionType('individual')}
                   className={`p-3 rounded-lg border-2 transition-colors ${
                     substitutionType === 'individual'
@@ -555,6 +554,7 @@ const LiveMatchScreen: React.FC<LiveMatchScreenProps> = ({
                 </button>
 
                 <button
+                  type="button"
                   onClick={() => setSubstitutionType('team')}
                   className={`p-3 rounded-lg border-2 transition-colors ${
                     substitutionType === 'team'
@@ -576,6 +576,7 @@ const LiveMatchScreen: React.FC<LiveMatchScreenProps> = ({
                     {[...getPlayingPlayers(1), ...getPlayingPlayers(2)].map(
                       (player) => (
                         <button
+                          type="button"
                           key={player.id}
                           onClick={() => setSelectedPlayer(player)}
                           className={`w-full flex items-center p-3 rounded-lg border transition-colors ${
@@ -609,6 +610,7 @@ const LiveMatchScreen: React.FC<LiveMatchScreenProps> = ({
                   </h4>
                   <div className="space-y-2">
                     <button
+                      type="button"
                       onClick={() => setSelectedTeam(1)}
                       className={`w-full p-3 rounded-lg border transition-colors ${
                         selectedTeam === 1
@@ -622,6 +624,7 @@ const LiveMatchScreen: React.FC<LiveMatchScreenProps> = ({
                       </div>
                     </button>
                     <button
+                      type="button"
                       onClick={() => setSelectedTeam(2)}
                       className={`w-full p-3 rounded-lg border transition-colors ${
                         selectedTeam === 2

@@ -1,5 +1,4 @@
 import {
-  ArrowLeft,
   Calendar,
   Check,
   Clock,
@@ -97,26 +96,19 @@ const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 pb-20">
-      <div className="flex items-center mb-6">
-        <button
-          onClick={() => onNavigate('myMatches')}
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors mr-3"
-        >
-          <ArrowLeft className="h-5 w-5" />
-        </button>
-      </div>
+      {' '}
       {/* Discrete Page Title */}
       <div className="mb-6">
         <h1 className="text-lg font-medium text-gray-700 text-center">
           ⚽ Criar Partida
         </h1>
       </div>
-
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Match Name */}
         <div className="bg-white rounded-lg p-4 shadow-sm">
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Nome da Partida
+            <input />
           </label>
           <input
             type="text"
@@ -132,6 +124,7 @@ const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({
         <div className="bg-white rounded-lg p-4 shadow-sm">
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Jogadores por Time
+            <input type="text" />
           </label>
           <select
             value={formData.playersPerTeam}
@@ -150,6 +143,7 @@ const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({
         <div className="bg-white rounded-lg p-4 shadow-sm">
           <label className="block text-sm font-medium text-gray-700 mb-3">
             Critérios de Fim da Partida
+            <input type="text" />
           </label>
           <div className="space-y-3">
             {[
@@ -202,6 +196,7 @@ const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({
                 <Target className="h-4 w-4 text-[#F2442E]" />
                 <span>Gols para Vencer</span>
               </div>
+              <input type="" />
             </label>
             <input
               type="number"
@@ -226,6 +221,7 @@ const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({
           <div className="bg-white rounded-lg p-4 shadow-sm">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Tempo de Jogo
+              <input type="" />
             </label>
             <select
               value={formData.gameTime}
@@ -260,6 +256,7 @@ const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({
         <div className="bg-white rounded-lg p-4 shadow-sm">
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Local
+            <input type="text" />
           </label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -282,6 +279,7 @@ const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Data do Jogo
+                <input type="datetime-local" />
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -300,6 +298,7 @@ const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Horário
+                <input type="time" />
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -321,6 +320,7 @@ const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({
         <div className="bg-white rounded-lg p-4 shadow-sm">
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Imagem da Partida (opcional)
+            <input type="text" />
           </label>
           <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-[#F2442E] transition-colors">
             {matchImage ? (
@@ -375,7 +375,6 @@ const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({
           Criar Partida
         </CustomButton>
       </form>
-
       {/* Invite Modal */}
       {showInviteModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
@@ -397,6 +396,7 @@ const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Token
+                  <input type="text" />
                 </label>
                 <div className="flex space-x-2">
                   <input
@@ -406,6 +406,7 @@ const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({
                     className="flex-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-50"
                   />
                   <button
+                    type="button"
                     onClick={() => copyToClipboard(inviteToken)}
                     className="px-3 py-2 text-[#F2442E] border border-[#F2442E] rounded-lg hover:bg-[#F2442E] hover:text-white transition-colors"
                   >
@@ -418,6 +419,7 @@ const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Link
+                  <input type="text" />
                 </label>
                 <div className="flex space-x-2">
                   <input
@@ -427,6 +429,7 @@ const CreateMatchScreen: React.FC<CreateMatchScreenProps> = ({
                     className="flex-1 px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 text-sm"
                   />
                   <button
+                    type="button"
                     onClick={() => copyToClipboard(inviteLink)}
                     className="px-3 py-2 text-[#F2442E] border border-[#F2442E] rounded-lg hover:bg-[#F2442E] hover:text-white transition-colors"
                   >

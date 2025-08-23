@@ -1,12 +1,25 @@
-import { ArrowLeft, Calendar, Clock, MapPin, Plus, Users } from 'lucide-react'
+import { Calendar, Clock, MapPin, Plus, Users } from 'lucide-react'
 import type React from 'react'
 import { useState } from 'react'
 import type { Screen } from '../../App'
 import CustomButton from '../../components/ui/customButton'
 
+interface Match {
+  id: number
+  name: string
+  date: string
+  time: string
+  location: string
+  status: string
+  playersPerTeam: number
+  confirmedPlayers: number
+  totalSlots: number
+  isAdmin: boolean
+}
+
 interface MyMatchesScreenProps {
   onNavigate: (screen: Screen) => void
-  onSelectMatch: (match: any) => void
+  onSelectMatch: (match: Match) => void
 }
 
 const MyMatchesScreen: React.FC<MyMatchesScreenProps> = ({
@@ -81,7 +94,7 @@ const MyMatchesScreen: React.FC<MyMatchesScreenProps> = ({
     }
   }
 
-  const handleMatchClick = (match: any) => {
+  const handleMatchClick = (match: Match) => {
     onSelectMatch(match)
     if (match.status === 'aguardando' && match.isAdmin) {
       onNavigate('matchControl')
@@ -102,16 +115,6 @@ const MyMatchesScreen: React.FC<MyMatchesScreenProps> = ({
 
   return (
     <div className="min-h-screen bg-gray-50 p-4 pb-20">
-      {/* Page Header */}
-      <div className="flex items-center mb-6">
-        <button
-          onClick={() => onNavigate('home')}
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors mr-3"
-        >
-          <ArrowLeft className="h-5 w-5" />
-        </button>
-      </div>
-
       {/* Create Match Button */}
       <div className="mb-6">
         <CustomButton
@@ -153,10 +156,11 @@ const MyMatchesScreen: React.FC<MyMatchesScreenProps> = ({
       {matches.length > 0 ? (
         <div className="space-y-4">
           {matches.map((match) => (
-            <div
+            <button
+              type="button"
               key={match.id}
               onClick={() => handleMatchClick(match)}
-              className="bg-white rounded-lg shadow-sm p-4 cursor-pointer hover:shadow-md transition-shadow"
+              className="w-full text-left bg-white rounded-lg shadow-sm p-4 cursor-pointer hover:shadow-md transition-shadow"
             >
               {/* Match Header */}
               <div className="flex justify-between items-start mb-3">
@@ -213,7 +217,7 @@ const MyMatchesScreen: React.FC<MyMatchesScreenProps> = ({
                   ></div>
                 </div>
               </div>
-            </div>
+            </button>
           ))}
         </div>
       ) : (

@@ -1,5 +1,4 @@
 import {
-  ArrowLeft,
   Calendar,
   Clock,
   Share2,
@@ -98,12 +97,6 @@ const MatchSummaryScreen: React.FC<MatchSummaryScreenProps> = ({
     <div className="min-h-screen bg-gray-50 p-4 pb-20">
       {/* Header */}
       <div className="flex items-center mb-6">
-        <button
-          onClick={() => onNavigate('history')}
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors mr-3"
-        >
-          <ArrowLeft className="h-5 w-5" />
-        </button>
         <div>
           <h1 className="text-2xl font-semibold text-gray-900">
             Resumo da Partida
