@@ -1,192 +1,73 @@
-# Fut-Match Front-end
+# Welcome to your Lovable project
 
-Um projeto React moderno com Progressive Web App (PWA) para o sistema Fut-Match.
+## Project info
 
-## 🚀 Tecnologias Utilizadas
+**URL**: https://lovable.dev/projects/b97a822e-3d37-4f1c-8368-c1f0e455646f
 
-### **Frontend Framework**
-- **React 19** - Biblioteca JavaScript para construção de interfaces de usuário
-- **TypeScript 5.7** - Superset do JavaScript que adiciona tipagem estática
+## How can I edit this code?
 
-### **Build & Development**
-- **Vite 6** - Build tool moderna e rápida para desenvolvimento frontend
-- **@vitejs/plugin-react** - Plugin oficial do Vite para React com suporte a Fast Refresh
+There are several ways of editing your application.
 
-### **Styling**
-- **Tailwind CSS 4.1** - Framework CSS utility-first para estilização rápida
-- **@tailwindcss/vite** - Plugin do Tailwind CSS para Vite
+**Use Lovable**
 
-### **UI Components**
-- **@radix-ui/react-slot** - Primitivos de UI acessíveis e não estilizados
-- **class-variance-authority (CVA)** - Criação de variantes de componentes de forma type-safe
-- **clsx** - Utilitário para construção de strings de className condicionais
-- **tailwind-merge** - Merge inteligente de classes do Tailwind CSS
+Simply visit the [Lovable Project](https://lovable.dev/projects/b97a822e-3d37-4f1c-8368-c1f0e455646f) and start prompting.
 
-### **Progressive Web App (PWA)**
-- **vite-plugin-pwa** - Plugin para transformar a aplicação em PWA
-- **@vite-pwa/assets-generator** - Gerador automático de ícones para PWA
-- **workbox-core & workbox-window** - Service workers e caching strategies
+Changes made via Lovable will be committed automatically to this repo.
 
-### **Code Quality & Linting**
-- **ESLint 9** - Linter para identificar e corrigir problemas no código
-- **typescript-eslint** - Regras do ESLint específicas para TypeScript
-- **eslint-plugin-react-hooks** - Regras do ESLint para React Hooks
-- **eslint-plugin-react-refresh** - Regras do ESLint para React Fast Refresh
+**Use your preferred IDE**
 
-## 📁 Estrutura do Projeto
+If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
 
-```
-src/
-├── components/
-│   └── ui/
-│       ├── button.tsx           # Componente Button reutilizável
-│       ├── button-variants.ts   # Variantes do componente Button
-│       └── utils.ts            # Utilitários para merge de classes CSS
-├── assets/
-│   └── react.svg              # Assets da aplicação
-├── App.tsx                    # Componente principal da aplicação
-├── main.tsx                   # Ponto de entrada da aplicação
-├── index.css                  # Estilos globais
-├── PWABadge.tsx              # Componente do badge PWA
-├── PWABadge.css              # Estilos do badge PWA
-└── vite-env.d.ts             # Definições de tipos do Vite
+The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
-public/
-└── icon.svg                   # Ícone da aplicação
+Follow these steps:
 
-Arquivos de configuração:
-├── package.json               # Dependências e scripts
-├── vite.config.ts            # Configuração do Vite
-├── tsconfig.json             # Configuração principal do TypeScript
-├── tsconfig.app.json         # Configuração do TypeScript para a aplicação
-├── tsconfig.node.json        # Configuração do TypeScript para Node.js
-├── eslint.config.js          # Configuração do ESLint
-└── pwa-assets.config.ts      # Configuração dos assets PWA
-```
+```sh
+# Step 1: Clone the repository using the project's Git URL.
+git clone <YOUR_GIT_URL>
 
-## 🛠️ Pré-requisitos
+# Step 2: Navigate to the project directory.
+cd <YOUR_PROJECT_NAME>
 
-Antes de executar o projeto, certifique-se de ter instalado:
+# Step 3: Install the necessary dependencies.
+npm i
 
-- **Node.js** (versão 18 ou superior)
-- **npm** (gerenciador de pacotes)
-
-## 📦 Instalação
-
-1. **Clone o repositório:**
-```bash
-git clone <url-do-repositorio>
-cd front-end/my-app-react
-```
-
-2. **Instale as dependências:**
-```bash
-npm install
-```
-
-## 🚀 Como Executar
-
-### **Modo Desenvolvimento**
-Executa a aplicação em modo de desenvolvimento com hot-reload:
-```bash
+# Step 4: Start the development server with auto-reloading and an instant preview.
 npm run dev
 ```
-A aplicação estará disponível em: `http://localhost:5173`
 
-### **Build para Produção**
-Compila a aplicação para produção:
-```bash
-npm run build
-```
-Os arquivos compilados estarão na pasta `dist/`
+**Edit a file directly in GitHub**
 
-### **Preview da Build**
-Visualiza a build de produção localmente:
-```bash
-npm run preview
-```
+- Navigate to the desired file(s).
+- Click the "Edit" button (pencil icon) at the top right of the file view.
+- Make your changes and commit the changes.
 
-### **Linting**
-Executa o ESLint para verificar problemas no código:
-```bash
-npm run lint
-```
+**Use GitHub Codespaces**
 
-## ⚙️ Scripts Disponíveis
+- Navigate to the main page of your repository.
+- Click on the "Code" button (green button) near the top right.
+- Select the "Codespaces" tab.
+- Click on "New codespace" to launch a new Codespace environment.
+- Edit files directly within the Codespace and commit and push your changes once you're done.
 
-| Script | Descrição |
-|--------|-----------|
-| `npm run dev` | Inicia o servidor de desenvolvimento |
-| `npm run build` | Compila a aplicação para produção |
-| `npm run lint` | Executa o linter para verificar problemas no código |
-| `npm run preview` | Visualiza a build de produção localmente |
+## What technologies are used for this project?
 
-## 🎨 Sistema de Design
+This project is built with:
 
-O projeto utiliza um sistema de componentes reutilizáveis baseado em:
+- Vite
+- TypeScript
+- React
+- shadcn-ui
+- Tailwind CSS
 
-- **Tailwind CSS** para estilização utility-first
-- **CVA (Class Variance Authority)** para variantes type-safe de componentes
-- **Radix UI** como base para componentes acessíveis
+## How can I deploy this project?
 
-### Exemplo de Uso do Componente Button:
+Simply open [Lovable](https://lovable.dev/projects/b97a822e-3d37-4f1c-8368-c1f0e455646f) and click on Share -> Publish.
 
-```tsx
-import { Button } from './components/ui/button';
+## Can I connect a custom domain to my Lovable project?
 
-// Botão padrão
-<Button>Clique aqui</Button>
+Yes, you can!
 
-// Botão com variante destrutiva
-<Button variant="destructive">Excluir</Button>
+To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
 
-// Botão pequeno com variante outline
-<Button variant="outline" size="sm">Cancelar</Button>
-```
-
-## 📱 Progressive Web App (PWA)
-
-A aplicação está configurada como PWA com:
-
-- **Service Worker** automático
-- **Manifest** para instalação no dispositivo
-- **Caching strategies** otimizadas
-- **Ícones** gerados automaticamente para diferentes dispositivos
-
-## 🔧 Configurações Importantes
-
-### **TypeScript**
-- Modo estrito habilitado
-- Verificação de imports não utilizados
-- Suporte a JSX via React
-
-### **Vite**
-- Hot Module Replacement (HMR)
-- Build otimizada
-- Suporte a ES modules
-
-### **ESLint**
-- Regras para React Hooks
-- Verificação de dependências do useEffect
-- Regras para TypeScript
-
-## 🤝 Contribuição
-
-1. Faça um fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`)
-3. Commit suas mudanças (`git commit -m 'Adiciona nova feature'`)
-4. Push para a branch (`git push origin feature/nova-feature`)
-5. Abra um Pull Request
-
-## 📝 Notas de Desenvolvimento
-
-- **Fast Refresh**: O projeto está configurado para React Fast Refresh, garantindo atualizações rápidas durante o desenvolvimento
-- **Type Safety**: Todas as configurações priorizam type safety com TypeScript
-- **Performance**: Build otimizada com code splitting automático via Vite
-- **Acessibilidade**: Componentes baseados em Radix UI garantem acessibilidade
-
----
-
-**Versão:** 0.0.2
-**Licença:** Privada  
-**Autor:** Fut-Match Team
+Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)

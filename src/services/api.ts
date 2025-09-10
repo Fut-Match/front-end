@@ -1,27 +1,41 @@
-import axios from 'axios'
+import api from '@/lib/api';
 
-// Configuração base do Axios
-export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3001/api',
-  timeout: 10000,
-  headers: {
-    'Content-Type': 'application/json',
+// Tipos para as respostas da API
+export interface HealthResponse {
+  status: string;
+  timestamp: string;
+}
+
+// Serviços da API
+export const apiService = {
+  // Teste de conectividade com o servidor
+  checkHealth: async (): Promise<HealthResponse> => {
+    const response = await api.get('/health');
+    return response.data;
   },
-  withCredentials: true, // Importante: permite envio de cookies httpOnly
-})
 
-// Interceptor para tratamento de respostas
-api.interceptors.response.use(
-  (response) => {
-    return response
-  },
-  (error) => {
-    // Tratamento global de erros
-    if (error.response?.status === 401) {
-      // Token expirado ou inválido - redirecionar para login
-      window.location.href = '/login'
-    }
+  // Exemplo de outros endpoints que você pode adicionar
+  // auth: {
+  //   login: async (credentials: LoginCredentials) => {
+  //     const response = await api.post('/auth/login', credentials);
+  //     return response.data;
+  //   },
+  //   register: async (userData: RegisterData) => {
+  //     const response = await api.post('/auth/register', userData);
+  //     return response.data;
+  //   }
+  // },
 
-    return Promise.reject(error)
-  }
-)
+  // matches: {
+  //   getAll: async () => {
+  //     const response = await api.get('/matches');
+  //     return response.data;
+  //   },
+  //   create: async (matchData: CreateMatchData) => {
+  //     const response = await api.post('/matches', matchData);
+  //     return response.data;
+  //   }
+  // }
+};
+
+export default apiService;

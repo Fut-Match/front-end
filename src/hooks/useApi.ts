@@ -1,142 +1,93 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import type { AxiosError } from 'axios'
-import { api } from '../services/api'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { apiService, type HealthResponse } from '@/services/api';
+import { useToast } from '@/hooks/use-toast';
 
-// Tipos para autenticação
-export interface User {
-  id: string
-  name: string
-  email: string
-  avatar?: string
+// Tipos para tratamento de erros
+interface ApiError extends Error {
+  response?: {
+    data?: {
+      message?: string;
+    };
+  };
 }
 
-export interface LoginCredentials {
-  email: string
-  password: string
-}
+// Query Keys - centralizados para fácil gerenciamento
+export const queryKeys = {
+  health: ['health'] as const,
+  matches: ['matches'] as const,
+  players: ['players'] as const,
+  rankings: ['rankings'] as const,
+};
 
-export interface LoginResponse {
-  user: User
-  message?: string
-}
-
-export interface RegisterData {
-  name: string
-  email: string
-  password: string
-  confirmPassword: string
-}
-
-export interface ApiError {
-  message: string
-  statusCode?: number
-}
-
-// Tipos para Health Check
-export interface HealthStatus {
-  status: 'active' | 'inactive' | 'error'
-  timestamp: string
-}
-
-// ===============================
-// HOOKS PARA HEALTH CHECK
-// ===============================
-
+// Hook para verificar a saúde da API
 export const useHealthCheck = () => {
   return useQuery({
-    queryKey: ['health'],
-    queryFn: async () => {
-      const healthUrl =
-        import.meta.env.VITE_HEALTH_CHECK_URL ||
-        'https://back-end-production-c28b.up.railway.app/api/health'
-      const response = await fetch(healthUrl)
-
-      if (!response.ok) {
-        throw new Error(`Health check failed: ${response.status}`)
-      }
-
-      const data: HealthStatus = await response.json()
-      return data
-    },
-    refetchInterval: 30000, // Verificar a cada 30 segundos
+    queryKey: queryKeys.health,
+    queryFn: apiService.checkHealth,
     retry: 3,
-    retryDelay: 5000, // Esperar 5 segundos entre tentativas
-  })
-}
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+    staleTime: 5 * 60 * 1000, // 5 minutos
+    gcTime: 10 * 60 * 1000, // 10 minutos (anteriormente cacheTime)
+  });
+};
 
-// ===============================
-// HOOKS PARA AUTENTICAÇÃO
-// ===============================
-
-export const useLogin = () => {
+// Hook personalizado para testar conectividade
+export const useTestConnection = () => {
+  const { toast } = useToast();
+  
   return useMutation({
-    mutationFn: async (credentials: LoginCredentials) => {
-      const response = await api.post<LoginResponse>('/auth/login', credentials)
-      return response.data
+    mutationFn: apiService.checkHealth,
+    onSuccess: (data: HealthResponse) => {
+      toast({
+        title: "✅ Conexão estabelecida!",
+        description: `Status: ${data.status} - Timestamp: ${data.timestamp}`,
+      });
     },
-    onSuccess: (data) => {
-      console.log('Login realizado com sucesso!', data.user)
-      // Token é automaticamente armazenado como httpOnly cookie pelo backend
+    onError: (error: ApiError) => {
+      const errorMessage = error.response?.data?.message || error.message || 'Erro desconhecido';
+      toast({
+        title: "❌ Erro de conexão",
+        description: `Não foi possível conectar com o servidor: ${errorMessage}`,
+        variant: "destructive",
+      });
     },
-    onError: (error: AxiosError<ApiError>) => {
-      console.error(
-        'Erro no login:',
-        error.response?.data?.message || error.message
-      )
-    },
-  })
-}
+  });
+};
 
-export const useRegister = () => {
-  return useMutation({
-    mutationFn: async (userData: RegisterData) => {
-      const response = await api.post<LoginResponse>('/auth/register', userData)
-      return response.data
-    },
-    onSuccess: (data) => {
-      console.log('Cadastro realizado com sucesso!', data.user)
-    },
-    onError: (error: AxiosError<ApiError>) => {
-      console.error(
-        'Erro no cadastro:',
-        error.response?.data?.message || error.message
-      )
-    },
-  })
-}
+// Exemplos de outros hooks que você pode implementar:
 
-export const useLogout = () => {
-  const queryClient = useQueryClient()
+// export const useMatches = () => {
+//   return useQuery({
+//     queryKey: queryKeys.matches,
+//     queryFn: apiService.matches.getAll,
+//     staleTime: 2 * 60 * 1000, // 2 minutos
+//   });
+// };
 
-  return useMutation({
-    mutationFn: async () => {
-      await api.post('/auth/logout')
-    },
-    onSuccess: () => {
-      // Cookie httpOnly é removido automaticamente pelo backend
-      queryClient.clear() // Limpar todo o cache
-      console.log('Logout realizado com sucesso!')
-    },
-    onError: (error: AxiosError<ApiError>) => {
-      console.error(
-        'Erro no logout:',
-        error.response?.data?.message || error.message
-      )
-    },
-  })
-}
+// export const useCreateMatch = () => {
+//   const queryClient = useQueryClient();
+//   const { toast } = useToast();
 
-export const useVerifyAuth = () => {
-  return useMutation({
-    mutationFn: async () => {
-      const response = await api.get<{ user: User }>('/auth/me')
-      return response.data
-    },
-    onError: (error: AxiosError<ApiError>) => {
-      console.error(
-        'Token inválido ou expirado:',
-        error.response?.data?.message || error.message
-      )
-    },
-  })
-}
+//   return useMutation({
+//     mutationFn: apiService.matches.create,
+//     onSuccess: () => {
+//       queryClient.invalidateQueries({ queryKey: queryKeys.matches });
+//       toast({
+//         title: "Partida criada!",
+//         description: "A partida foi criada com sucesso.",
+//       });
+//     },
+//     onError: (error: any) => {
+//       toast({
+//         title: "Erro ao criar partida",
+//         description: error.response?.data?.message || "Erro desconhecido",
+//         variant: "destructive",
+//       });
+//     },
+//   });
+// };
+
+export default {
+  useHealthCheck,
+  useTestConnection,
+};
