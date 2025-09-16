@@ -2,7 +2,6 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
-import { ApiConnectionTest } from "@/components/ApiConnectionTest";
 import { User, Bell, Shield, Moon, Edit, Mail, MapPin, Activity, Server } from "lucide-react";
 
 interface SettingsProps {
@@ -13,10 +12,9 @@ interface SettingsProps {
 
 interface SettingsProps {
   onEditProfile?: () => void;
-  onApiStatus?: () => void;
 }
 
-export function Settings({ onEditProfile, onApiStatus }: SettingsProps) {
+export function Settings({ onEditProfile }: SettingsProps) {
   const handlePrivacyPolicy = () => {
     window.open('/privacy-policy', '_blank');
   };
@@ -131,7 +129,7 @@ export function Settings({ onEditProfile, onApiStatus }: SettingsProps) {
           </div>
           
           <div className="space-y-3 pl-8">
-            <Button variant="outline" className="w-full justify-start" onClick={onApiStatus}>
+            <Button variant="outline" className="w-full justify-start"  >
               <Server className="h-4 w-4 mr-2" />
               Status da API
             </Button>
