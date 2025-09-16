@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Mail, Lock, User, Eye, EyeOff, CheckCircle, ArrowLeft } from "lucide-react";
 
 interface RegisterProps {
-  onNavigateToLogin: () => void;
+  onNavigateToLogin?: () => void;
 }
 
 export function Register({ onNavigateToLogin }: RegisterProps) {
@@ -22,6 +22,14 @@ export function Register({ onNavigateToLogin }: RegisterProps) {
     password: "",
     confirmPassword: ""
   });
+
+  const navigateToLogin = () => {
+    if (onNavigateToLogin) {
+      onNavigateToLogin();
+    } else {
+      window.location.href = '/login';
+    }
+  };
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,7 +60,7 @@ export function Register({ onNavigateToLogin }: RegisterProps) {
             Verifique sua caixa de entrada e clique no link de confirmação para ativar sua conta.
           </p>
           <Button 
-            onClick={onNavigateToLogin}
+            onClick={navigateToLogin}
             className="w-full"
           >
             Voltar ao Login
@@ -173,7 +181,7 @@ export function Register({ onNavigateToLogin }: RegisterProps) {
             <Button
               type="button"
               variant="ghost"
-              onClick={onNavigateToLogin}
+              onClick={navigateToLogin}
               className="w-full flex items-center gap-2"
             >
               <ArrowLeft className="h-4 w-4" />

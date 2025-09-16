@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
-import { Auth } from "@/pages/Auth";
+import Login from "@/pages/Login";
 import { Register } from "@/pages/Register";
 import { ForgotPassword } from "@/pages/ForgotPassword";
 import { Home } from "@/pages/Home";
@@ -13,7 +13,6 @@ import { MatchDetails } from "@/pages/MatchDetails";
 import ManageMatch from "@/pages/ManageMatch";
 import { EditProfile } from "@/pages/EditProfile";
 import { LiveMatch } from "@/pages/LiveMatch";
-import { ApiStatus } from "@/pages/ApiStatus";
 
 const Index = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -21,7 +20,7 @@ const Index = () => {
   const [showRegister, setShowRegister] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [currentView, setCurrentView] = useState<{
-    type: "main" | "createMatch" | "matchDetails" | "manageMatch" | "editProfile" | "liveMatch" | "apiStatus";
+    type: "main" | "createMatch" | "matchDetails" | "manageMatch" | "editProfile" | "liveMatch";
     data?: {
       matchId?: string;
     };
@@ -41,7 +40,7 @@ const Index = () => {
     }
     
     return (
-      <Auth 
+      <Login 
         onAuth={() => setIsAuthenticated(true)} 
         onNavigateToRegister={() => setShowRegister(true)}
         onNavigateToForgotPassword={() => setShowForgotPassword(true)}
@@ -81,14 +80,6 @@ const Index = () => {
       );
     }
 
-    if (currentView.type === "apiStatus") {
-      return (
-        <ApiStatus 
-          onBack={() => setCurrentView({ type: "main" })}
-        />
-      );
-    }
-
     if (currentView.type === "editProfile") {
       return (
         <EditProfile 
@@ -121,7 +112,6 @@ const Index = () => {
         return (
           <Settings 
             onEditProfile={() => setCurrentView({ type: "editProfile" })}
-            onApiStatus={() => setCurrentView({ type: "apiStatus" })}
           />
         );
       default:
@@ -131,7 +121,6 @@ const Index = () => {
             onMyMatches={() => setActiveTab("matches")}
           />
         );
-        return <Home />;
     }
   };
 
@@ -167,15 +156,7 @@ const Index = () => {
         headerTitle: "Partida ao Vivo"
       };
     }
-
-    if (currentView.type === "apiStatus") {
-      return {
-        showBackButton: true,
-        onBack: () => setCurrentView({ type: "main" }),
-        headerTitle: "Status da API"
-      };
-    }
-
+    
     if (currentView.type === "editProfile") {
       return {
         showBackButton: true,

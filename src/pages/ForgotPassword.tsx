@@ -7,13 +7,21 @@ import { Mail, ArrowLeft, CheckCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface ForgotPasswordProps {
-  onBackToLogin: () => void;
+  onBackToLogin?: () => void;
 }
 
 export function ForgotPassword({ onBackToLogin }: ForgotPasswordProps) {
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+
+  const navigateToLogin = () => {
+    if (onBackToLogin) {
+      onBackToLogin();
+    } else {
+      window.location.href = '/login';
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,7 +63,7 @@ export function ForgotPassword({ onBackToLogin }: ForgotPasswordProps) {
                 Não recebeu o email? Verifique sua pasta de spam ou tente novamente em alguns minutos.
               </p>
               
-              <Button onClick={onBackToLogin} variant="outline" className="w-full">
+              <Button onClick={navigateToLogin} variant="outline" className="w-full">
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Voltar ao Login
               </Button>
@@ -114,7 +122,7 @@ export function ForgotPassword({ onBackToLogin }: ForgotPasswordProps) {
               type="button" 
               variant="ghost" 
               className="w-full" 
-              onClick={onBackToLogin}
+              onClick={navigateToLogin}
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Voltar ao Login
