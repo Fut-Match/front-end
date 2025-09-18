@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Mail, Lock, Eye, EyeOff, Trophy, ArrowLeft } from "lucide-react";
 import { LoginModelData } from "./LoginModel";
 import { showGoogleLoginErrorToast, showFacebookLoginErrorToast } from "./LoginToast";
+import icon from '@/components/image/Icon.png'
 
 interface LoginViewProps extends LoginModelData {
   onAuth?: () => void;
@@ -44,44 +45,16 @@ export function LoginView({
     console.log("Google login not implemented yet");
   };
 
-  const handleFacebookLogin = () => {
-    // TODO: Implement Facebook OAuth
-    showFacebookLoginErrorToast();
-    console.log("Facebook login not implemented yet");
-  };
+
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex flex-col">
-      {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200/50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-blue-500 rounded-lg flex items-center justify-center">
-                <Trophy className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-green-600 to-blue-600 bg-clip-text text-transparent">
-                FutMatch
-              </span>
-            </div>
-            <Button 
-              variant="ghost" 
-              onClick={() => navigateToHome(onNavigateToHome)}
-              className="text-gray-700 hover:text-green-600"
-            >
-              <ArrowLeft className="w-4 h-4 mr-2" />
-              Voltar
-            </Button>
-          </div>
-        </div>
-      </header>
-
+    <div className="min-h-screen bg-background flex flex-col">
       {/* Login Form */}
       <div className="flex-1 flex items-center justify-center p-4">
         <Card className="w-full max-w-md bg-white/80 backdrop-blur-sm border-0 shadow-xl">
           <CardHeader className="text-center pb-6">
-            <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <Trophy className="w-8 h-8 text-white" />
+            <div className="w-16 h-16 bg-gradient-to-r  rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <img src={icon} alt="Logo" className="w-22 h-22 text-white" />
             </div>
             <CardTitle className="text-2xl font-bold text-gray-900">
               Bem-vindo de volta!
@@ -105,7 +78,7 @@ export function LoginView({
                     placeholder="seu@email.com"
                     value={loginData.email}
                     onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
-                    className="pl-10 h-12 border-gray-200 focus:border-green-500 focus:ring-green-500"
+                    className="pl-10 h-12 border-gray-200  focus:ring-green-500"
                     required
                   />
                 </div>
@@ -123,7 +96,7 @@ export function LoginView({
                     placeholder="••••••••"
                     value={loginData.password}
                     onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
-                    className="pl-10 pr-10 h-12 border-gray-200 focus:border-green-500 focus:ring-green-500"
+                    className="pl-10 pr-10 h-12 border-gray-200  focus:ring-green-500"
                     required
                   />
                   <button
@@ -144,7 +117,7 @@ export function LoginView({
                 <button
                   type="button"
                   onClick={() => navigateToForgotPassword(onNavigateToForgotPassword)}
-                  className="text-sm text-green-600 hover:text-green-700 font-medium"
+                  className="text-sm text-red-200 hover:text-red-700 font-medium"
                 >
                   Esqueci minha senha
                 </button>
@@ -152,7 +125,7 @@ export function LoginView({
 
               <Button 
                 type="submit" 
-                className="w-full h-12 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white font-medium"
+                className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
                 disabled={isLoading}
               >
                 {isLoading ? "Entrando..." : "Entrar"}
@@ -164,7 +137,7 @@ export function LoginView({
                 Não tem uma conta?{" "}
                 <button
                   onClick={() => navigateToRegister(onNavigateToRegister)}
-                  className="text-green-600 hover:text-green-700 font-medium"
+                  className="text-red-200 hover:text-red-700 font-medium"
                 >
                   Cadastre-se aqui
                 </button>
@@ -172,7 +145,7 @@ export function LoginView({
             </div>
 
             {/* Social Login - Optional */}
-            <div className="mt-6">
+            {/* <div className="mt-6">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-gray-200"></div>
@@ -210,7 +183,7 @@ export function LoginView({
                   Facebook
                 </Button>
               </div>
-            </div>
+            </div> */}
           </CardContent>
         </Card>
       </div>
