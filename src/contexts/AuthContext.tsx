@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { authContext } from './auth-context';
 import { IAuthContext } from './types';
-import { User, RegisterRequest } from '@/entities/User';
-import { LoginRequest } from '@/entities/auth';
+import { User } from '@/entities/User';
+import { RegisterRequest, LoginSuccessResponse } from '@/entities/auth';
 import { useLogin, useRegister, useLogout } from '@/hooks/mutations';
 
 interface AuthProviderProps {
@@ -11,7 +11,6 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const loginMutation = useLogin();
@@ -20,17 +19,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   // Inicializar autenticação
   useEffect(() => {
-    const savedToken = localStorage.getItem('accessToken');
-    const savedUser = localStorage.getItem('user');
+    const savedUser = localStorage.getItem('user_data');
+    const emailVerified = localStorage.getItem('email_verified');
     
-    if (savedToken && savedUser) {
+    if (savedUser && emailVerified === 'true') {
       try {
-        setToken(savedToken);
         setUser(JSON.parse(savedUser));
       } catch (error) {
         console.error('Erro ao carregar dados salvos:', error);
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('user');
+        localStorage.removeItem('user_data');
+        localStorage.removeItem('email_verified');
       }
     }
     setIsLoading(false);
@@ -41,12 +39,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setIsLoading(true);
       const response = await loginMutation.mutateAsync({ email, password });
       
-      setUser(response.user);
-      setToken(response.accessToken);
-      
-      localStorage.setItem('accessToken', response.accessToken);
-      localStorage.setItem('refreshToken', response.refreshToken);
-      localStorage.setItem('user', JSON.stringify(response.user));
+      if (response.success && 'data' in response) {
+        const successResponse = response as LoginSuccessResponse;
+        setUser(successResponse.data.user);
+        localStorage.setItem('user_data', JSON.stringify(successResponse.data.user));
+        localStorage.setItem('email_verified', 'true');
+      } else {
+        // Caso de email não verificado ou credenciais inválidas
+        const errorResponse = response as { success: false; message: string };
+        throw new Error(errorResponse.message);
+      }
     } catch (error) {
       console.error('Erro no login:', error);
       throw error;
@@ -58,7 +60,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const register = async (name: string, email: string, password: string): Promise<void> => {
     try {
       setIsLoading(true);
-      await registerMutation.mutateAsync({ name, email, password, confirmPassword: password });
+      await registerMutation.mutateAsync({ 
+        name, 
+        email, 
+        password, 
+        password_confirmation: password 
+      });
     } catch (error) {
       console.error('Erro no registro:', error);
       throw error;
@@ -69,10 +76,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const logout = (): void => {
     setUser(null);
-    setToken(null);
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('user');
+    localStorage.removeItem('user_data');
+    localStorage.removeItem('email_verified');
     
     logoutMutation.mutate();
   };
@@ -81,14 +86,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     if (user) {
       const updatedUser = { ...user, ...userData };
       setUser(updatedUser);
-      localStorage.setItem('user', JSON.stringify(updatedUser));
+      localStorage.setItem('user_data', JSON.stringify(updatedUser));
     }
   };
 
   const value: IAuthContext = {
     user,
-    token,
-    isAuthenticated: !!user && !!token,
+    token: null, // Com cookies httpOnly, não temos mais acesso ao token
+    isAuthenticated: !!user,
     isLoading,
     login,
     register,

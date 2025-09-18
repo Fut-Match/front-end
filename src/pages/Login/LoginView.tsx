@@ -1,78 +1,53 @@
-import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
 import { Mail, Lock, Eye, EyeOff, Trophy, ArrowLeft } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
+import { LoginModelData } from "./LoginModel";
+import { showGoogleLoginErrorToast, showFacebookLoginErrorToast } from "./LoginToast";
 
-interface LoginProps {
+interface LoginViewProps extends LoginModelData {
   onAuth?: () => void;
   onNavigateToRegister?: () => void;
   onNavigateToForgotPassword?: () => void;
   onNavigateToHome?: () => void;
 }
 
-export function Login({ 
+export function LoginView({ 
+  loginData,
+  showPassword,
+  isLoading,
+  setLoginData,
+  setShowPassword,
+  handleLogin,
+  navigateToRegister,
+  navigateToForgotPassword,
+  navigateToHome,
   onAuth, 
   onNavigateToRegister, 
   onNavigateToForgotPassword,
   onNavigateToHome 
-}: LoginProps) {
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  
-  const { login } = useAuth();
+}: LoginViewProps) {
 
-  const [loginData, setLoginData] = useState({
-    email: "",
-    password: ""
-  });
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-    
-    try {
-      await login(loginData.email, loginData.password);
-      
-      if (onAuth) {
-        onAuth();
-      } else {
-        // Navigate to app home
-        window.location.href = '/home';
-      }
-    } catch (error) {
-      // O erro já é tratado nos hooks/toasts
-      console.error('Erro no login:', error);
-    } finally {
-      setIsLoading(false);
-    }
+  const onSubmit = (e: React.FormEvent) => {
+    handleLogin(e, {
+      onAuth,
+      onNavigateToRegister,
+      onNavigateToForgotPassword,
+      onNavigateToHome
+    });
   };
 
-  const navigateToRegister = () => {
-    if (onNavigateToRegister) {
-      onNavigateToRegister();
-    } else {
-      window.location.href = '/register';
-    }
+  const handleGoogleLogin = () => {
+    // TODO: Implement Google OAuth
+    showGoogleLoginErrorToast();
+    console.log("Google login not implemented yet");
   };
 
-  const navigateToForgotPassword = () => {
-    if (onNavigateToForgotPassword) {
-      onNavigateToForgotPassword();
-    } else {
-      window.location.href = '/forgot-password';
-    }
-  };
-
-  const navigateToHome = () => {
-    if (onNavigateToHome) {
-      onNavigateToHome();
-    } else {
-      window.location.href = '/';
-    }
+  const handleFacebookLogin = () => {
+    // TODO: Implement Facebook OAuth
+    showFacebookLoginErrorToast();
+    console.log("Facebook login not implemented yet");
   };
 
   return (
@@ -91,7 +66,7 @@ export function Login({
             </div>
             <Button 
               variant="ghost" 
-              onClick={navigateToHome}
+              onClick={() => navigateToHome(onNavigateToHome)}
               className="text-gray-700 hover:text-green-600"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
@@ -117,7 +92,7 @@ export function Login({
           </CardHeader>
 
           <CardContent>
-            <form onSubmit={handleLogin} className="space-y-6">
+            <form onSubmit={onSubmit} className="space-y-6">
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-gray-700 font-medium">
                   E-mail
@@ -168,7 +143,7 @@ export function Login({
                 </label>
                 <button
                   type="button"
-                  onClick={navigateToForgotPassword}
+                  onClick={() => navigateToForgotPassword(onNavigateToForgotPassword)}
                   className="text-sm text-green-600 hover:text-green-700 font-medium"
                 >
                   Esqueci minha senha
@@ -188,7 +163,7 @@ export function Login({
               <p className="text-gray-600">
                 Não tem uma conta?{" "}
                 <button
-                  onClick={navigateToRegister}
+                  onClick={() => navigateToRegister(onNavigateToRegister)}
                   className="text-green-600 hover:text-green-700 font-medium"
                 >
                   Cadastre-se aqui
@@ -212,10 +187,7 @@ export function Login({
                   type="button"
                   variant="outline"
                   className="h-12 border-gray-200 hover:bg-gray-50"
-                  onClick={() => {
-                    // TODO: Implement Google OAuth
-                    console.log("Google login");
-                  }}
+                  onClick={handleGoogleLogin}
                 >
                   <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24">
                     <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -230,10 +202,7 @@ export function Login({
                   type="button"
                   variant="outline"
                   className="h-12 border-gray-200 hover:bg-gray-50"
-                  onClick={() => {
-                    // TODO: Implement Facebook OAuth
-                    console.log("Facebook login");
-                  }}
+                  onClick={handleFacebookLogin}
                 >
                   <svg className="w-5 h-5 mr-2" fill="#1877F2" viewBox="0 0 24 24">
                     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
@@ -258,4 +227,4 @@ export function Login({
   );
 }
 
-export default Login;
+export default LoginView;

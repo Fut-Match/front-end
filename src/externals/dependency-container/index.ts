@@ -9,15 +9,21 @@ import { AxiosAdapter } from '@/externals/http-client/axios-adapter';
 
 export type BaseUrl = string;
 export type Repository<T> = (baseUrl: BaseUrl) => T;
+export type AuthContext = 'auth' | 'public';
 
 export interface IDependencyContainer {
   repositories: {
-    authRepository: Repository<IAuthRepository>;
+    authRepository: (context: AuthContext) => IAuthRepository;
     playerRepository: Repository<IPlayerRepository>;
     matchRepository: Repository<IMatchRepository>;
   };
   httpClient: Repository<AxiosAdapter>;
 }
+
+const getBaseUrl = (context: AuthContext): string => {
+  const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+  return baseUrl;
+};
 
 const httpClient = (baseURL: BaseUrl) => new AxiosAdapter(baseURL);
 
@@ -25,9 +31,16 @@ function createServiceInstance<T>(ServiceClass: new (client: IHttpClient) => T):
   return (baseUrl: BaseUrl) => new ServiceClass(httpClient(baseUrl));
 }
 
+function createAuthServiceInstance(): (context: AuthContext) => IAuthRepository {
+  return (context: AuthContext) => {
+    const baseUrl = getBaseUrl(context);
+    return new AuthRepositoryRest(httpClient(baseUrl));
+  };
+}
+
 export const DC: IDependencyContainer = {
   repositories: {
-    authRepository: createServiceInstance(AuthRepositoryRest),
+    authRepository: createAuthServiceInstance(),
     playerRepository: createServiceInstance(PlayerRepositoryRest),
     matchRepository: createServiceInstance(MatchRepositoryRest),
   },

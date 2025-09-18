@@ -26,7 +26,7 @@ export const useCreatePlayer = () => {
     },
     onError: (error: Error) => {
       toast({
-        title: "❌ Erro ao criar jogador",
+        title: "Erro ao criar jogador",
         description: error.message,
         variant: "destructive",
       });
@@ -47,7 +47,7 @@ export const useUpdatePlayer = () => {
       playerRepository.update(id, data),
     onSuccess: (data) => {
       toast({
-        title: "✅ Jogador atualizado com sucesso!",
+        title: "Jogador atualizado com sucesso!",
         description: `${data.name} foi atualizado.`,
       });
       
@@ -77,7 +77,7 @@ export const useDeletePlayer = () => {
     mutationFn: (id: string) => playerRepository.delete(id),
     onSuccess: () => {
       toast({
-        title: "✅ Jogador removido com sucesso!",
+        title: "Jogador removido com sucesso!",
         description: "O jogador foi removido da lista.",
       });
       
@@ -86,7 +86,7 @@ export const useDeletePlayer = () => {
     },
     onError: (error: Error) => {
       toast({
-        title: "❌ Erro ao remover jogador",
+        title: "Erro ao remover jogador",
         description: error.message,
         variant: "destructive",
       });

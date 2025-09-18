@@ -6,11 +6,12 @@ export class AxiosAdapter implements IHttpClient {
 
   constructor(baseURL?: string) {
     this.axiosInstance = axios.create({
-      baseURL: baseURL || import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api',
+      baseURL: baseURL || import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000',
       timeout: 10000,
       headers: {
         'Content-Type': 'application/json',
       },
+      withCredentials: true, // Para incluir cookies automaticamente
     });
 
     this.setupInterceptors();
@@ -20,11 +21,7 @@ export class AxiosAdapter implements IHttpClient {
     // Interceptor para requisições
     this.axiosInstance.interceptors.request.use(
       (config) => {
-        // Adicionar token de autenticação se existir
-        const token = localStorage.getItem('auth_token');
-        if (token) {
-          config.headers.Authorization = `Bearer ${token}`;
-        }
+        // Com cookies httpOnly, não precisamos mais gerenciar tokens manualmente
         return config;
       },
       (error) => {
@@ -45,10 +42,10 @@ export class AxiosAdapter implements IHttpClient {
 
   private handleError(error: AxiosError): Error {
     if (error.response?.status === 401) {
-      // Token expirado ou inválido
-      localStorage.removeItem('auth_token');
+      // Token expirado ou inválido - limpar dados locais
       localStorage.removeItem('user_data');
-      // Redirecionar para login se necessário
+      localStorage.removeItem('email_verified');
+      // Disparar evento de logout
       window.dispatchEvent(new CustomEvent('auth:logout'));
     }
 
@@ -82,14 +79,9 @@ export class AxiosAdapter implements IHttpClient {
     return response.data;
   }
 
-  // Método para atualizar o token
-  public setAuthToken(token: string): void {
-    localStorage.setItem('auth_token', token);
-  }
-
-  // Método para remover o token
-  public removeAuthToken(): void {
-    localStorage.removeItem('auth_token');
+  // Método para limpar dados de autenticação
+  public clearAuthData(): void {
     localStorage.removeItem('user_data');
+    localStorage.removeItem('email_verified');
   }
 }
