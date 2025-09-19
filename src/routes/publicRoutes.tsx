@@ -2,7 +2,7 @@ import { Route } from 'react-router-dom';
 import { ProtectedRoute } from './ProtectedRoute';
 import LandingPage from '@/pages/LandingPage';
 import Index from '@/pages/Index';
-import Login from '@/pages/Login';
+import Login from '@/pages/Login/index';
 import { Register } from '@/pages/Register';
 import { ForgotPassword } from '@/pages/ForgotPassword';
 import { Home } from '@/pages/Home';
