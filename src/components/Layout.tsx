@@ -1,6 +1,6 @@
 import { ReactNode, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Home, Trophy, Users, Settings, Menu, ArrowLeft, User, Award, LogOut } from "lucide-react";
 
 interface LayoutProps {
@@ -68,6 +68,11 @@ export function Layout({ children, activeTab, onTabChange, showBackButton, onBac
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="left" className="w-80 p-0">
+                  {/* Header/Title/Description invisíveis para acessibilidade (requisito do Radix) */}
+                  <SheetHeader className="sr-only">
+                    <SheetTitle>Menu</SheetTitle>
+                    <SheetDescription>Navegação do aplicativo</SheetDescription>
+                  </SheetHeader>
                   <div className="p-6 border-b">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center">

@@ -11,10 +11,12 @@ interface ProtectedRouteProps {
 export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   children,
   requireAuth = true,
-  redirectTo = '/auth'
+  redirectTo = '/login'
 }) => {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { user, isLoading } = useAuth();
   const location = useLocation();
+  
+  const isAuthenticated = !!user;
 
   // Enquanto carrega, pode mostrar um loading
   if (isLoading) {

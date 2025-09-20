@@ -5,18 +5,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Mail, Lock, User, Eye, EyeOff, CheckCircle, ArrowLeft } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
+import { useRegister } from "@/hooks";
 
 interface RegisterProps {
   onNavigateToLogin?: () => void;
 }
 
-export function Register({ onNavigateToLogin }: RegisterProps) {
+export function RegisterView({ onNavigateToLogin }: RegisterProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  
-  const { register } = useAuth();
+
+  const { mutateAsync: register } = useRegister();
 
   const [registerData, setRegisterData] = useState({
     firstName: "",
@@ -46,7 +47,14 @@ export function Register({ onNavigateToLogin }: RegisterProps) {
     
     try {
       const fullName = `${registerData.firstName} ${registerData.lastName}`.trim();
-      await register(fullName, registerData.email, registerData.password);
+      await register(
+        {
+            name: fullName,
+            email: registerData.email,
+            password: registerData.password,
+            password_confirmation: registerData.confirmPassword
+        }
+      );
       setShowSuccessMessage(true);
     } catch (error) {
       // O erro já é tratado nos hooks/toasts

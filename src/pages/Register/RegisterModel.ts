@@ -4,7 +4,8 @@ import {
   showRegisterSuccessToast, 
   showValidationConfirmPasswordRequiredToast 
 } from "./RegisterToast";
-import { useAuth } from "@/hooks/useAuth";
+import { useRegister } from "@/hooks/mutations/useAuthMutations";
+import { useNavigate } from "react-router-dom";
 
 export interface RegisterModelData {
   registerData: {
@@ -36,8 +37,10 @@ export interface RegisterModelData {
 
 export function RegisterModel(): RegisterModelData {
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const { register } = useAuth();
+
+  const { mutateAsync: registerMutation, isPending } = useRegister();
+
+  const navigate = useNavigate()
 
   const [registerData, setRegisterData] = useState({
     name: "",
@@ -56,33 +59,30 @@ export function RegisterModel(): RegisterModelData {
     }
   ) => {
     e.preventDefault();
-    setIsLoading(true);
+    
 
     if (registerData.password !== registerData.password_confirmation) {
       showValidationConfirmPasswordRequiredToast();
-      setIsLoading(false);
       return;
     }
 
     try {
-      await register(
-        registerData.name,
-        registerData.lastname,
-        registerData.email,
-        registerData.password
-      );
+      await registerMutation({
+        name: `${registerData.name} ${registerData.lastname}`,
+        email: registerData.email,
+        password: registerData.password,
+        password_confirmation: registerData.password_confirmation
+      });
 
       showRegisterSuccessToast();
 
       if (callbacks?.onAuth) {
         callbacks.onAuth();
       } else {
-        window.location.href = "/home";
+        navigate('/login');
       }
     } catch (error) {
-      // showRegisterErrorToast();
-    } finally {
-      setIsLoading(false);
+      showRegisterErrorToast();
     }
   };
 
@@ -90,7 +90,7 @@ export function RegisterModel(): RegisterModelData {
     if (onNavigateToLogin) {
       onNavigateToLogin();
     } else {
-      window.location.href = "/login";
+      navigate('/login');
     }
   };
 
@@ -98,14 +98,14 @@ export function RegisterModel(): RegisterModelData {
     if (onNavigateToConfirmEmail) {
       onNavigateToConfirmEmail();
     } else {
-      window.location.href = "/home";
+      navigate('/home');
     }
   };
 
   return {
     registerData,
     showPassword,
-    isLoading,
+    isLoading: isPending,
     setRegisterData,
     setShowPassword,
     handleRegister,

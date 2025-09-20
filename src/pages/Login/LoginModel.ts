@@ -1,101 +1,67 @@
 import { useState } from "react";
-import { useAuth } from "@/hooks/useAuth";
-import { showLoginSuccessToast, showLoginErrorToast } from "./LoginToast";
+import { useLogin } from "@/hooks/mutations/useAuthMutations";
+import { LoginSuccessResponse } from "@/entities/auth";
+import { setAuthUser } from "@/utils/auth";
+import { useNavigate } from "react-router-dom";
+import { toast } from "@/components/ui/sonner";
 
-export interface LoginModelData {
-  loginData: {
-    email: string;
-    password: string;
-  };
-  showPassword: boolean;
-  isLoading: boolean;
-  setLoginData: (data: { email: string; password: string }) => void;
-  setShowPassword: (show: boolean) => void;
-  handleLogin: (e: React.FormEvent, callbacks?: {
-    onAuth?: () => void;
-    onNavigateToRegister?: () => void;
-    onNavigateToForgotPassword?: () => void;
-    onNavigateToHome?: () => void;
-  }) => Promise<void>;
-  navigateToRegister: (onNavigateToRegister?: () => void) => void;
-  navigateToForgotPassword: (onNavigateToForgotPassword?: () => void) => void;
-  navigateToHome: (onNavigateToHome?: () => void) => void;
-}
-
-export function LoginModel(): LoginModelData {
+export function LoginModel() {
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const [loginData, setLoginData] = useState({
     email: "",
-    password: ""
+    password: "",
   });
 
-  const handleLogin = async (
-    e: React.FormEvent, 
-    callbacks?: {
-      onAuth?: () => void;
-      onNavigateToRegister?: () => void;
-      onNavigateToForgotPassword?: () => void;
-      onNavigateToHome?: () => void;
-    }
-  ) => {
-    e.preventDefault();
-    setIsLoading(true);
-    
-    try {
-      await login(loginData.email, loginData.password);
-      
-      showLoginSuccessToast();
-      
-      if (callbacks?.onAuth) {
-        callbacks.onAuth();
-      } else {
-        // Navigate to app home
-        window.location.href = '/home';
+  const loginMutation = useLogin({
+    onSuccess: (data) => {
+      if (data.success && "data" in data) {
+        const successResponse = data as LoginSuccessResponse;
+        setAuthUser(successResponse.data.user);
+
+        toast.success("Login realizado com sucesso!", {
+          description: `Bem-vindo de volta, ${successResponse.data.user.name}!`,
+        });
+
+        // Pequeno delay para garantir que o contexto seja atualizado
+        setTimeout(() => {
+          navigate("/home");
+        }, 100);
       }
-    } catch (error) {
-      showLoginErrorToast();
-      console.error('Erro no login:', error);
-    } finally {
-      setIsLoading(false);
-    }
+    },
+    onError: (error) => {
+      toast.error("Erro no login", {
+        description: error.message,
+      });
+    },
+  });
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    loginMutation.mutate({
+      email: loginData.email,
+      password: loginData.password,
+    });
   };
 
-  const navigateToRegister = (onNavigateToRegister?: () => void) => {
-    if (onNavigateToRegister) {
-      onNavigateToRegister();
-    } else {
-      window.location.href = '/register';
-    }
+  const navigateToRegister = () => {
+    navigate("/register");
   };
 
-  const navigateToForgotPassword = (onNavigateToForgotPassword?: () => void) => {
-    if (onNavigateToForgotPassword) {
-      onNavigateToForgotPassword();
-    } else {
-      window.location.href = '/forgot-password';
-    }
-  };
-
-  const navigateToHome = (onNavigateToHome?: () => void) => {
-    if (onNavigateToHome) {
-      onNavigateToHome();
-    } else {
-      window.location.href = '/';
-    }
+  const navigateToForgotPassword = () => {
+    navigate("/forgot-password");
   };
 
   return {
     loginData,
     showPassword,
-    isLoading,
+    isLoading: loginMutation.isPending,
     setLoginData,
     setShowPassword,
     handleLogin,
     navigateToRegister,
     navigateToForgotPassword,
-    navigateToHome,
   };
 }

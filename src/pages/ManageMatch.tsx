@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "@/components/ui/sonner";
 import { 
   Calendar, MapPin, Users, Target, Plus, Shuffle, 
   Check, DollarSign, X, Play
@@ -34,7 +34,6 @@ interface ManageMatchProps {
 
 export default function ManageMatch({ onBack, onStartMatch }: ManageMatchProps) {
   const { matchId } = useParams()
-  const { toast } = useToast()
   
   // Mock match data - in real app would fetch by matchId
   const match = mockMatches.organizing[0]
@@ -70,8 +69,7 @@ export default function ManageMatch({ onBack, onStartMatch }: ManageMatchProps) 
     setPlayers(prev => [...prev, newPlayer])
     setNewPlayerName("")
     
-    toast({
-      title: "Jogador Adicionado",
+    toast.success("Jogador Adicionado", {
       description: `${newPlayer.name} foi adicionado à partida.`
     })
   }
@@ -83,8 +81,7 @@ export default function ManageMatch({ onBack, onStartMatch }: ManageMatchProps) 
       players: team.players.filter(p => p !== playerId)
     })))
     
-    toast({
-      title: "Jogador Removido",
+    toast.success("Jogador Removido", {
       description: "Jogador foi removido da partida."
     })
   }
@@ -118,10 +115,7 @@ export default function ManageMatch({ onBack, onStartMatch }: ManageMatchProps) 
     
     setIsShuffling(false)
     
-    toast({
-      title: "Times Sorteados",
-      description: "Jogadores foram divididos aleatoriamente em times."
-    })
+
   }
 
   const confirmedPlayers = players.filter(p => p.isConfirmed)

@@ -8,6 +8,7 @@ interface RegisterProps {
 }
 export const Register = (props: RegisterProps) => {
     const registerModelData = RegisterModel();
+    
     return <RegisterView {...registerModelData} {...props} />;
 };
 export default Register;
