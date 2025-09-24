@@ -1,18 +1,10 @@
-import { PlayerCard } from "@/components/PlayerCard";
+import { PlayerCard, PlayerCardSkeleton } from "@/components/PlayerCard";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus, Calendar } from "lucide-react";
+import { usePlayerMe } from "@/hooks";
 
-// Mock data - will be replaced with real data from Supabase
-const mockPlayerStats = {
-  goals: 24,
-  assists: 12,
-  tackles: 18,
-  mvps: 5,
-  wins: 15,
-  averageRating: 8.4
-};
-
+// Mock data para partidas futuras - será substituído por dados reais posteriormente
 const mockUpcomingMatches = [
   {
     id: "1",
@@ -34,6 +26,10 @@ interface HomeProps {
 }
 
 export function Home({ onCreateMatch, onMyMatches }: HomeProps) {
+  const { data: playerData, isLoading, error } = usePlayerMe();
+  
+  console.log("🚀 ~ Home ~ playerData:", playerData)
+
   const handleCreateMatch = () => {
     onCreateMatch?.();
   };
@@ -42,15 +38,36 @@ export function Home({ onCreateMatch, onMyMatches }: HomeProps) {
     onMyMatches?.();
   };
 
+  // Preparar os dados do player no formato esperado pelo PlayerCard
+  const playerStats = playerData ? {
+    goals: playerData.goals || 0,
+    assists: playerData.assists || 0,
+    tackles: playerData.tackles || 0,
+    mvps: playerData.mvps || 0,
+    wins: playerData.wins || 0,
+    averageRating: typeof playerData.average_rating === 'string' 
+      ? parseFloat(playerData.average_rating) 
+      : playerData.average_rating || 0
+  } : null;
+
   return (
     <div className="p-4 space-y-6">
       {/* Player Card */}
       <div>
-        <PlayerCard
-          name="João Silva"
-          nickname="@joaosilva"
-          stats={mockPlayerStats}
-        />
+        {isLoading ? (
+          <PlayerCardSkeleton />
+        ) : error ? (
+          <Card className="p-6 text-center">
+            <p className="text-destructive">Erro ao carregar dados do jogador</p>
+          </Card>
+        ) : playerData && playerStats ? (
+          <PlayerCard
+            name={playerData.name}
+            nickname={playerData.nickname || `@${playerData.name.toLowerCase().replace(/\s+/g, '')}`}
+            stats={playerStats}
+            avatar={playerData.image || playerData.avatar}
+          />
+        ) : null}
       </div>
 
       {/* Quick Actions */}

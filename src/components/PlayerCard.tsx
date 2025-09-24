@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Star, Target, Shield, Trophy, TrendingUp } from "lucide-react";
 
 interface PlayerStats {
@@ -64,7 +65,7 @@ export function PlayerCard({ name, nickname, stats, avatar }: PlayerCardProps) {
               <img src={avatar} alt={name} className="w-full h-full rounded-full object-cover" />
             ) : (
               <div className="text-primary-foreground/70 text-2xl font-bold">
-                {name.split(' ').map(n => n[0]).join('').slice(0, 2)}
+                {name ? name.split(' ').map(n => n[0]).join('').slice(0, 2) : null}
               </div>
             )}
           </div>
@@ -114,6 +115,64 @@ export function PlayerCard({ name, nickname, stats, avatar }: PlayerCardProps) {
             <div className="text-lg font-bold">{stats.wins}</div>
             <div className="text-xs opacity-90">Vitórias</div>
           </div>
+        </div>
+      </div>
+    </Card>
+  );
+}
+
+export function PlayerCardSkeleton() {
+  return (
+    <Card className="relative overflow-hidden bg-gradient-sport p-6 shadow-card">
+      {/* FIFA-style background pattern */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="h-full w-full bg-[radial-gradient(circle_at_50%_50%,_rgba(255,255,255,0.1)_0%,_transparent_50%)]" />
+      </div>
+      
+      <div className="relative z-10">
+        {/* Header */}
+        <div className="flex items-start justify-between mb-4">
+          <div className="text-primary-foreground">
+            <Skeleton className="h-6 w-32 mb-2" />
+            <Skeleton className="h-4 w-20" />
+          </div>
+          
+          {/* Level Rating */}
+          <div className="bg-muted rounded-lg p-3 min-w-[60px] text-center">
+            <Skeleton className="h-8 w-8 mx-auto mb-1" />
+            <Skeleton className="h-3 w-6 mx-auto" />
+          </div>
+        </div>
+
+        {/* Avatar */}
+        <div className="flex justify-center mb-6">
+          <Skeleton className="w-24 h-24 rounded-full" />
+        </div>
+
+        {/* Stats Grid */}
+        <div className="grid grid-cols-3 gap-4">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="text-center text-primary-foreground">
+              <div className="flex items-center justify-center mb-1">
+                <Skeleton className="h-4 w-4" />
+              </div>
+              <Skeleton className="h-6 w-8 mx-auto mb-1" />
+              <Skeleton className="h-3 w-12 mx-auto" />
+            </div>
+          ))}
+        </div>
+
+        {/* Bottom Stats */}
+        <div className="grid grid-cols-2 gap-4 mt-4 pt-4 border-t border-primary-foreground/20">
+          {[1, 2].map((i) => (
+            <div key={i} className="text-center text-primary-foreground">
+              <div className="flex items-center justify-center mb-1">
+                <Skeleton className="h-4 w-4" />
+              </div>
+              <Skeleton className="h-6 w-8 mx-auto mb-1" />
+              <Skeleton className="h-3 w-12 mx-auto" />
+            </div>
+          ))}
         </div>
       </div>
     </Card>

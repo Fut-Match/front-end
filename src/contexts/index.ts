@@ -1,10 +1,9 @@
 // Contextos
-export { AuthProvider } from './AuthContext';
-export { AppProvider } from './AppContext';
+export { AuthProvider } from "./AuthContext";
+export { AppProvider } from "./AppContext";
 
 // Hooks customizados
-export { useAuth } from '../hooks/useAuth';
-export { useApp } from '../hooks/useApp';
+export { useAuth } from "../hooks/useAuth";
 
 // Tipos
-export type { IAuthContext, IAppContext } from './types';
+export type { IAuthContext, IAppContext } from "./types";

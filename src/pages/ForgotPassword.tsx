@@ -79,11 +79,11 @@ export function ForgotPassword({ onBackToLogin }: ForgotPasswordProps) {
       <div className="w-full max-w-md space-y-6">
         {/* Header */}
         <div className="text-center space-y-4">
-          <div className="w-16 h-16 bg-gradient-sport rounded-2xl flex items-center justify-center mx-auto shadow-glow">
+          <div className="w-16 h-16  rounded-2xl flex items-center justify-center mx-auto shadow-glow">
             <img 
               src="/lovable-uploads/91f1a561-6498-4bc6-80aa-bc621858f182.png" 
               alt="Logo" 
-              className="w-10 h-10"
+              className="w-22 h-22"
             />
           </div>
           <div>
