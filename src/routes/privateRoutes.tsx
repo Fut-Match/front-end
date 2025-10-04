@@ -4,7 +4,7 @@ import Achievements from '@/pages/Achievements';
 import { Matches } from '@/pages/Matches';
 import { Ranking } from '@/pages/Ranking';
 import { Settings } from '@/pages/Settings';
-import { Home } from '@/pages/Home';
+import { Home } from '@/pages/Home/index';
 import { PrivateLayout } from './PrivateLayout';
 
 export const privateRoutes = (
