@@ -1,8 +1,7 @@
 import { MatchesView } from "./MatchesView";
 import { MatchesModel } from "./MatchesModel";
 
-
-
+// Não entendi o motivo de utilizar as três funções, se possível remover as que não forem necessárias
 interface MatchesProps {
     onCreateMatch?: () => void;
     onViewMatch?: (matchId: string) => void;

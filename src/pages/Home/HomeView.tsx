@@ -1,8 +1,11 @@
-import { PlayerCard, PlayerCardSkeleton } from "@/components/PlayerCard";
+
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus, Calendar } from "lucide-react";
 import { HomeModel } from "./HomeModel";
+import { HomeError } from "@/components/Home/HomeError";
+import { PlayerCardSkeleton } from "@/components/Home/PlayerCardSkeleton";
+import { PlayerCard } from "@/components/Home/PlayerCard";
 
 type HomeViewProps = ReturnType<typeof HomeModel> & {
   onCreateMatch?: () => void;
@@ -21,27 +24,25 @@ export function HomeView( props: HomeViewProps) {
     handleMyMatches
   } = props;
 
+  if (isLoading) {
+    return <PlayerCardSkeleton />;
+  }
+
+  if (error) {
+    return <HomeError />;
+  }
+
   return (
     <div className="p-4 space-y-6">
-      {/* Player Card */}
       <div>
-        {isLoading ? (
-          <PlayerCardSkeleton />
-        ) : error ? (
-          <Card className="p-6 text-center">
-            <p className="text-destructive">Erro ao carregar dados do jogador</p>
-          </Card>
-        ) : playerData && playerStats ? (
-          <PlayerCard
+        <PlayerCard
             name={playerData.name}
             nickname={playerData.nickname || `@${playerData.name.toLowerCase().replace(/\s+/g, '')}`}
             stats={playerStats}
             avatar={playerData.image || playerData.avatar}
           />
-        ) : null}
       </div>
 
-      {/* Quick Actions */}
       <div className="grid grid-cols-2 gap-3">
         <Button variant="outline" className="h-20 flex-col gap-2" onClick={handleCreateMatch}>
           <Plus className="h-6 w-6" />
@@ -53,7 +54,6 @@ export function HomeView( props: HomeViewProps) {
         </Button>
       </div>
 
-      {/* Upcoming Matches */}
       <div>
         <h3 className="text-lg font-semibold mb-3 text-foreground">📅 Próximas Partidas</h3>
         <div className="space-y-3">

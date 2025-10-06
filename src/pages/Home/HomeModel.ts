@@ -22,7 +22,6 @@ export function HomeModel() {
     const { data: playerData, isLoading, error } = usePlayerMe();
     const navigate = useNavigate();
 
-    // Preparar os dados do player no formato esperado pelo PlayerCard
     const playerStats = playerData ? {
         goals: playerData.goals || 0,
         assists: playerData.assists || 0,

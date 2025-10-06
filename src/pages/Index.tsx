@@ -91,10 +91,7 @@ const Index = () => {
     switch (activeTab) {
       case "home":
         return (
-          <Home 
-            onCreateMatch={() => setCurrentView({ type: "createMatch" })}
-            onMyMatches={() => setActiveTab("matches")}
-          />
+          <Home  />
         );
       case "matches":
         return (
@@ -116,10 +113,7 @@ const Index = () => {
         );
       default:
         return (
-          <Home 
-            onCreateMatch={() => setCurrentView({ type: "createMatch" })}
-            onMyMatches={() => setActiveTab("matches")}
-          />
+          <Home  />
         );
     }
   };
