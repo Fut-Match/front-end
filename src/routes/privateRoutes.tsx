@@ -1,7 +1,7 @@
 import { Route } from 'react-router-dom';
 import { ProtectedRoute } from './ProtectedRoute';
 import Achievements from '@/pages/Achievements';
-import { Matches } from '@/pages/Matches';
+import { Matches } from '@/pages/Matchs/index';
 import { Ranking } from '@/pages/Ranking';
 import { Settings } from '@/pages/Settings';
 import { Home } from '@/pages/Home/index';

@@ -4,7 +4,7 @@ import Login from "@/pages/Login/index";
 import { Register } from "@/pages/Register";
 import { ForgotPassword } from "@/pages/ForgotPassword";
 import { Home } from "@/pages/Home/index";
-import { Matches } from "@/pages/Matches";
+import { Matches } from "@/pages/Matchs/index";
 import { Ranking } from "@/pages/Ranking";
 import { Settings } from "@/pages/Settings";
 import Achievements from "@/pages/Achievements";

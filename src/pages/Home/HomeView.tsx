@@ -2,7 +2,7 @@ import { PlayerCard, PlayerCardSkeleton } from "@/components/PlayerCard";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus, Calendar } from "lucide-react";
-import { HomeModel } from "./Home/HomeModel";
+import { HomeModel } from "./HomeModel";
 
 type HomeViewProps = ReturnType<typeof HomeModel> & {
   onCreateMatch?: () => void;

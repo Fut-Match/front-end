@@ -1,4 +1,5 @@
 import { usePlayerMe } from "@/hooks";
+import { useNavigate } from "react-router-dom";
 
 // Mock data para partidas futuras - será substituído por dados reais posteriormente
 const mockUpcomingMatches = [
@@ -16,9 +17,10 @@ const mockUpcomingMatches = [
     }
 ];
 
+
 export function HomeModel() {
     const { data: playerData, isLoading, error } = usePlayerMe();
-
+    const navigate = useNavigate();
 
     // Preparar os dados do player no formato esperado pelo PlayerCard
     const playerStats = playerData ? {
@@ -33,14 +35,11 @@ export function HomeModel() {
     } : null;
 
     const handleCreateMatch = () => {
-       
-    window.location.href = "/matches/create";
-       
+        navigate("/matches/create");
     };
 
     const handleMyMatches = () => {
-      
-        window.location.href = "/matches";
+        navigate("/matches")
     };
 
 

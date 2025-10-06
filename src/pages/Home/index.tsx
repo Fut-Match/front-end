@@ -1,4 +1,4 @@
-import { HomeView } from "../Home";
+import { HomeView } from "./HomeView";
 import { HomeModel } from "./HomeModel";
 
 interface HomeProps {
