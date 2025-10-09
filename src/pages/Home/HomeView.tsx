@@ -19,7 +19,7 @@ export function HomeView( props: HomeViewProps) {
     playerStats,
     isLoading,
     error,
-    mockUpcomingMatches,
+    UpcomingMatches,
     handleCreateMatch,
     handleMyMatches
   } = props;
@@ -57,7 +57,7 @@ export function HomeView( props: HomeViewProps) {
       <div>
         <h3 className="text-lg font-semibold mb-3 text-foreground">📅 Próximas Partidas</h3>
         <div className="space-y-3">
-          {mockUpcomingMatches.map((match) => (
+          {UpcomingMatches.map((match) => (
             <Card key={match.id} className="p-3">
               <div className="flex justify-between items-center">
                 <div>
@@ -73,7 +73,7 @@ export function HomeView( props: HomeViewProps) {
             </Card>
           ))}
           
-          {mockUpcomingMatches.length === 0 && (
+          {UpcomingMatches.length === 0 && (
             <Card className="p-6 text-center">
               <Calendar className="h-8 w-8 mx-auto mb-2 text-muted-foreground" />
               <p className="text-muted-foreground">Nenhuma partida agendada</p>
