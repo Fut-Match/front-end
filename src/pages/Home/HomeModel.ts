@@ -1,7 +1,7 @@
 import { usePlayerMe } from "@/hooks";
 import { useNavigate } from "react-router-dom";
 
-// Data for upcoming matches
+// Retirando dados fixos para demonstração
 const UpcomingMatches = [
 
 ];

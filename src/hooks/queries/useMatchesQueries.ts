@@ -2,6 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { queryKeys } from "./queryKeys";
 import { DC } from "@/externals/dependency-container";
 
+// Queries related to matches
+
 export const useMatches = () => {
     const matchRepository = DC.repositories.matchRepository("auth");
     return useQuery({

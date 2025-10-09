@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 
 
-//  Logica para lidar com partidas,  visualização.
+//  Retirando dados fixos para demonstração
 const Matches = [
 
 ];
