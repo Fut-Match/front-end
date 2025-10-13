@@ -28,6 +28,7 @@ export const useCreateMatch = () => {
     });
 }
 
+// Hook para atualizar partida
 export const useUpdateMatch = () => {
     const queryClient = useQueryClient();
     const matchRepository = DC.repositories.matchRepository(
@@ -52,7 +53,7 @@ export const useUpdateMatch = () => {
     });
 }
 
-
+// Hook para deletar partida
 export const useDeleteMatch = () => {
     const queryClient = useQueryClient();
     const matchRepository = DC.repositories.matchRepository(

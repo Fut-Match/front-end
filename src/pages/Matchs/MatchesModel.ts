@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 
 
-//  Retirando dados fixos para demonstração
+//  Retirando dados fictícios
 const Matches = [
 
 ];

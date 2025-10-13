@@ -8,7 +8,7 @@ import { Matches } from "@/pages/Matchs/index";
 import { Ranking } from "@/pages/Ranking";
 import { Settings } from "@/pages/Settings";
 import Achievements from "@/pages/Achievements";
-import { CreateMatch } from "@/pages/CreateMatch";
+import { CreateMatch } from "@/pages/CreateMatch/";
 import { MatchDetails } from "@/pages/MatchDetails";
 import ManageMatch from "@/pages/ManageMatch";
 import { EditProfile } from "@/pages/EditProfile";
