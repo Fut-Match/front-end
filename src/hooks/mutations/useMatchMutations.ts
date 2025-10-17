@@ -8,13 +8,13 @@ import { Match, CreateMatchRequest } from "@/entities"
 export const useCreateMatch = () => {
     const queryClient = useQueryClient();
     const matchRepository = DC.repositories.matchRepository(
-        import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api"
+        import.meta.env.VITE_API_BASE_URL 
     );
     return useMutation({
         mutationFn: (matchData: CreateMatchRequest) =>
             matchRepository.create(matchData),
         onSuccess: (data: Match) => {
-            toast.success("✅ Partida criada com sucesso!", {
+            toast.success(" Partida criada com sucesso!", {
                 description: `Partida entre ${data.description} foi adicionada.`,
             });
             // Invalidar queries relacionadas
@@ -32,13 +32,13 @@ export const useCreateMatch = () => {
 export const useUpdateMatch = () => {
     const queryClient = useQueryClient();
     const matchRepository = DC.repositories.matchRepository(
-        import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api"
+        import.meta.env.VITE_API_BASE_URL 
     );
     return useMutation({
         mutationFn: ({ id, data }: { id: string; data: Partial<Match> }) =>
             matchRepository.update(id, data),
         onSuccess: (data: Match) => {
-            toast.success("✅ Partida atualizada com sucesso!", {
+            toast.success(" Partida atualizada com sucesso!", {
                 description: `Partida entre ${data.description} foi atualizada.`,
             });
             // Invalidar queries relacionadas
@@ -57,12 +57,12 @@ export const useUpdateMatch = () => {
 export const useDeleteMatch = () => {
     const queryClient = useQueryClient();
     const matchRepository = DC.repositories.matchRepository(
-        import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api"
+        import.meta.env.VITE_API_BASE_URL 
     );
     return useMutation({
         mutationFn: (id: string) => matchRepository.delete(id),
         onSuccess: () => {
-            toast.success("✅ Partida deletada com sucesso!", {
+            toast.success(" Partida deletada com sucesso!", {
                 description: `A partida foi removida.`,
             });
             // Invalidar queries relacionadas

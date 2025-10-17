@@ -21,7 +21,6 @@ export const privateRoutes = (
       <Route path="/home" element={<Home />} />
       <Route path="/achievements" element={<Achievements />} />
       <Route path="/matches" element={<Matches />} />
-      {/* Create match page - wrapper provides onBack navigation to /matches */}
       <Route path="/matches/create" element={<CreateMatchWrapper />} />
       <Route path="/ranking" element={<Ranking />} />
       <Route path="/settings" element={<Settings />} />
