@@ -1,20 +1,9 @@
 import { usePlayerMe } from "@/hooks";
 import { useNavigate } from "react-router-dom";
 
-// Mock data para partidas futuras - será substituído por dados reais posteriormente
-const mockUpcomingMatches = [
-    {
-        id: "1",
-        name: "Pelada do Fim de Semana",
-        date: "2024-01-20",
-        time: "15:00"
-    },
-    {
-        id: "2",
-        name: "Copa do Bairro",
-        date: "2024-01-22",
-        time: "18:30"
-    }
+// Retirando dados fictícios
+const UpcomingMatches = [
+
 ];
 
 
@@ -47,7 +36,7 @@ export function HomeModel() {
         playerStats,
         isLoading,
         error,
-        mockUpcomingMatches,
+        UpcomingMatches,
         handleCreateMatch,
         handleMyMatches
     }
