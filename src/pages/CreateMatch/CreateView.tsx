@@ -19,6 +19,8 @@ export function CreateView(props: CreateViewProps) {
     onBack,
     matchData,
     setMatchData,
+   handleCheckBoxChange,
+    isChecked,
   } = props;
 
   return (
@@ -68,16 +70,49 @@ export function CreateView(props: CreateViewProps) {
           {/* Formato */}
           <div className="space-y-2">
             <Label htmlFor="playersPerTeam">Formato da Partida</Label>
-            <Input
-              id="playersPerTeam"
-              readOnly
-              className="bg-muted"
-              value={
-                matchData.playersPerTeam
-                  ? `${matchData.playersPerTeam} vs ${matchData.playersPerTeam}`
-                  : ""
-              }
-            />
+
+            {isChecked ? (
+              <Select
+                value={matchData.playersPerTeam}
+                onValueChange={(value) =>
+                  setMatchData({ ...matchData, playersPerTeam: value })
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="3">3 vs 3 (6 jogadores)</SelectItem>
+                  <SelectItem value="4">4 vs 4 (8 jogadores)</SelectItem>
+                  <SelectItem value="5">5 vs 5 (10 jogadores)</SelectItem>
+                  <SelectItem value="6">6 vs 6 (12 jogadores)</SelectItem>
+                  <SelectItem value="7">7 vs 7 (14 jogadores)</SelectItem>
+                </SelectContent>
+              </Select>
+            ) : (
+              <Input
+                id="playersPerTeam"
+                readOnly
+                className="bg-muted"
+                value={
+                  matchData.playersPerTeam
+                    ? `${matchData.playersPerTeam} vs ${matchData.playersPerTeam}`
+                    : ""
+                }
+              />
+            )}
+
+            <label className="flex items-center space-x-2 text-sm">
+              <input
+                type="checkbox"
+                checked={isChecked}
+                onChange={handleCheckBoxChange}
+                className="rounded border-gray-300 text-green-600 focus:ring-green-500"
+              />
+              <span className="text-gray-600">
+                Selecionar participantes por time
+              </span>
+            </label>
           </div>
 
           {/* Local */}
@@ -256,6 +291,6 @@ export function CreateView(props: CreateViewProps) {
           </Button>
         </div>
       </form>
-    </div>
+    </div >
   );
 }

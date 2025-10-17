@@ -8,7 +8,7 @@ import { Match, CreateMatchRequest } from "@/entities"
 export const useCreateMatch = () => {
     const queryClient = useQueryClient();
     const matchRepository = DC.repositories.matchRepository(
-        import.meta.env.VITE_API_BASE_URL 
+        import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api"
     );
     return useMutation({
         mutationFn: (matchData: CreateMatchRequest) =>
