@@ -1,17 +1,20 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from "axios";
 import type { IHttpClient } from "@/contracts/i-http-client";
 
+export interface ApiError extends Error {
+  status?: number;
+  errors?: Record<string, string[]>;
+  backendMessage?: string;
+}
+
 export class AxiosAdapter implements IHttpClient {
   private axiosInstance: AxiosInstance;
 
   constructor(baseURL?: string) {
     this.axiosInstance = axios.create({
-      baseURL:
-        baseURL || import.meta.env.VITE_API_BASE_URL || "http://localhost:3000",
+      baseURL: baseURL || import.meta.env.VITE_API_BASE_URL,
       timeout: 10000,
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       withCredentials: true, // Para incluir cookies automaticamente
     });
 
@@ -48,20 +51,28 @@ export class AxiosAdapter implements IHttpClient {
     );
   }
 
-  private handleError(error: AxiosError): Error {
+  private handleError(error: AxiosError): ApiError {
     if (error.response?.status === 401) {
-      // Token expirado ou inválido - limpar dados locais
-      localStorage.removeItem("user_data");
-      localStorage.removeItem("email_verified");
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("token_type");
-      // Disparar evento de logout
+      this.clearAuthData();
       window.dispatchEvent(new CustomEvent("auth:logout"));
     }
 
-    const errorData = error.response?.data as { message?: string } | undefined;
-    const message = errorData?.message || error.message || "Erro de rede";
-    return new Error(message);
+    const errorData = error.response?.data as
+      | {
+          message?: string;
+          errors?: Record<string, string[]>;
+        }
+      | undefined;
+
+    const genericMessage = "Erro, não foi possível realizar ação desejada";
+
+    const customError = new Error(genericMessage) as ApiError;
+
+    customError.status = error.response?.status;
+    customError.errors = errorData?.errors;
+    customError.backendMessage = errorData?.message;
+
+    return customError;
   }
 
   async get<T>(url: string, config?: Record<string, unknown>): Promise<T> {
@@ -119,7 +130,6 @@ export class AxiosAdapter implements IHttpClient {
     return response.data;
   }
 
-  // Método para limpar dados de autenticação
   public clearAuthData(): void {
     localStorage.removeItem("user_data");
     localStorage.removeItem("email_verified");
