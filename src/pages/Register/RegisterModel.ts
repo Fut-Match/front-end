@@ -1,29 +1,14 @@
 import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  showRegisterErrorToast,
-  showRegisterSuccessToast,
-} from "./RegisterToast";
+import { showRegisterSuccessToast } from "./RegisterToast";
 import { useRegister } from "@/hooks/mutations/useAuthMutations";
 import { useNavigate } from "react-router-dom";
-import { RegisterRequest } from "@/entities/auth";
+import { RegisterRequest, registerRequestSchema } from "@/entities/auth";
 import { z } from "zod";
+import { handleApiError } from "@/utils/error-handler";
 
-const registerFormSchema = z
-  .object({
-    firstName: z.string().min(2, "Nome deve ter pelo menos 2 caracteres"),
-    lastName: z.string().min(2, "Sobrenome deve ter pelo menos 2 caracteres"),
-    email: z.string().email("Email inválido"),
-    password: z.string().min(6, "Senha deve ter pelo menos 6 caracteres"),
-    password_confirmation: z.string(),
-  })
-  .refine((data) => data.password === data.password_confirmation, {
-    message: "Senhas não coincidem",
-    path: ["password_confirmation"],
-  });
-
-type RegisterFormData = z.infer<typeof registerFormSchema>;
+type RegisterFormData = z.infer<typeof registerRequestSchema>;
 
 export function RegisterModel() {
   const [showPassword, setShowPassword] = useState(false);
@@ -39,7 +24,7 @@ export function RegisterModel() {
     watch,
     formState: { errors },
   } = useForm<RegisterFormData>({
-    resolver: zodResolver(registerFormSchema),
+    resolver: zodResolver(registerRequestSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -52,7 +37,8 @@ export function RegisterModel() {
   const onSubmit = async (data: RegisterFormData) => {
     try {
       const apiData: RegisterRequest = {
-        name: `${data.firstName} ${data.lastName}`.trim(),
+        firstName: data.firstName,
+        lastName: data.lastName,
         email: data.email,
         password: data.password,
         password_confirmation: data.password_confirmation,
@@ -63,7 +49,10 @@ export function RegisterModel() {
       setShowSuccessMessage(true);
       showRegisterSuccessToast();
     } catch (error) {
-      showRegisterErrorToast();
+      handleApiError(error, {
+        title: "Erro ao realizar cadastro",
+        useBackendMessage: true,
+      });
     }
   };
 
