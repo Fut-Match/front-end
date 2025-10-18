@@ -1,115 +1,89 @@
 import { useState } from "react";
-import { 
-  showRegisterErrorToast, 
-  showRegisterSuccessToast, 
-  showValidationConfirmPasswordRequiredToast 
-} from "./RegisterToast";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { showRegisterSuccessToast } from "./RegisterToast";
 import { useRegister } from "@/hooks/mutations/useAuthMutations";
 import { useNavigate } from "react-router-dom";
+import { RegisterRequest, registerRequestSchema } from "@/entities/auth";
+import { z } from "zod";
+import { handleApiError } from "@/utils/error-handler";
 
-export interface RegisterModelData {
-  registerData: {
-    name: string;
-    lastname: string;
-    email: string;
-    password: string;
-    password_confirmation: string; 
-  };
-  showPassword: boolean;
-  isLoading: boolean;
-  setRegisterData: (
-    data: { name: string; lastname: string; email: string; password: string; password_confirmation: string }
-  ) => void;
-  setShowPassword: (show: boolean) => void;
-  
-  handleRegister: (
-    e: React.FormEvent,
-    callbacks?: {
-      onAuth?: () => void;
-      onNavigateToLogin?: () => void;
-      onNavigateToHome?: () => void;
-      onNavigateToConfirmEmail?: () => void;
-    }
-  ) => Promise<void>;
-  navigateToLogin: (onNavigateToLogin?: () => void) => void;
-  navigateToConfirmEmail: (onNavigateToConfirmEmail?: () => void) => void;
-}
+type RegisterFormData = z.infer<typeof registerRequestSchema>;
 
-export function RegisterModel(): RegisterModelData {
+export function RegisterModel() {
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   const { mutateAsync: registerMutation, isPending } = useRegister();
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()
-
-  const [registerData, setRegisterData] = useState({
-    name: "",
-    lastname: "",
-    email: "",
-    password: "",
-    password_confirmation: "",
+  const {
+    control,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<RegisterFormData>({
+    resolver: zodResolver(registerRequestSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      password_confirmation: "",
+    },
   });
 
-  const handleRegister = async (
-    e: React.FormEvent,
-    callbacks?: {
-      onAuth?: () => void;
-      onNavigateToLogin?: () => void;
-      onNavigateToHome?: () => void;
-    }
-  ) => {
-    e.preventDefault();
-    
-
-    if (registerData.password !== registerData.password_confirmation) {
-      showValidationConfirmPasswordRequiredToast();
-      return;
-    }
-
+  const onSubmit = async (data: RegisterFormData) => {
     try {
-      await registerMutation({
-        name: `${registerData.name} ${registerData.lastname}`,
-        email: registerData.email,
-        password: registerData.password,
-        password_confirmation: registerData.password_confirmation
-      });
+      const apiData: RegisterRequest = {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        password: data.password,
+        password_confirmation: data.password_confirmation,
+      };
 
+      await registerMutation(apiData);
+
+      setShowSuccessMessage(true);
       showRegisterSuccessToast();
-
-      if (callbacks?.onAuth) {
-        callbacks.onAuth();
-      } else {
-        navigate('/login');
-      }
     } catch (error) {
-      showRegisterErrorToast();
+      handleApiError(error, {
+        title: "Erro ao realizar cadastro",
+        useBackendMessage: true,
+      });
     }
   };
 
-  const navigateToLogin = (onNavigateToLogin?: () => void) => {
-    if (onNavigateToLogin) {
-      onNavigateToLogin();
-    } else {
-      navigate('/login');
-    }
+  const handleRegister = handleSubmit(onSubmit);
+
+  const navigateToLogin = () => {
+    navigate("/login");
   };
 
-  const navigateToConfirmEmail = (onNavigateToConfirmEmail?: () => void) => {
-    if (onNavigateToConfirmEmail) {
-      onNavigateToConfirmEmail();
-    } else {
-      navigate('/home');
-    }
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleShowConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   return {
-    registerData,
+    control,
+    handleSubmit: handleRegister,
+    errors,
+    watch,
     showPassword,
+    showConfirmPassword,
+    showSuccessMessage,
     isLoading: isPending,
-    setRegisterData,
     setShowPassword,
-    handleRegister,
+    setShowConfirmPassword,
+    toggleShowPassword,
+    toggleShowConfirmPassword,
     navigateToLogin,
-    navigateToConfirmEmail,
+    Controller,
   };
 }

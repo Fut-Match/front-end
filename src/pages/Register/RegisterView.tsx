@@ -1,68 +1,27 @@
-import { useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Mail, Lock, User, Eye, EyeOff, CheckCircle, ArrowLeft } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
-import { useRegister } from "@/hooks";
+import { RegisterModel } from "./RegisterModel";
 
-interface RegisterProps {
-  onNavigateToLogin?: () => void;
-}
+type RegisterViewProps = ReturnType<typeof RegisterModel>;
 
-export function RegisterView({ onNavigateToLogin }: RegisterProps) {
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-
-  const { mutateAsync: register } = useRegister();
-
-  const [registerData, setRegisterData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    confirmPassword: ""
-  });
-
-  const navigateToLogin = () => {
-    if (onNavigateToLogin) {
-      onNavigateToLogin();
-    } else {
-      window.location.href = '/login';
-    }
-  };
-
-  const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (registerData.password !== registerData.confirmPassword) {
-      alert("As senhas não coincidem!");
-      return;
-    }
-
-    setIsLoading(true);
-    
-    try {
-      const fullName = `${registerData.firstName} ${registerData.lastName}`.trim();
-      await register(
-        {
-            name: fullName,
-            email: registerData.email,
-            password: registerData.password,
-            password_confirmation: registerData.confirmPassword
-        }
-      );
-      setShowSuccessMessage(true);
-    } catch (error) {
-      // O erro já é tratado nos hooks/toasts
-      console.error('Erro no registro:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+export function RegisterView(props: RegisterViewProps) {
+  const {
+    control,
+    handleSubmit,
+    errors,
+    watch,
+    showPassword,
+    showConfirmPassword,
+    showSuccessMessage,
+    isLoading,
+    toggleShowPassword,
+    toggleShowConfirmPassword,
+    navigateToLogin,
+    Controller,
+  } = props;
 
   if (showSuccessMessage) {
     return (
@@ -71,7 +30,7 @@ export function RegisterView({ onNavigateToLogin }: RegisterProps) {
           <CheckCircle className="h-16 w-16 mx-auto text-accent" />
           <h2 className="text-2xl font-bold text-foreground">Cadastro Realizado!</h2>
           <p className="text-muted-foreground">
-            Enviamos um e-mail de confirmação para <strong>{registerData.email}</strong>
+            Enviamos um e-mail de confirmação para <strong>{watch("email")}</strong>
           </p>
           <p className="text-sm text-muted-foreground">
             Verifique sua caixa de entrada e clique no link de confirmação para ativar sua conta.
@@ -90,105 +49,138 @@ export function RegisterView({ onNavigateToLogin }: RegisterProps) {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <div className="w-full max-w-md space-y-6">
-        {/* Header */}
         <div className="text-center space-y-2">
           <h1 className="text-3xl font-bold text-foreground">Criar Conta</h1>
           <p className="text-muted-foreground">Junte-se ao SoccerApp</p>
         </div>
 
-        {/* Register Form */}
         <Card className="p-6">
-          <form onSubmit={handleRegister} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="firstName">Nome</Label>
-              <div className="relative">
-                <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="firstName"
-                  placeholder="João"
-                  value={registerData.firstName}
-                  onChange={(e) => setRegisterData({...registerData, firstName: e.target.value})}
-                  className="pl-9"
-                  required
-                />
-              </div>
+              <Controller
+                name="firstName"
+                control={control}
+                render={({ field }) => (
+                  <div className="relative">
+                    <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="firstName"
+                      placeholder="João"
+                      className="pl-9"
+                      {...field}
+                    />
+                  </div>
+                )}
+              />
+              {errors.firstName && (
+                <p className="text-sm text-red-500">{errors.firstName.message}</p>
+              )}
             </div>
             
             <div className="space-y-2">
               <Label htmlFor="lastName">Sobrenome</Label>
-              <div className="relative">
-                <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="lastName"
-                  placeholder="Silva"
-                  value={registerData.lastName}
-                  onChange={(e) => setRegisterData({...registerData, lastName: e.target.value})}
-                  className="pl-9"
-                  required
-                />
-              </div>
+              <Controller
+                name="lastName"
+                control={control}
+                render={({ field }) => (
+                  <div className="relative">
+                    <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="lastName"
+                      placeholder="Silva"
+                      className="pl-9"
+                      {...field}
+                    />
+                  </div>
+                )}
+              />
+              {errors.lastName && (
+                <p className="text-sm text-red-500">{errors.lastName.message}</p>
+              )}
             </div>
             
             <div className="space-y-2">
               <Label htmlFor="register-email">Email</Label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="register-email"
-                  type="email"
-                  placeholder="seu@email.com"
-                  value={registerData.email}
-                  onChange={(e) => setRegisterData({...registerData, email: e.target.value})}
-                  className="pl-9"
-                  required
-                />
-              </div>
+              <Controller
+                name="email"
+                control={control}
+                render={({ field }) => (
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="register-email"
+                      type="email"
+                      placeholder="seu@email.com"
+                      className="pl-9"
+                      {...field}
+                    />
+                  </div>
+                )}
+              />
+              {errors.email && (
+                <p className="text-sm text-red-500">{errors.email.message}</p>
+              )}
             </div>
             
             <div className="space-y-2">
               <Label htmlFor="register-password">Senha</Label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="register-password"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Sua senha"
-                  value={registerData.password}
-                  onChange={(e) => setRegisterData({...registerData, password: e.target.value})}
-                  className="pl-9 pr-9"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
-                >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
-              </div>
+              <Controller
+                name="password"
+                control={control}
+                render={({ field }) => (
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="register-password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Sua senha"
+                      className="pl-9 pr-9"
+                      {...field}
+                    />
+                    <button
+                      type="button"
+                      onClick={toggleShowPassword}
+                      className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
+                    >
+                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                )}
+              />
+              {errors.password && (
+                <p className="text-sm text-red-500">{errors.password.message}</p>
+              )}
             </div>
             
             <div className="space-y-2">
               <Label htmlFor="confirm-password">Confirmar Senha</Label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="confirm-password"
-                  type={showConfirmPassword ? "text" : "password"}
-                  placeholder="Confirme sua senha"
-                  value={registerData.confirmPassword}
-                  onChange={(e) => setRegisterData({...registerData, confirmPassword: e.target.value})}
-                  className="pl-9 pr-9"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
-                >
-                  {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
-              </div>
+              <Controller
+                name="password_confirmation"
+                control={control}
+                render={({ field }) => (
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      id="confirm-password"
+                      type={showConfirmPassword ? "text" : "password"}
+                      placeholder="Confirme sua senha"
+                      className="pl-9 pr-9"
+                      {...field}
+                    />
+                    <button
+                      type="button"
+                      onClick={toggleShowConfirmPassword}
+                      className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
+                    >
+                      {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                    </button>
+                  </div>
+                )}
+              />
+              {errors.password_confirmation && (
+                <p className="text-sm text-red-500">{errors.password_confirmation.message}</p>
+              )}
             </div>
             
             <Button type="submit" className="w-full" disabled={isLoading}>

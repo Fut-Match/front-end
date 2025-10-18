@@ -1,4 +1,4 @@
-import type { Match, CreateMatchRequest } from '@/entities/Match';
+import type { Match, CreateMatchRequest } from "@/entities/match";
 
 export interface IMatchRepository {
   getAll(): Promise<Match[]>;

@@ -8,7 +8,7 @@ import { DC } from "@/externals/dependency-container";
 export const useCreatePlayer = () => {
   const queryClient = useQueryClient();
   const playerRepository = DC.repositories.playerRepository(
-    import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api"
+    import.meta.env.VITE_API_BASE_URL
   );
 
   return useMutation({
@@ -34,7 +34,7 @@ export const useCreatePlayer = () => {
 export const useUpdatePlayer = () => {
   const queryClient = useQueryClient();
   const playerRepository = DC.repositories.playerRepository(
-    import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api"
+    import.meta.env.VITE_API_BASE_URL
   );
 
   return useMutation({
@@ -63,7 +63,7 @@ export const useUpdatePlayer = () => {
 export const useDeletePlayer = () => {
   const queryClient = useQueryClient();
   const playerRepository = DC.repositories.playerRepository(
-    import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api"
+    import.meta.env.VITE_API_BASE_URL
   );
 
   return useMutation({
