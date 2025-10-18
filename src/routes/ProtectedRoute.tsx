@@ -35,9 +35,8 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   // Se não requer autenticação mas está autenticado (ex: página de login)
   if (!requireAuth && isAuthenticated) {
-    // Redireciona para onde estava tentando ir ou para home
-    const from = location.state?.from?.pathname || '/';
-    return <Navigate to={from} replace />;
+    // Redireciona para o redirectTo especificado (normalmente /home)
+    return <Navigate to={redirectTo} replace />;
   }
 
   return <>{children}</>;
