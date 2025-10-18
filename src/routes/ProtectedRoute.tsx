@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { Navigate, useLocation } from 'react-router-dom';
+
 import { useAuth } from '@/hooks/useAuth';
 
 interface ProtectedRouteProps {
@@ -18,7 +20,6 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   
   const isAuthenticated = !!user;
 
-  // Enquanto carrega, pode mostrar um loading
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">

@@ -7,7 +7,7 @@ import {
 } from "./RegisterToast";
 import { useRegister } from "@/hooks/mutations/useAuthMutations";
 import { useNavigate } from "react-router-dom";
-import { RegisterRequest } from "@/entities/User";
+import { RegisterRequest } from "@/entities/auth";
 import { z } from "zod";
 
 const registerFormSchema = z

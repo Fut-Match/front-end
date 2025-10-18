@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { authContext } from './auth-context';
 import { IAuthContext } from './types';
-import { User } from '@/entities/User';
+import { User } from '@/entities/user';
 
 interface AuthProviderProps {
   children: React.ReactNode;

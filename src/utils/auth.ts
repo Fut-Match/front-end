@@ -1,4 +1,4 @@
-import { User } from "@/entities/User";
+import { User } from "@/entities/user";
 
 // Funções para gerenciar estado do usuário externamente
 export const setAuthUser = (user: User | null) => {

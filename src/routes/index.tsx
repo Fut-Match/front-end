@@ -12,13 +12,10 @@ export const AppRouter = () => {
       }}
     >
       <Routes>
-        {/* Rotas públicas */}
         {publicRoutes}
         
-        {/* Rotas privadas */}
         {privateRoutes}
         
-        {/* Catch-all route deve sempre ficar por último */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
