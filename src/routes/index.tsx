@@ -22,5 +22,4 @@ export const AppRouter = () => {
   );
 };
 
-// Re-exports específicos para componentes
 export { ProtectedRoute } from './ProtectedRoute';
