@@ -1,5 +1,7 @@
 import React from 'react';
+
 import { Navigate, useLocation } from 'react-router-dom';
+
 import { useAuth } from '@/hooks/useAuth';
 
 interface ProtectedRouteProps {
@@ -18,7 +20,6 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   
   const isAuthenticated = !!user;
 
-  // Enquanto carrega, pode mostrar um loading
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -35,9 +36,8 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 
   // Se não requer autenticação mas está autenticado (ex: página de login)
   if (!requireAuth && isAuthenticated) {
-    // Redireciona para onde estava tentando ir ou para home
-    const from = location.state?.from?.pathname || '/';
-    return <Navigate to={from} replace />;
+    // Redireciona para o redirectTo especificado (normalmente /home)
+    return <Navigate to={redirectTo} replace />;
   }
 
   return <>{children}</>;

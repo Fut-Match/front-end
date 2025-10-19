@@ -1,14 +1,10 @@
 import { RegisterModel } from "./RegisterModel";
 import { RegisterView } from "./RegisterView";
 
-interface RegisterProps {
-  onAuth?: () => void;
-  onNavigateToLogin?: () => void;
-  onNavigateToHome?: () => void;
-}
-export const Register = (props: RegisterProps) => {
+
+export const Register = () => {
     const registerModelData = RegisterModel();
-    
-    return <RegisterView {...registerModelData} {...props} />;
+
+    return <RegisterView {...registerModelData} />;
 };
 export default Register;

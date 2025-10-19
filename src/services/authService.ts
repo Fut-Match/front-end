@@ -1,12 +1,12 @@
 /**
  * Serviço de autenticação - Orquestra operações relacionadas à autenticação
  */
-import { DC } from '@/externals/dependency-container';
-import type { LoginRequest, RegisterRequest, User } from '@/entities';
+import { DC } from "@/externals/dependency-container";
+import type { LoginRequest, RegisterRequest, User } from "@/entities";
 
 export class AuthService {
   private authRepository = DC.repositories.authRepository(
-    import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api'
+    import.meta.env.VITE_API_BASE_URL
   );
 
   /**
@@ -15,15 +15,15 @@ export class AuthService {
   async login(credentials: LoginRequest) {
     try {
       const response = await this.authRepository.signIn(credentials);
-      
+
       // Armazena dados no localStorage
-      localStorage.setItem('accessToken', response.accessToken);
-      localStorage.setItem('refreshToken', response.refreshToken);
-      localStorage.setItem('user', JSON.stringify(response.user));
-      
+      localStorage.setItem("accessToken", response.accessToken);
+      localStorage.setItem("refreshToken", response.refreshToken);
+      localStorage.setItem("user", JSON.stringify(response.user));
+
       return response;
     } catch (error) {
-      console.error('Erro no login:', error);
+      console.error("Erro no login:", error);
       throw error;
     }
   }
@@ -35,7 +35,7 @@ export class AuthService {
     try {
       await this.authRepository.logout();
     } catch (error) {
-      console.error('Erro no logout:', error);
+      console.error("Erro no logout:", error);
     } finally {
       // Sempre limpa dados locais
       this.clearLocalData();
@@ -50,7 +50,7 @@ export class AuthService {
       const response = await this.authRepository.register(userData);
       return response;
     } catch (error) {
-      console.error('Erro no registro:', error);
+      console.error("Erro no registro:", error);
       throw error;
     }
   }
@@ -60,10 +60,10 @@ export class AuthService {
    */
   getCurrentUser(): User | null {
     try {
-      const userData = localStorage.getItem('user');
+      const userData = localStorage.getItem("user");
       return userData ? JSON.parse(userData) : null;
     } catch (error) {
-      console.error('Erro ao obter usuário:', error);
+      console.error("Erro ao obter usuário:", error);
       return null;
     }
   }
@@ -72,7 +72,7 @@ export class AuthService {
    * Obtém token de acesso do localStorage
    */
   getAccessToken(): string | null {
-    return localStorage.getItem('accessToken');
+    return localStorage.getItem("accessToken");
   }
 
   /**
@@ -91,7 +91,7 @@ export class AuthService {
     const currentUser = this.getCurrentUser();
     if (currentUser) {
       const updatedUser = { ...currentUser, ...userData };
-      localStorage.setItem('user', JSON.stringify(updatedUser));
+      localStorage.setItem("user", JSON.stringify(updatedUser));
     }
   }
 
@@ -99,9 +99,9 @@ export class AuthService {
    * Limpa todos os dados de autenticação
    */
   private clearLocalData() {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('user');
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("user");
   }
 
   /**
@@ -109,20 +109,20 @@ export class AuthService {
    */
   async refreshToken(): Promise<string | null> {
     try {
-      const refreshToken = localStorage.getItem('refreshToken');
+      const refreshToken = localStorage.getItem("refreshToken");
       if (!refreshToken) {
-        throw new Error('Refresh token não encontrado');
+        throw new Error("Refresh token não encontrado");
       }
 
       const response = await this.authRepository.refreshToken(refreshToken);
-      
+
       // Atualiza tokens
-      localStorage.setItem('accessToken', response.accessToken);
-      localStorage.setItem('refreshToken', response.refreshToken);
-      
+      localStorage.setItem("accessToken", response.accessToken);
+      localStorage.setItem("refreshToken", response.refreshToken);
+
       return response.accessToken;
     } catch (error) {
-      console.error('Erro ao renovar token:', error);
+      console.error("Erro ao renovar token:", error);
       this.clearLocalData();
       return null;
     }

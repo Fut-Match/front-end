@@ -1,16 +1,16 @@
 import { Route, useNavigate } from 'react-router-dom';
+
 import { ProtectedRoute } from './ProtectedRoute';
-import Achievements from '@/pages/Achievements';
-import { Matches } from '@/pages/Matchs/index';
-import { Ranking } from '@/pages/Ranking';
-import { Settings } from '@/pages/Settings';
-import { Home } from '@/pages/Home/index';
-import { PrivateLayout } from './PrivateLayout';
 import { CreateMatch } from '@/pages/CreateMatch';
+import Achievements from '@/pages/Achievements';
+import { PrivateLayout } from './PrivateLayout';
+import { Matches } from '@/pages/Matchs/index';
+import { Settings } from '@/pages/Settings';
+import { Ranking } from '@/pages/Ranking';
+import { Home } from '@/pages/Home/index';
 
 export const privateRoutes = (
   <>
-    {/* Rotas que requerem autenticação, todas dentro do PrivateLayout */}
     <Route
       element={
         <ProtectedRoute>

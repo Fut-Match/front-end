@@ -1,4 +1,4 @@
-import type { Player, CreatePlayerRequest } from "@/entities/Player";
+import type { Player, CreatePlayerRequest } from "@/entities/player";
 
 export interface IPlayerRepository {
   getAll(): Promise<Player[]>;
