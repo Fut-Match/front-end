@@ -1,27 +1,19 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
-import { User, Bell, Shield, Moon, Edit, Mail, MapPin, Activity, Server } from "lucide-react";
+import { User, Shield, Edit, Mail, MapPin } from "lucide-react";
+import { SettingsModel } from "./SettingsModel";
 
-interface SettingsProps {
-  onEditProfile?: () => void;
-  onPrivacyPolicy?: () => void;
-  onTermsOfService?: () => void;
-}
+type SettingsViewProps = ReturnType<typeof SettingsModel>;
 
-interface SettingsProps {
-  onEditProfile?: () => void;
-}
+export function SettingsView(props: SettingsViewProps) {
+  const {
+    handleEditProfile,
+    handlePrivacyPolicy,
+    handleTermsOfService,
+    handleChangePassword,
+  } = props;
 
-export function Settings({ onEditProfile }: SettingsProps) {
-  const handlePrivacyPolicy = () => {
-    window.open('/privacy-policy', '_blank');
-  };
-
-  const handleTermsOfService = () => {
-    window.open('/terms-of-service', '_blank');
-  };
   return (
     <div className="p-4 space-y-6">
       {/* Profile Section */}
@@ -31,38 +23,44 @@ export function Settings({ onEditProfile }: SettingsProps) {
             <User className="h-5 w-5 text-primary" />
             <h3 className="text-lg font-semibold text-foreground">Perfil</h3>
           </div>
-          
+
           <div className="space-y-3 pl-8">
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium text-foreground">Editar Perfil</p>
-                <p className="text-sm text-muted-foreground">Nome, foto, informações pessoais</p>
+                <p className="text-sm text-muted-foreground">
+                  Nome, foto, informações pessoais
+                </p>
               </div>
-              <Button variant="outline" size="sm" onClick={onEditProfile}>
+              <Button variant="outline" size="sm" onClick={handleEditProfile}>
                 <Edit className="h-4 w-4" />
               </Button>
             </div>
-            
+
             <Separator />
-            
+
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium text-foreground">Email</p>
-                <p className="text-sm text-muted-foreground">joao@email.com</p>
+                <p className="text-sm text-muted-foreground">
+                  Gerencie seu email
+                </p>
               </div>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" onClick={handleEditProfile}>
                 <Mail className="h-4 w-4" />
               </Button>
             </div>
-            
+
             <Separator />
-            
+
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-foreground">Localização</p>
-                <p className="text-sm text-muted-foreground">São Paulo, SP</p>
+                <p className="font-medium text-foreground">Apelido</p>
+                <p className="text-sm text-muted-foreground">
+                  Personalize seu apelido
+                </p>
               </div>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" onClick={handleEditProfile}>
                 <MapPin className="h-4 w-4" />
               </Button>
             </div>
@@ -70,8 +68,8 @@ export function Settings({ onEditProfile }: SettingsProps) {
         </div>
       </Card>
 
-      {/* Preferences Section */}
-      <Card className="p-4">
+      {/* Preferences Section - Comentado conforme solicitado */}
+      {/* <Card className="p-4">
         <div className="space-y-4">
           <div className="flex items-center gap-3">
             <Bell className="h-5 w-5 text-primary" />
@@ -96,66 +94,43 @@ export function Settings({ onEditProfile }: SettingsProps) {
               </div>
               <Switch defaultChecked />
             </div>
-            
-            <Separator />
-            
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-medium text-foreground">Notificações de Email</p>
-                <p className="text-sm text-muted-foreground">Resumos semanais e convites</p>
-              </div>
-              <Switch defaultChecked />
-            </div>
-            
-            <Separator />
-            
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="font-medium text-foreground">Perfil Público</p>
-                <p className="text-sm text-muted-foreground">Permitir que outros vejam seu perfil</p>
-              </div>
-              <Switch defaultChecked />
-            </div>
           </div>
         </div>
-      </Card>
-
-      {/* API Status */}
-      <Card className="p-4">
-        <div className="space-y-4">
-          <div className="flex items-center gap-3">
-            <Activity className="h-5 w-5 text-primary" />
-            <h3 className="text-lg font-semibold text-foreground">Sistema</h3>
-          </div>
-          
-          <div className="space-y-3 pl-8">
-            <Button variant="outline" className="w-full justify-start"  >
-              <Server className="h-4 w-4 mr-2" />
-              Status da API
-            </Button>
-          </div>
-        </div>
-      </Card>
+      </Card> */}
 
       {/* Privacy & Security */}
       <Card className="p-4">
         <div className="space-y-4">
           <div className="flex items-center gap-3">
             <Shield className="h-5 w-5 text-primary" />
-            <h3 className="text-lg font-semibold text-foreground">Privacidade & Segurança</h3>
+            <h3 className="text-lg font-semibold text-foreground">
+              Privacidade & Segurança
+            </h3>
           </div>
-          
+
           <div className="space-y-3 pl-8">
-            <Button variant="outline" className="w-full justify-start">
+            <Button
+              variant="outline"
+              className="w-full justify-start"
+              onClick={handleChangePassword}
+            >
               Alterar Senha
             </Button>
             <Button variant="outline" className="w-full justify-start">
               Excluir Conta
             </Button>
-            <Button variant="outline" className="w-full justify-start" onClick={handlePrivacyPolicy}>
+            <Button
+              variant="outline"
+              className="w-full justify-start"
+              onClick={handlePrivacyPolicy}
+            >
               Política de Privacidade
             </Button>
-            <Button variant="outline" className="w-full justify-start" onClick={handleTermsOfService}>
+            <Button
+              variant="outline"
+              className="w-full justify-start"
+              onClick={handleTermsOfService}
+            >
               Termos de Uso
             </Button>
           </div>

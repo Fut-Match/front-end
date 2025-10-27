@@ -287,3 +287,126 @@ export function LoginView({ handleSubmit }) {
   return <form onSubmit={handleSubmit}>...</form>;
 }
 ```
+
+---
+
+## Exemplo Completo: Atualização de Usuário
+
+Demonstra o fluxo completo com query (GET) e mutation (POST) integrados:
+
+### 1. Domain
+```typescript
+// entities/user.ts - Usa schema de player.ts
+import { playerSchema } from "./player";
+
+export const userWithPlayerSchema = z.object({
+  id: z.number(),
+  first_name: z.string(),
+  last_name: z.string(),
+  email: z.string().email(),
+  player: playerSchema.nullable(),
+});
+
+export const updateUserRequestSchema = z.object({
+  first_name: z.string().min(2),
+  last_name: z.string().min(2),
+  email: z.string().email(),
+  nickname: z.string().optional(),
+  image: z.string().url().optional(),
+  password: z.string().min(6).optional(),
+});
+
+// contracts/i-user-repository.ts
+export interface IUserRepository {
+  getMe(): Promise<GetCurrentUserResponse>;
+  updateMe(request: UpdateUserRequest): Promise<UpdateUserResponse>;
+}
+```
+
+### 2. Infrastructure
+```typescript
+// externals/repositories/user-repository-rest.ts
+export class UserRepositoryRest implements IUserRepository {
+  constructor(private httpClient: IHttpClient) {}
+
+  async getMe(): Promise<GetCurrentUserResponse> {
+    return this.httpClient.get("/api/users/me");
+  }
+
+  async updateMe(request: UpdateUserRequest): Promise<UpdateUserResponse> {
+    return this.httpClient.post("/api/users/me", request);
+  }
+}
+```
+
+### 3. Application
+```typescript
+// hooks/queries/useUserQueries.ts - Query (GET)
+export const useGetCurrentUser = () => {
+  const userRepository = DC.repositories.userRepository("auth");
+  return useQuery({
+    queryKey: queryKeys.user.me,
+    queryFn: () => userRepository.getMe(),
+  });
+};
+
+// hooks/mutations/useUserMutations.ts - Mutation (POST)
+export const useUpdateUser = () => {
+  const userRepository = DC.repositories.userRepository("auth");
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: (userData) => userRepository.updateMe(userData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.user.me });
+    },
+  });
+};
+```
+
+### 4. Presentation
+```typescript
+// pages/EditProfile/EditProfileModel.ts
+export function EditProfileModel() {
+  const { data: currentUserData, isLoading } = useGetCurrentUser();
+  const { mutateAsync: updateUser } = useUpdateUser();
+
+  // Carrega dados do usuário do endpoint
+  useEffect(() => {
+    if (currentUserData?.data) {
+      reset({
+        first_name: currentUserData.data.first_name,
+        email: currentUserData.data.email,
+        nickname: currentUserData.data.player?.nickname || "",
+      });
+    }
+  }, [currentUserData, reset]);
+
+  const onSubmit = async (data) => {
+    await updateUser(data);
+    navigate("/settings");
+  };
+
+  return { handleSubmit, isLoading, /* ... */ };
+}
+
+// pages/EditProfile/EditProfileView.tsx
+export function EditProfileView({ handleSubmit, isLoading }) {
+  if (isLoading) return <Skeleton />;
+  return <form onSubmit={handleSubmit}>...</form>;
+}
+```
+
+**Benefícios:**
+- Sem localStorage: dados sempre atualizados via API
+- Reutilização de schemas (playerSchema de player.ts)
+- Cache automático com React Query
+- Invalidação de cache após mutation
+- Loading states gerenciados automaticamente
+
+---
+
+## Referências
+
+- [Clean Architecture - Robert C. Martin](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+- [SOLID Principles](https://en.wikipedia.org/wiki/SOLID)

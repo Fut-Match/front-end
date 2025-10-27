@@ -1,11 +1,12 @@
-import { Route, useNavigate } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 import { ProtectedRoute } from './ProtectedRoute';
-import { CreateMatch } from '@/pages/CreateMatch';
+import { CreateMatchWrapper } from './CreateMatchWrapper';
 import Achievements from '@/pages/Achievements';
 import { PrivateLayout } from './PrivateLayout';
 import { Matches } from '@/pages/Matchs/index';
 import { Settings } from '@/pages/Settings';
+import EditProfile from '@/pages/EditProfile';
 import { Ranking } from '@/pages/Ranking';
 import { Home } from '@/pages/Home/index';
 
@@ -24,11 +25,7 @@ export const privateRoutes = (
       <Route path="/matches/create" element={<CreateMatchWrapper />} />
       <Route path="/ranking" element={<Ranking />} />
       <Route path="/settings" element={<Settings />} />
+      <Route path="/settings/edit-profile" element={<EditProfile />} />
     </Route>
   </>
 );
-
-function CreateMatchWrapper() {
-  const navigate = useNavigate();
-  return <CreateMatch onBack={() => navigate('/matches')} />;
-}
