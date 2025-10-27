@@ -1,75 +1,143 @@
-# Welcome to your Lovable project
+# ⚽ FutMatch - Frontend
 
-## Project info
+Aplicação web moderna para gerenciamento de partidas de futebol, ranking de jogadores e estatísticas em tempo real.
 
-**URL**: https://lovable.dev/projects/b97a822e-3d37-4f1c-8368-c1f0e455646f
+## 🚀 Tecnologias
 
-## How can I edit this code?
+Este projeto foi construído com as seguintes tecnologias:
 
-There are several ways of editing your application.
+- **[React 18](https://react.dev/)** - Biblioteca para construção de interfaces
+- **[TypeScript](https://www.typescriptlang.org/)** - Superset JavaScript com tipagem estática
+- **[Vite](https://vitejs.dev/)** - Build tool moderna e rápida
+- **[Tailwind CSS](https://tailwindcss.com/)** - Framework CSS utility-first
+- **[shadcn/ui](https://ui.shadcn.com/)** - Componentes reutilizáveis e acessíveis
+- **[React Query](https://tanstack.com/query)** - Gerenciamento de estado assíncrono
+- **[React Hook Form](https://react-hook-form.com/)** - Gerenciamento de formulários
+- **[Zod](https://zod.dev/)** - Validação de schemas TypeScript-first
+- **[React Router](https://reactrouter.com/)** - Roteamento da aplicação
+- **[Axios](https://axios-http.com/)** - Cliente HTTP
+- **[Sonner](https://sonner.emilkowal.ski/)** - Notificações toast elegantes
 
-**Use Lovable**
+## 📋 Pré-requisitos
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/b97a822e-3d37-4f1c-8368-c1f0e455646f) and start prompting.
+- **Node.js** 18+ e **npm** (recomendado instalar via [nvm](https://github.com/nvm-sh/nvm))
+- **Git** para controle de versão
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🔧 Instalação e Configuração
 
-**Use your preferred IDE**
+```bash
+# Clone o repositório
+git clone https://github.com/Fut-Match/front-end.git
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+# Entre no diretório
+cd front-end
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+# Instale as dependências
+npm install
 
-Follow these steps:
+# Configure as variáveis de ambiente
+cp .env.example .env
+# Edite o arquivo .env com suas configurações
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Inicie o servidor de desenvolvimento
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+A aplicação estará disponível em `http://localhost:5173`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 🏗️ Arquitetura do Projeto
 
-**Use GitHub Codespaces**
+Este projeto segue os princípios de **Clean Architecture** e utiliza o padrão **MVVM** para organização de componentes.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Estrutura de Pastas
 
-## What technologies are used for this project?
+```
+src/
+├── entities/              # Entidades e schemas de validação
+├── contracts/             # Interfaces e contratos
+├── externals/             # Implementações externas e adapters
+│   ├── repositories/      # Repositórios REST
+│   ├── http-client/       # Cliente HTTP (Axios)
+│   └── dependency-container/  # Injeção de dependências
+├── hooks/                 # Hooks customizados
+│   ├── mutations/         # React Query mutations
+│   └── queries/           # React Query queries
+├── pages/                 # Páginas da aplicação (MVVM)
+├── components/            # Componentes reutilizáveis
+├── routes/                # Configuração de rotas
+├── services/              # Serviços auxiliares
+└── utils/                 # Funções utilitárias
+```
 
-This project is built with:
+### Documentação Técnica
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Para entender melhor a arquitetura e padrões utilizados, consulte:
 
-## How can I deploy this project?
+- 📐 **[Clean Architecture](docs/CLEAN_ARCHITECTURE.md)** - Organização em camadas do projeto
+- 🎨 **[Design Pattern MVVM](docs/DESIGN_PATTERN.md)** - Padrão aplicado nos componentes
 
-Simply open [Lovable](https://lovable.dev/projects/b97a822e-3d37-4f1c-8368-c1f0e455646f) and click on Share -> Publish.
+## 📜 Scripts Disponíveis
 
-## Can I connect a custom domain to my Lovable project?
+```bash
+# Desenvolvimento
+npm run dev          # Inicia servidor de desenvolvimento
 
-Yes, you can!
+# Build
+npm run build        # Gera build de produção
+npm run preview      # Preview da build de produção
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+# Qualidade de Código
+npm run lint         # Executa ESLint
+npm run type-check   # Verifica tipos TypeScript
+```
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide).
+## 🌟 Funcionalidades Principais
 
-testando commit
+- [x] Autenticação de usuários (login, registro, recuperação de senha)
+- [x] Gerenciamento de perfil de jogador
+- [x] Criação e gerenciamento de partidas
+- [x] Sistema de ranking de jogadores
+- [x] Estatísticas em tempo real
+- [x] Notificações e alertas
+- [x] Design responsivo e moderno
+- [x] Tema dark/light mode
+
+## 🔐 Variáveis de Ambiente
+
+Configure as seguintes variáveis no arquivo `.env`:
+
+```env
+VITE_API_BASE_URL=http://localhost:8000
+```
+
+## 🤝 Contribuindo
+
+1. Faça um fork do projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/MinhaFeature`)
+3. Commit suas mudanças (`git commit -m 'feat: Minha nova feature'`)
+4. Push para a branch (`git push origin feature/MinhaFeature`)
+5. Abra um Pull Request
+
+### Convenção de Commits
+
+Seguimos o padrão [Conventional Commits](https://www.conventionalcommits.org/):
+
+- `feat:` Nova funcionalidade
+- `fix:` Correção de bug
+- `docs:` Documentação
+- `style:` Formatação de código
+- `refactor:` Refatoração
+- `test:` Testes
+- `chore:` Manutenção
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+## 👥 Time
+
+Desenvolvido pela equipe **Fut-Match**
+
+---
+
+⚽ **FutMatch** - Gerencie suas partidas com inteligência!
