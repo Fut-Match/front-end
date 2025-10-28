@@ -1,10 +1,12 @@
 import type { IAuthRepository } from "@/contracts/i-auth-repository";
 import type { IPlayerRepository } from "@/contracts/i-player-repository";
 import type { IMatchRepository } from "@/contracts/i-match-repository";
+import type { IUserRepository } from "@/contracts/i-user-repository";
 import type { IHttpClient } from "@/contracts/i-http-client";
 import { AuthRepositoryRest } from "@/externals/repositories/auth-repository-rest";
 import { PlayerRepositoryRest } from "@/externals/repositories/player-repository-rest";
 import { MatchRepositoryRest } from "@/externals/repositories/match-repository-rest";
+import { UserRepositoryRest } from "@/externals/repositories/user-repository-rest";
 import { AxiosAdapter } from "@/externals/http-client/axios-adapter";
 
 export type BaseUrl = string;
@@ -16,6 +18,7 @@ export interface IDependencyContainer {
     authRepository: (context: AuthContext) => IAuthRepository;
     playerRepository: (context: AuthContext) => IPlayerRepository;
     matchRepository: (context: AuthContext) => IMatchRepository;
+    userRepository: (context: AuthContext) => IUserRepository;
   };
   httpClient: Repository<AxiosAdapter>;
 }
@@ -50,6 +53,7 @@ export const DC: IDependencyContainer = {
     authRepository: createAuthServiceInstance(),
     playerRepository: createServiceInstance(PlayerRepositoryRest),
     matchRepository: createServiceInstance(MatchRepositoryRest),
+    userRepository: createServiceInstance(UserRepositoryRest),
   },
   httpClient,
 };
