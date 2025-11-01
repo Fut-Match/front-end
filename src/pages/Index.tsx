@@ -10,7 +10,7 @@ import { Settings } from "@/pages/Settings";
 import Achievements from "@/pages/Achievements";
 import { CreateMatch } from "@/pages/CreateMatch/";
 import { MatchDetails } from "@/pages/MatchDetails";
-import ManageMatch from "@/pages/ManageMatch";
+import { ManageMatch } from "@/pages/ManageMatch";
 import { EditProfile } from "@/pages/EditProfile";
 import { LiveMatch } from "@/pages/LiveMatch";
 
@@ -29,19 +29,19 @@ const Index = () => {
   if (!isAuthenticated) {
     if (showForgotPassword) {
       return (
-        <ForgotPassword 
-          onBackToLogin={() => setShowForgotPassword(false)} 
+        <ForgotPassword
+          onBackToLogin={() => setShowForgotPassword(false)}
         />
       );
     }
-    
+
     if (showRegister) {
       return <Register onNavigateToLogin={() => setShowRegister(false)} />;
     }
-    
+
     return (
-      <Login 
-        onAuth={() => setIsAuthenticated(true)} 
+      <Login
+        onAuth={() => setIsAuthenticated(true)}
         onNavigateToRegister={() => setShowRegister(true)}
         onNavigateToForgotPassword={() => setShowForgotPassword(true)}
       />
@@ -52,19 +52,19 @@ const Index = () => {
     if (currentView.type === "createMatch") {
       return <CreateMatch onBack={() => setCurrentView({ type: "main" })} />;
     }
-    
+
     if (currentView.type === "matchDetails") {
       return (
-        <MatchDetails 
-          matchId={currentView.data?.matchId || "1"} 
-          onBack={() => setCurrentView({ type: "main" })} 
+        <MatchDetails
+          matchId={currentView.data?.matchId || "1"}
+          onBack={() => setCurrentView({ type: "main" })}
         />
       );
     }
-    
+
     if (currentView.type === "manageMatch") {
       return (
-        <ManageMatch 
+        <ManageMatch
           onBack={() => setCurrentView({ type: "main" })}
           onStartMatch={(matchId) => setCurrentView({ type: "liveMatch", data: { matchId } })}
         />
@@ -73,7 +73,7 @@ const Index = () => {
 
     if (currentView.type === "liveMatch") {
       return (
-        <LiveMatch 
+        <LiveMatch
           matchId={currentView.data?.matchId || "1"}
           onBack={() => setCurrentView({ type: "main" })}
         />
@@ -82,7 +82,7 @@ const Index = () => {
 
     if (currentView.type === "editProfile") {
       return (
-        <EditProfile 
+        <EditProfile
           onBack={() => setCurrentView({ type: "main" })}
         />
       );
@@ -91,11 +91,11 @@ const Index = () => {
     switch (activeTab) {
       case "home":
         return (
-          <Home  />
+          <Home />
         );
       case "matches":
         return (
-          <Matches 
+          <Matches
             onCreateMatch={() => setCurrentView({ type: "createMatch" })}
             onViewMatch={(matchId) => setCurrentView({ type: "matchDetails", data: { matchId } })}
             onManageMatch={(matchId) => setCurrentView({ type: "manageMatch", data: { matchId } })}
@@ -107,13 +107,13 @@ const Index = () => {
         return <Achievements />;
       case "settings":
         return (
-          <Settings 
+          <Settings
             onEditProfile={() => setCurrentView({ type: "editProfile" })}
           />
         );
       default:
         return (
-          <Home  />
+          <Home />
         );
     }
   };
@@ -126,7 +126,7 @@ const Index = () => {
         headerTitle: "Criar Partida"
       };
     }
-    
+
     if (currentView.type === "matchDetails") {
       return {
         showBackButton: true,
@@ -134,7 +134,7 @@ const Index = () => {
         headerTitle: "Detalhes da Partida"
       };
     }
-    
+
     if (currentView.type === "manageMatch") {
       return {
         showBackButton: true,
@@ -150,7 +150,7 @@ const Index = () => {
         headerTitle: "Partida ao Vivo"
       };
     }
-    
+
     if (currentView.type === "editProfile") {
       return {
         showBackButton: true,
@@ -169,8 +169,8 @@ const Index = () => {
   };
 
   return (
-    <Layout 
-      activeTab={activeTab} 
+    <Layout
+      activeTab={activeTab}
       onTabChange={setActiveTab}
       onLogout={handleLogout}
       {...getLayoutProps()}

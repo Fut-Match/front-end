@@ -1,60 +1,83 @@
-
 import { useState } from "react";
+import { useCreateMatch } from "@/hooks/mutations/useMatchMutations";
+import { toast } from "@/components/ui/sonner";
+import { useNavigate } from "react-router-dom";
 
-interface CreateMatchProps {
-    onBack: () => void;
+export function CreateModel(onBack: () => void) {
+  const createMatch = useCreateMatch();
+  const navigate = useNavigate();
+
+  const [isChecked, setIsChecked] = useState(false);
+
+  const [matchData, setMatchData] = useState({
+    name: "",
+    modality: "",
+    playersPerTeam: "",
+    location: "",
+    date: "",
+    time: "",
+    description: "",
+    endByGoals: true,
+    endByTime: false,
+    maxGoals: 3,
+    maxTime: 90,
+  });
+
+
+
+  const handleCheckBoxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsChecked(e.target.checked);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    createMatch.mutate(
+      {
+
+        name: matchData.name,
+        playersPerTeam: "3", 
+        location: matchData.location,
+        match_date: matchData.date,
+        match_time: matchData.time,
+        description: matchData.description,
+        end_mode: matchData.endByGoals
+          ? "goals"
+          : matchData.endByTime
+            ? "time"
+            : "both",
+        goal_limit: matchData.endByGoals
+          ? parseInt(matchData.maxGoals.toString())
+          : undefined,
+        time_limit: matchData.endByTime
+          ? parseInt(matchData.maxTime.toString())
+          : undefined,
+        maxPlayers: isChecked
+          ? parseInt(matchData.playersPerTeam) * 2
+          : parseInt(matchData.playersPerTeam),
+      },
+      {
+        onSuccess: () => {
+          toast.success("Partida criada com sucesso!", {
+            description: `Sua nova partida foi criada.`,
+          });
+          navigate("/manage-match");
+        },
+        onError: (error: Error) => {
+          toast.error("Erro ao criar partida", {
+            description: error.message,
+          });
+        },
+      }
+    );
+  };
+
+  return {
+    handleSubmit,
+    onBack,
+    matchData,
+    setMatchData,
+    handleCheckBoxChange,
+    isChecked,
+  };
 }
-
-export function CreateModel(props: CreateMatchProps) {
-    const { onBack } = props;
-
-    const [matchData, setMatchData] = useState({
-        name: "",
-        modality: "",
-        playersPerTeam: "",
-        location: "",
-        date: "",
-        time: "",
-        description: "",
-        endByGoals: true,
-        endByTime: false,
-        maxGoals: 3,
-        maxTime: 90,
-    });
-
-    const handleModalityChange = (value: string) => {
-        let playersPerTeam = "";
-        switch (value) {
-            case "Futebol":
-                playersPerTeam = "11";
-                break;
-            case "Futsal":
-                playersPerTeam = "5";
-                break;
-            case "Society":
-                playersPerTeam = "7";
-                break;
-        }
-        setMatchData((prev) => ({
-            ...prev,
-            modality: value,
-            playersPerTeam,
-        }));
-    };
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        console.log("Criando partida:", matchData);
-        onBack();
-    };
-
-    return {
-        handleModalityChange,
-        handleSubmit,
-        onBack,
-        matchData,
-        setMatchData,
-    };
-}
-
-
