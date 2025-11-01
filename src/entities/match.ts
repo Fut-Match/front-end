@@ -25,11 +25,16 @@ export const matchSchema = z.object({
 });
 
 export const createMatchRequestSchema = z.object({
-  title: z.string().min(3, "Título deve ter pelo menos 3 caracteres"),
+  name: z.string().min(3, "Título deve ter pelo menos 3 caracteres"),
   description: z.string().optional(),
-  date: z.string(),
   location: z.string().min(2, "Local deve ter pelo menos 2 caracteres"),
   maxPlayers: z.number().min(2).max(22),
+  match_date: z.string(),
+  match_time: z.string(),
+  playersPerTeam: z.enum(["3", "5", "6" ]),
+  end_mode: z.enum(["goals", "time", "both"]),
+  goal_limit: z.number().min(1).optional(),
+  time_limit: z.number().min(5).optional(),
 });
 
 export type MatchStatus = z.infer<typeof matchStatusSchema>;

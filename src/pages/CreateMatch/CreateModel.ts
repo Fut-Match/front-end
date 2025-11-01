@@ -23,25 +23,7 @@ export function CreateModel(onBack: () => void) {
     maxTime: 90,
   });
 
-  const handleModalityChange = (value: string) => {
-    let playersPerTeam = "";
-    switch (value) {
-      case "Futebol":
-        playersPerTeam = "11";
-        break;
-      case "Futsal":
-        playersPerTeam = "5";
-        break;
-      case "Society":
-        playersPerTeam = "7";
-        break;
-    }
-    setMatchData((prev) => ({
-      ...prev,
-      modality: value,
-      playersPerTeam,
-    }));
-  };
+
 
   const handleCheckBoxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(e.target.checked);
@@ -52,21 +34,27 @@ export function CreateModel(onBack: () => void) {
 
     createMatch.mutate(
       {
-        title: matchData.name,
-        modality: matchData.modality,
-        playersPerTeam: parseInt(matchData.playersPerTeam),
+
+        name: matchData.name,
+        playersPerTeam: "3", 
         location: matchData.location,
-        date: matchData.date,
-        time: matchData.time,
+        match_date: matchData.date,
+        match_time: matchData.time,
         description: matchData.description,
-        endByGoals: matchData.endByGoals,
-        endByTime: matchData.endByTime,
-        maxGoals: matchData.endByGoals
+        end_mode: matchData.endByGoals
+          ? "goals"
+          : matchData.endByTime
+            ? "time"
+            : "both",
+        goal_limit: matchData.endByGoals
           ? parseInt(matchData.maxGoals.toString())
           : undefined,
-        maxTime: matchData.endByTime
+        time_limit: matchData.endByTime
           ? parseInt(matchData.maxTime.toString())
           : undefined,
+        maxPlayers: isChecked
+          ? parseInt(matchData.playersPerTeam) * 2
+          : parseInt(matchData.playersPerTeam),
       },
       {
         onSuccess: () => {
@@ -85,7 +73,6 @@ export function CreateModel(onBack: () => void) {
   };
 
   return {
-    handleModalityChange,
     handleSubmit,
     onBack,
     matchData,
