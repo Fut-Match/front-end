@@ -14,7 +14,7 @@ export function MatchesView(props: MatchesViewProps) {
     inviteCode,
     setInviteCode,
     organizingMatches,
-    participatingMatches,
+    filteredMatches,
     handleJoinMatch,
     handleViewMatch,
     handleManageMatch,
@@ -56,8 +56,8 @@ export function MatchesView(props: MatchesViewProps) {
         </TabsList>
 
         <TabsContent value="participating" className="space-y-4 mt-4">
-          {participatingMatches.length > 0 ? (
-            participatingMatches.map((match) => (
+          {filteredMatches.length > 0 ? (
+            filteredMatches.map((match) => (
               <MatchCard
                 key={match.id}
                 match={match}
@@ -80,7 +80,6 @@ export function MatchesView(props: MatchesViewProps) {
               <MatchCard
                 key={match.id}
                 match={match}
-                onJoin={handleJoinMatch}
                 onView={handleViewMatch}
                 onManage={handleManageMatch}
               />

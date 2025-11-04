@@ -17,7 +17,7 @@ interface Match {
     goals?: number;
     time?: number;
   };
-  status: "organizing" | "playing" | "finished";
+  status: "organizing" | "playing" | "finished" | "waiting";
   userRole: "organizer" | "participant" | "none";
 }
 
@@ -53,10 +53,10 @@ export function MatchCard({ match, onJoin, onView, onManage }: MatchCardProps) {
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);
-    return date.toLocaleDateString('pt-BR', { 
-      day: '2-digit', 
-      month: '2-digit', 
-      year: 'numeric' 
+    return date.toLocaleDateString('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
     });
   };
 
@@ -66,9 +66,13 @@ export function MatchCard({ match, onJoin, onView, onManage }: MatchCardProps) {
     if (percentage >= 70) return "text-primary";
     return "text-muted-foreground";
   };
+  console.log("📦 Props recebidas no MatchCard:", { match, onManage });
+
 
   return (
+    
     <Card className="p-4 space-y-4 hover:shadow-card transition-shadow">
+      
       {/* Header */}
       <div className="flex items-start justify-between">
         <div className="space-y-1">
@@ -128,27 +132,34 @@ export function MatchCard({ match, onJoin, onView, onManage }: MatchCardProps) {
 
       {/* Actions */}
       <div className="flex gap-2 pt-2">
-        <Button 
-          variant="outline" 
-          size="sm" 
+        <Button
+          variant="outline"
+          size="sm"
           onClick={() => onView?.(match.id)}
           className="flex-1"
         >
           Ver Detalhes
         </Button>
-        {match.userRole === "organizer" && match.status === "organizing" && (
-          <Button 
-            size="sm" 
-            onClick={() => onManage?.(match.id)}
-            className="flex-1"
-          >
-            Gerenciar
-          </Button>
-        )}
+       {match.userRole === "organizer" && 
+ (match.status === "organizing" || match.status === "waiting") && (
+  <Button
+    size="sm"
+    onClick={() => {
+      console.log("Gerenciando partida:", match.id);
+      onManage?.(match.id);
+    }}
+    className="flex-1"
+  >
+    Gerenciar
+  </Button>
+)}
         {match.userRole === "none" && match.status === "organizing" && (
-          <Button 
-            size="sm" 
-            onClick={() => onJoin?.(match.id)}
+          <Button
+            size="sm"
+            onClick={() => {
+              console.log("Gerenciando partida:", match.id);
+              onJoin?.(match.id)
+            }}
             className="flex-1"
             disabled={match.currentPlayers >= match.maxPlayers}
           >
