@@ -24,6 +24,7 @@ export const privateRoutes = (
       <Route path="/achievements" element={<Achievements />} />
       <Route path="/matches" element={<Matches />} />
       <Route path="/matches/create" element={<CreateMatchWrapper />} />
+      {/* Adicionando rota de manage  */}
       <Route path="/matches/:matchId/manage" element={<MatchesManage />} />
       <Route path="/ranking" element={<Ranking />} />
       <Route path="/settings" element={<Settings />} />

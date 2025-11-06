@@ -17,6 +17,7 @@ interface Match {
     goals?: number;
     time?: number;
   };
+  // New properties
   status: "organizing" | "playing" | "finished" | "waiting";
   userRole: "organizer" | "participant" | "none";
 }

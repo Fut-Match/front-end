@@ -8,6 +8,7 @@ export function CreateMatchWrapper() {
   return <CreateMatch onBack={() => navigate('/matches')} />;
 }
 
+// Wrapper para gerenciar partida
 export function MatchesManage() {
   const navigate = useNavigate();
   const { matchId } = useParams<{ matchId: string }>();

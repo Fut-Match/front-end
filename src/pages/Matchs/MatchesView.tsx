@@ -1,3 +1,5 @@
+// adicionando comentário para descrever o propósito do arquivo
+
 import { MatchCard } from "@/components/MatchCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

@@ -1,8 +1,9 @@
+//Adicionando comentário para descrever o propósito do arquivo
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useMatch } from "@/hooks/queries/useMatchesQueries";
 import { useAuth } from "@/hooks";
-
 interface Match {
   id: number;
   code: string;
