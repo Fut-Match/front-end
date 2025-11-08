@@ -25,7 +25,7 @@ export const LoginView = (props: LoginViewProps) => {
         <Card >
           <CardHeader className="text-center pb-6">
             <div className="w-16 h-16 bg-gradient-to-r  rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <img src='/lovable-uploads/91f1a561-6498-4bc6-80aa-bc621858f182.png' alt="Logo" className="w-22 h-22 text-white" />
+              <img src='/icon.png' alt="Logo" className="w-22 h-22 text-white" />
             </div>
             <CardTitle className="text-2xl font-bold text-gray-900">
               Bem-vindo de volta!

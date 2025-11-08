@@ -5,10 +5,10 @@ import { CreateMatchWrapper } from './CreateMatchWrapper';
 import Achievements from '@/pages/Achievements';
 import { PrivateLayout } from './PrivateLayout';
 import { Matches } from '@/pages/Matchs/index';
-import { Settings } from '@/pages/Settings';
+import Settings from '@/pages/Settings';
 import EditProfile from '@/pages/EditProfile';
-import { Ranking } from '@/pages/Ranking';
-import { Home } from '@/pages/Home/index';
+import Ranking from '@/pages/Ranking';
+import Home from '@/pages/Home';
 
 export const privateRoutes = (
   <>

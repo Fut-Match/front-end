@@ -1,10 +1,9 @@
 import { SettingsModel } from "./SettingsModel";
 import { SettingsView } from "./SettingsView";
 
-export const Settings = () => {
+export default function Settings() {
   const settingsModelData = SettingsModel();
 
   return <SettingsView {...settingsModelData} />;
-};
+}
 
-export default Settings;

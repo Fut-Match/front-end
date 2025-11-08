@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
 import Login from "@/pages/Login/index";
-import { Register } from "@/pages/Register";
+import Register from "@/pages/Register";
 import { ForgotPassword } from "@/pages/ForgotPassword";
-import { Home } from "@/pages/Home/index";
+import Home from "@/pages/Home";
 import { Matches } from "@/pages/Matchs/index";
-import { Ranking } from "@/pages/Ranking";
-import { Settings } from "@/pages/Settings";
+import Ranking from "@/pages/Ranking";
+import Settings from "@/pages/Settings";
 import Achievements from "@/pages/Achievements";
 import { CreateMatch } from "@/pages/CreateMatch/";
 import { MatchDetails } from "@/pages/MatchDetails";
-import { ManageMatch } from "@/pages/ManageMatch";
-import { EditProfile } from "@/pages/EditProfile";
+import ManageMatch from "@/pages/ManageMatch";
+import EditProfile from "@/pages/EditProfile";
 import { LiveMatch } from "@/pages/LiveMatch";
 
 const Index = () => {
@@ -36,7 +36,7 @@ const Index = () => {
     }
 
     if (showRegister) {
-      return <Register onNavigateToLogin={() => setShowRegister(false)} />;
+      return <Register />;
     }
 
     return (
@@ -82,9 +82,7 @@ const Index = () => {
 
     if (currentView.type === "editProfile") {
       return (
-        <EditProfile
-          onBack={() => setCurrentView({ type: "main" })}
-        />
+        <EditProfile />
       );
     }
 
@@ -106,15 +104,9 @@ const Index = () => {
       case "achievements":
         return <Achievements />;
       case "settings":
-        return (
-          <Settings
-            onEditProfile={() => setCurrentView({ type: "editProfile" })}
-          />
-        );
+        return <Settings />;
       default:
-        return (
-          <Home />
-        );
+        return <Home />;
     }
   };
 

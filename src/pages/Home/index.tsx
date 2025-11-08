@@ -1,6 +1,6 @@
 import { HomeView } from "./HomeView";
 import { HomeModel } from "./HomeModel";
 
-export function Home() {
+export default function Home() {
     return <HomeView {...HomeModel()} />;
 }

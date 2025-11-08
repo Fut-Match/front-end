@@ -4,7 +4,7 @@ import { TermsOfService } from '@/pages/TermsOfService';
 import { ForgotPassword } from '@/pages/ForgotPassword';
 import { PrivacyPolicy } from '@/pages/PrivacyPolicy';
 import LandingPage from '@/pages/LandingPage';
-import { Register } from '@/pages/Register';
+import Register from '@/pages/Register';
 import Login from '@/pages/Login/index';
 import Index from '@/pages/Index';
 
