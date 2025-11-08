@@ -43,6 +43,14 @@ export const queryKeys = {
       ["rankings", "list", params] as const,
   },
 
+  // Achievement queries
+  achievements: {
+    all: ["achievements"] as const,
+    list: (params?: Record<string, unknown>) =>
+      ["achievements", "list", params] as const,
+    player: ["achievements", "player"] as const,
+  },
+
   // Health queries
   health: {
     check: ["health", "check"] as const,
