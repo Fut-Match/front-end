@@ -1,30 +1,41 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { Search, Crown, Medal, Award } from "lucide-react";
-import { useState } from "react";
-
-interface Player {
-  id: string;
-  name: string;
-  nickname: string;
-  score: number;
-  avatar?: string;
-  city: string;
-}
+import { Button } from "@/components/ui/button";
+import { Search, Crown, Medal, Award, ChevronLeft, ChevronRight } from "lucide-react";
+import type { RankingItem } from "@/entities/ranking";
+import type { Pagination } from "@/entities/pagination";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface RankingListProps {
-  players: Player[];
-  currentCity: string;
+  players: RankingItem[];
+  isLoading: boolean;
+  searchTerm: string;
+  onSearchChange: (value: string) => void;
+  pagination?: Pagination;
+  currentPage: number;
+  onPageChange: (page: number) => void;
 }
 
-export function RankingList({ players, currentCity }: RankingListProps) {
-  const [searchTerm, setSearchTerm] = useState("");
-
-  const filteredPlayers = players.filter(player =>
-    player.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    player.nickname.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+export function RankingList({
+  players,
+  isLoading,
+  searchTerm,
+  onSearchChange,
+  pagination,
+  currentPage,
+  onPageChange,
+}: RankingListProps) {
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        <Skeleton className="h-10 w-full" />
+        {[...Array(5)].map((_, i) => (
+          <Skeleton key={i} className="h-24 w-full" />
+        ))}
+      </div>
+    );
+  }
 
   const getRankIcon = (position: number) => {
     switch (position) {
@@ -69,6 +80,18 @@ export function RankingList({ players, currentCity }: RankingListProps) {
     }
   };
 
+  const getPlayerName = (player: RankingItem) => {
+    return player.username || player.player?.name || "Jogador";
+  };
+
+  const getPlayerNickname = (player: RankingItem) => {
+    return player.player?.nickname || player.username || "user";
+  };
+
+  const getPlayerAvatar = (player: RankingItem) => {
+    return player.image_url || player.player?.image || undefined;
+  };
+
   return (
     <div className="space-y-4">
       {/* Search */}
@@ -77,16 +100,20 @@ export function RankingList({ players, currentCity }: RankingListProps) {
         <Input
           placeholder="Buscar jogador..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => onSearchChange(e.target.value)}
           className="pl-9"
         />
       </div>
 
       {/* Top 3 Players - Special Display */}
-      {filteredPlayers.slice(0, 3).length > 0 && (
+      {players.slice(0, 3).length > 0 && (
         <div className="space-y-3">
-          {filteredPlayers.slice(0, 3).map((player, index) => {
-            const position = index + 1;
+          {players.slice(0, 3).map((player) => {
+            const position = player.position || 0;
+            const playerName = getPlayerName(player);
+            const playerNickname = getPlayerNickname(player);
+            const playerAvatar = getPlayerAvatar(player);
+
             return (
               <Card
                 key={player.id}
@@ -100,11 +127,11 @@ export function RankingList({ players, currentCity }: RankingListProps) {
 
                   {/* Avatar */}
                   <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center overflow-hidden">
-                    {player.avatar ? (
-                      <img src={player.avatar} alt={player.name} className="w-full h-full object-cover" />
+                    {playerAvatar ? (
+                      <img src={playerAvatar} alt={playerName} className="w-full h-full object-cover" />
                     ) : (
                       <div className="text-muted-foreground font-bold text-sm">
-                        {player.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
+                        {playerName.split(' ').map(n => n[0]).join('').slice(0, 2)}
                       </div>
                     )}
                   </div>
@@ -112,18 +139,21 @@ export function RankingList({ players, currentCity }: RankingListProps) {
                   {/* Player Info */}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <h4 className="font-semibold text-foreground truncate">{player.name}</h4>
-                      <Badge variant={getRankBadgeVariant(position)} className="text-xs">
+                      <h4 className="font-semibold text-foreground truncate">{playerName}</h4>
+                      <Badge variant={getRankBadgeVariant(position) as "default" | "secondary" | "outline"} className="text-xs">
                         #{position}
                       </Badge>
                     </div>
-                    <p className="text-sm text-muted-foreground">@{player.nickname}</p>
+                    <p className="text-sm text-muted-foreground">@{playerNickname}</p>
                   </div>
 
-                  {/* Score */}
+                  {/* Score and Stats */}
                   <div className="text-right">
-                    <div className="text-xl font-bold text-primary">{player.score}</div>
+                    <div className="text-xl font-bold text-primary">{player.score || 0}</div>
                     <div className="text-xs text-muted-foreground">pts</div>
+                    <div className="text-xs text-muted-foreground mt-1">
+                      {player.wins}/{player.total_matches} vitórias
+                    </div>
                   </div>
                 </div>
               </Card>
@@ -133,10 +163,14 @@ export function RankingList({ players, currentCity }: RankingListProps) {
       )}
 
       {/* Rest of Players */}
-      {filteredPlayers.slice(3).length > 0 && (
+      {players.slice(3).length > 0 && (
         <div className="space-y-3">
-          {filteredPlayers.slice(3).map((player, index) => {
-            const position = index + 4;
+          {players.slice(3).map((player) => {
+            const position = player.position || 0;
+            const playerName = getPlayerName(player);
+            const playerNickname = getPlayerNickname(player);
+            const playerAvatar = getPlayerAvatar(player);
+
             return (
               <Card key={player.id} className="p-3 hover:bg-muted/50 transition-colors">
                 <div className="flex items-center gap-3">
@@ -147,24 +181,24 @@ export function RankingList({ players, currentCity }: RankingListProps) {
 
                   {/* Avatar */}
                   <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center overflow-hidden">
-                    {player.avatar ? (
-                      <img src={player.avatar} alt={player.name} className="w-full h-full object-cover" />
+                    {playerAvatar ? (
+                      <img src={playerAvatar} alt={playerName} className="w-full h-full object-cover" />
                     ) : (
                       <div className="text-muted-foreground font-bold text-xs">
-                        {player.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
+                        {playerName.split(' ').map(n => n[0]).join('').slice(0, 2)}
                       </div>
                     )}
                   </div>
 
                   {/* Player Info */}
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-medium text-foreground truncate">{player.name}</h4>
-                    <p className="text-sm text-muted-foreground">@{player.nickname}</p>
+                    <h4 className="font-medium text-foreground truncate">{playerName}</h4>
+                    <p className="text-sm text-muted-foreground">@{playerNickname}</p>
                   </div>
 
                   {/* Score */}
                   <div className="text-right">
-                    <div className="text-lg font-semibold text-foreground">{player.score}</div>
+                    <div className="text-lg font-semibold text-foreground">{player.score || 0}</div>
                     <div className="text-xs text-muted-foreground">pts</div>
                   </div>
                 </div>
@@ -174,7 +208,36 @@ export function RankingList({ players, currentCity }: RankingListProps) {
         </div>
       )}
 
-      {filteredPlayers.length === 0 && (
+      {/* Pagination */}
+      {pagination && pagination.total_pages > 1 && (
+        <div className="flex items-center justify-between pt-4">
+          <div className="text-sm text-muted-foreground">
+            Página {currentPage} de {pagination.total_pages} ({pagination.total_elements} jogadores)
+          </div>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onPageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              <ChevronLeft className="h-4 w-4" />
+              Anterior
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onPageChange(currentPage + 1)}
+              disabled={currentPage === pagination.total_pages}
+            >
+              Próxima
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      )}
+
+      {players.length === 0 && (
         <div className="text-center py-8 text-muted-foreground">
           <Search className="h-12 w-12 mx-auto mb-3 opacity-50" />
           <p>Nenhum jogador encontrado</p>

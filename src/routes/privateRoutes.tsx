@@ -7,7 +7,7 @@ import { PrivateLayout } from './PrivateLayout';
 import { Matches } from '@/pages/Matchs/index';
 import { Settings } from '@/pages/Settings';
 import EditProfile from '@/pages/EditProfile';
-import { Ranking } from '@/pages/Ranking';
+import Ranking from '@/pages/Ranking';
 import { Home } from '@/pages/Home/index';
 
 export const privateRoutes = (
