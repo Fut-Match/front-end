@@ -29,19 +29,19 @@ const Index = () => {
   if (!isAuthenticated) {
     if (showForgotPassword) {
       return (
-        <ForgotPassword 
-          onBackToLogin={() => setShowForgotPassword(false)} 
+        <ForgotPassword
+          onBackToLogin={() => setShowForgotPassword(false)}
         />
       );
     }
-    
+
     if (showRegister) {
       return <Register />;
     }
-    
+
     return (
-      <Login 
-        onAuth={() => setIsAuthenticated(true)} 
+      <Login
+        onAuth={() => setIsAuthenticated(true)}
         onNavigateToRegister={() => setShowRegister(true)}
         onNavigateToForgotPassword={() => setShowForgotPassword(true)}
       />
@@ -52,19 +52,19 @@ const Index = () => {
     if (currentView.type === "createMatch") {
       return <CreateMatch onBack={() => setCurrentView({ type: "main" })} />;
     }
-    
+
     if (currentView.type === "matchDetails") {
       return (
-        <MatchDetails 
-          matchId={currentView.data?.matchId || "1"} 
-          onBack={() => setCurrentView({ type: "main" })} 
+        <MatchDetails
+          matchId={currentView.data?.matchId || "1"}
+          onBack={() => setCurrentView({ type: "main" })}
         />
       );
     }
-    
+
     if (currentView.type === "manageMatch") {
       return (
-        <ManageMatch 
+        <ManageMatch
           onBack={() => setCurrentView({ type: "main" })}
           onStartMatch={(matchId) => setCurrentView({ type: "liveMatch", data: { matchId } })}
         />
@@ -73,7 +73,7 @@ const Index = () => {
 
     if (currentView.type === "liveMatch") {
       return (
-        <LiveMatch 
+        <LiveMatch
           matchId={currentView.data?.matchId || "1"}
           onBack={() => setCurrentView({ type: "main" })}
         />
@@ -89,11 +89,11 @@ const Index = () => {
     switch (activeTab) {
       case "home":
         return (
-          <Home  />
+          <Home />
         );
       case "matches":
         return (
-          <Matches 
+          <Matches
             onCreateMatch={() => setCurrentView({ type: "createMatch" })}
             onViewMatch={(matchId) => setCurrentView({ type: "matchDetails", data: { matchId } })}
             onManageMatch={(matchId) => setCurrentView({ type: "manageMatch", data: { matchId } })}
@@ -118,7 +118,7 @@ const Index = () => {
         headerTitle: "Criar Partida"
       };
     }
-    
+
     if (currentView.type === "matchDetails") {
       return {
         showBackButton: true,
@@ -126,7 +126,7 @@ const Index = () => {
         headerTitle: "Detalhes da Partida"
       };
     }
-    
+
     if (currentView.type === "manageMatch") {
       return {
         showBackButton: true,
@@ -142,7 +142,7 @@ const Index = () => {
         headerTitle: "Partida ao Vivo"
       };
     }
-    
+
     if (currentView.type === "editProfile") {
       return {
         showBackButton: true,
@@ -161,8 +161,8 @@ const Index = () => {
   };
 
   return (
-    <Layout 
-      activeTab={activeTab} 
+    <Layout
+      activeTab={activeTab}
       onTabChange={setActiveTab}
       onLogout={handleLogout}
       {...getLayoutProps()}
