@@ -1,4 +1,5 @@
-import { RankingList } from "@/components/RankingList";
+
+import { RankingList } from "@/components/Ranking/RankingList";
 import { RankingModel } from "./RankingModel";
 import { ErrorState } from "@/components/ErrorState";
 

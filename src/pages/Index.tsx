@@ -36,7 +36,7 @@ const Index = () => {
     }
     
     if (showRegister) {
-      return <Register onNavigateToLogin={() => setShowRegister(false)} />;
+      return <Register />;
     }
     
     return (
@@ -82,9 +82,7 @@ const Index = () => {
 
     if (currentView.type === "editProfile") {
       return (
-        <EditProfile 
-          onBack={() => setCurrentView({ type: "main" })}
-        />
+        <EditProfile />
       );
     }
 
@@ -106,15 +104,9 @@ const Index = () => {
       case "achievements":
         return <Achievements />;
       case "settings":
-        return (
-          <Settings 
-            onEditProfile={() => setCurrentView({ type: "editProfile" })}
-          />
-        );
+        return <Settings />;
       default:
-        return (
-          <Home  />
-        );
+        return <Home />;
     }
   };
 
