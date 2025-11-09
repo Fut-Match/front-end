@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useParams } from "react-router-dom"
+import { Navigate, useNavigate, useParams } from "react-router-dom"
 import { mockMatches } from "@/data/mockData"
 import { toast } from "@/components/ui/sonner";
 
@@ -23,6 +23,8 @@ interface Team {
 
 export function ManageMatchModel() {
     const { matchId } = useParams()
+
+    const Navigate = useNavigate()
 
     // Mock match data - in real app would fetch by matchId
     const match = mockMatches.organizing[0]
@@ -107,6 +109,10 @@ export function ManageMatchModel() {
 
     }
 
+    const onStartMatch = () => {
+        Navigate(`/match/${matchId}/live`)
+    }
+
     const confirmedPlayers = players.filter(p => p.isConfirmed)
     const paidPlayers = players.filter(p => p.hasPaid)
 
@@ -124,7 +130,9 @@ export function ManageMatchModel() {
         removePlayer,
         togglePayment,
         toggleConfirmation,
-        shuffleTeams
+        shuffleTeams,
+        onStartMatch
+
         
     }
 

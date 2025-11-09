@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { CreateMatch } from '@/pages/CreateMatch';
 import { ManageMatch } from '@/pages/ManageMatch';
+import { LiveMatch } from '@/pages/LiveMatch';
 
 
 export function CreateMatchWrapper() {
@@ -12,5 +13,14 @@ export function CreateMatchWrapper() {
 export function MatchesManage() {
   const navigate = useNavigate();
   const { matchId } = useParams<{ matchId: string }>();
-  return <ManageMatch  onBack={() => navigate(`/matches/${matchId}`)} />;
+  return <ManageMatch onBack={() => navigate(`/matches/${matchId}`)} />;
 }
+
+export function MatchesLive() {
+  const navigate = useNavigate();
+  const { matchId } = useParams<{ matchId: string }>();
+  return (
+    <LiveMatch  matchId={matchId}onBack={() => navigate(`/matches/${matchId}/live`)}
+    />
+  );
+} 

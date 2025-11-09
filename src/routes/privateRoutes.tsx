@@ -1,7 +1,7 @@
 import { Route } from 'react-router-dom';
 
 import { ProtectedRoute } from './ProtectedRoute';
-import { CreateMatchWrapper } from './CreateMatchWrapper';
+import { CreateMatchWrapper, MatchesLive } from './CreateMatchWrapper';
 import { MatchesManage } from './CreateMatchWrapper';
 import Achievements from '@/pages/Achievements';
 import { PrivateLayout } from './PrivateLayout';
@@ -26,6 +26,7 @@ export const privateRoutes = (
       <Route path="/matches/create" element={<CreateMatchWrapper />} />
       {/* Adicionando rota de manage  */}
       <Route path="/matches/:matchId/manage" element={<MatchesManage />} />
+      <Route path="/matches/:id/live" element={<MatchesLive />} />
       <Route path="/ranking" element={<Ranking />} />
       <Route path="/settings" element={<Settings />} />
       <Route path="/settings/edit-profile" element={<EditProfile />} />

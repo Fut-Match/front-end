@@ -1,7 +1,7 @@
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Calendar } from "lucide-react";
+import { Plus, Calendar, Trophy, Bell } from "lucide-react";
 import { HomeModel } from "./HomeModel";
 import { HomeError } from "@/components/Home/HomeError";
 import { PlayerCardSkeleton } from "@/components/Home/PlayerCardSkeleton";
@@ -21,7 +21,11 @@ export function HomeView( props: HomeViewProps) {
     error,
     UpcomingMatches,
     handleCreateMatch,
-    handleMyMatches
+    handleMyMatches,
+    activeTab,
+    setActiveTab,
+    RecentAchievements = [], 
+    Alerts = [],
   } = props;
 
   if (isLoading) {
@@ -54,29 +58,124 @@ export function HomeView( props: HomeViewProps) {
         </Button>
       </div>
 
-      <div>
-        <h3 className="text-lg font-semibold mb-3 text-foreground">📅 Próximas Partidas</h3>
-        <div className="space-y-3">
-          {UpcomingMatches.map((match) => (
-            <Card key={match.id} className="p-3">
-              <div className="flex justify-between items-center">
-                <div>
-                  <h4 className="font-medium text-foreground">{match.name}</h4>
-                  <p className="text-sm text-muted-foreground">
-                    {new Date(match.date).toLocaleDateString('pt-BR')} às {match.time}
-                  </p>
-                </div>
-                <Button size="sm" variant="outline">
-                  Ver
-                </Button>
+<div>
+  {/* === Cabeçalho === */}
+  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 gap-2">
+    <h3 className="text-base sm:text-lg font-semibold text-foreground flex items-center justify-center sm:justify-start">
+      <span className="mr-1">⭐</span> Comunicados
+    </h3>
+
+    <div className="flex justify-center sm:justify-end gap-1.5">
+      <Button
+        size="sm"
+        variant={activeTab === "conquistas" ? "default" : "outline"}
+        className={`rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 ${
+          activeTab === "conquistas"
+            ? "bg-pink-500 text-white shadow-sm hover:bg-pink-400"
+            : "border-pink-300 text-pink-500 hover:bg-pink-50"
+        }`}
+        onClick={() => setActiveTab("conquistas")}
+      >
+        <Trophy className="h-3.5 w-3.5 mr-1" />
+        Conquistas
+      </Button>
+
+      <Button
+        size="sm"
+        variant={activeTab === "alertas" ? "default" : "outline"}
+        className={`rounded-full px-3 py-1 text-xs font-medium transition-all duration-200 ${
+          activeTab === "alertas"
+            ? "bg-pink-500 text-white shadow-sm hover:bg-pink-400"
+            : "border-pink-300 text-pink-500 hover:bg-pink-50"
+        }`}
+        onClick={() => setActiveTab("alertas")}
+      >
+        <Bell className="h-3.5 w-3.5 mr-1" />
+        Alertas
+      </Button>
+    </div>
+  </div>
+
+  {/* === Conteúdo === */}
+  <Card className="p-3 sm:p-5 rounded-2xl shadow-sm border border-pink-100 bg-white/80 backdrop-blur-sm">
+    {activeTab === "conquistas" ? (
+      RecentAchievements.length > 0 ? (
+        <div className="space-y-2.5">
+          {RecentAchievements.map((ach, i) => (
+            <Card
+              key={i}
+              className="p-2.5 flex items-center gap-2.5 border border-pink-100 bg-gradient-to-r from-white to-pink-50/40 hover:shadow-md transition rounded-xl"
+            >
+              <div className="bg-yellow-100 p-1.5 rounded-full flex items-center justify-center">
+                <Trophy className="text-yellow-500 h-4 w-4" />
+              </div>
+              <div className="flex-1">
+                <h4 className="font-medium text-gray-800 text-sm leading-tight">
+                  {ach.title}
+                </h4>
+                <p className="text-xs text-muted-foreground">{ach.date}</p>
               </div>
             </Card>
           ))}
-          
-          {UpcomingMatches.length === 0 && (
+        </div>
+      ) : (
+        <p className="text-center text-muted-foreground py-6 text-sm">
+          Nenhuma conquista recente ainda 💪
+        </p>
+      )
+    ) : Alerts.length > 0 ? (
+      <div className="space-y-2.5">
+        {Alerts.map((alert, i) => (
+          <Card
+            key={i}
+            className="p-2.5 border-l-4 border-pink-400 bg-pink-50/70 text-sm text-foreground hover:shadow-md hover:bg-pink-100/50 transition rounded-xl"
+          >
+            {alert.message}
+          </Card>
+        ))}
+      </div>
+    ) : (
+      <p className="text-center text-muted-foreground py-6 text-sm">
+        Nenhum alerta por enquanto 🎯
+      </p>
+    )}
+  </Card>
+</div>
+
+
+      {/* === PRÓXIMAS PARTIDAS === */}
+      <div>
+        <h3 className="text-lg sm:text-xl font-semibold mb-4 text-foreground flex items-center gap-2 justify-center sm:justify-start">
+          📅 Próximas Partidas
+        </h3>
+        <div className="space-y-3">
+          {UpcomingMatches.length > 0 ? (
+            UpcomingMatches.map((match) => (
+              <Card
+                key={match.id}
+                className="p-4 sm:p-5 hover:shadow-md transition flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
+              >
+                <div className="text-center sm:text-left">
+                  <h4 className="font-medium text-foreground">{match.name}</h4>
+                  <p className="text-sm text-muted-foreground">
+                    {new Date(match.date).toLocaleDateString("pt-BR")} às {match.time}
+                  </p>
+                </div>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="border-pink-400 text-pink-500 w-full sm:w-auto"
+                >
+                  Ver
+                </Button>
+              </Card>
+            ))
+          ) : (
             <Card className="p-6 text-center">
               <Calendar className="h-8 w-8 mx-auto mb-2 text-muted-foreground" />
-              <p className="text-muted-foreground">Nenhuma partida agendada</p>
+              <p className="text-muted-foreground text-sm sm:text-base">
+                Nenhuma partida agendada
+              </p>
             </Card>
           )}
         </div>
