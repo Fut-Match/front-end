@@ -2,12 +2,6 @@ import { usePlayerMe } from "@/hooks";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-// Retirando dados fictícios
-const UpcomingMatches = [
-
-];
-
-
 export function HomeModel() {
     const { data: playerData, isLoading, error } = usePlayerMe();
     const navigate = useNavigate();
@@ -31,6 +25,9 @@ export function HomeModel() {
         navigate("/matches")
     };
 
+   
+
+
     const [activeTab, setActiveTab] = useState<"conquistas" | "alertas">("conquistas");
     const RecentAchievements = [
         { id: 1, title: "Artilheiro da Temporada", date: "2024-05-10" },
@@ -46,7 +43,6 @@ export function HomeModel() {
         playerStats,
         isLoading,
         error,
-        UpcomingMatches,
         handleCreateMatch,
         handleMyMatches,
         activeTab,

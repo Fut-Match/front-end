@@ -35,7 +35,7 @@ export function MatchesModel({ onCreateMatch, onViewMatch, onManageMatch }: Matc
   };
   const { user } = useAuth();
 
-  // Extrai corretamente os dados da API
+  // Extrai  os dados da API
   const Matches = Array.isArray(apiResponse?.data)
     ? apiResponse.data
     : Array.isArray(apiResponse)
@@ -76,17 +76,18 @@ export function MatchesModel({ onCreateMatch, onViewMatch, onManageMatch }: Matc
     console.log("⚙️ handleManageMatch chamado com:", matchId);
     navigate(`/matches/${matchId}/manage`);
   };
-
-
-
-  const navigateToCreateMatch = () => navigate("/matches/create");
-
   const handleJoinByCode = () => {
     if (inviteCode.trim()) {
       console.log("Joining match with code:", inviteCode);
       setInviteCode("");
     }
   };
+
+
+
+  const navigateToCreateMatch = () => navigate("/matches/create");
+
+
 
   return {
     handleJoinByCode,
