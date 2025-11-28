@@ -1,22 +1,27 @@
-//Adicionando comentário para descrever o propósito do arquivo
-
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useMatch } from "@/hooks/queries/useMatchesQueries";
+import { useMatches } from "@/hooks/queries/useMatchesQueries";
 import { useAuth } from "@/hooks";
+
 interface Match {
-  id: number;
-  code: string;
-  name: string;
+  id?: number | string;
+  code?: string;
+  name?: string;
   match_date?: string;
   admin_id?: number;
+  players?: any[];
   [key: string]: any;
 }
-
-interface MatchResponse {
+export interface MatchesResponse {
   data: Match[];
-  pagination?: object;
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+  };
 }
+
+
 
 interface MatchesProps {
   onCreateMatch?: () => void;
@@ -28,54 +33,47 @@ export function MatchesModel({ onCreateMatch, onViewMatch, onManageMatch }: Matc
   const navigate = useNavigate();
   const [inviteCode, setInviteCode] = useState("");
 
-  const { data: apiResponse, isLoading, error } = useMatch() as {
-    data?: MatchResponse;
-    isLoading: boolean;
-    error?: unknown;
-  };
+  // Agora sem renomeação desnecessária
+ const { data: response, isLoading, error } = useMatches();
   const { user } = useAuth();
 
-  // Extrai  os dados da API
-  const Matches = Array.isArray(apiResponse?.data)
-    ? apiResponse.data
-    : Array.isArray(apiResponse)
-      ? apiResponse
-      : [];
+  // Garantimos que sempre será array
+ const Matches: Match[] = Array.isArray(response?.data) ? response.data : [];
 
-  // Mapeia e define roles
-  const MatchesWithRole = Matches.map((match: any) => {
-    const isOrganizer = match.admin_id === user?.id;
-    const isParticipant = match.players?.some((p: any) => p.id === user?.id);
+  // Define roles
+  const MatchesWithRole = Matches.map((matchItem: Match) => {
+    const isOrganizer = matchItem.admin_id === user?.id;
+    const isParticipant = matchItem.players?.some((p: any) => p.id === user?.id);
 
     return {
-      id: String(match.id),
-      name: match.name ?? "Partida sem nome",
-      organizer: match.organizer_name ?? "Desconhecido",
-      playersPerTeam: match.players_per_team ?? 5,
-      currentPlayers: match.players?.length ?? 0,
-      maxPlayers: (match.players_per_team ?? 5) * 2,
-      date: match.match_date ?? new Date().toISOString(),
-      time: match.match_time ?? "00:00",
-      location: match.location ?? "Local não informado",
+      id: String(matchItem.id),
+      name: matchItem.name ?? "Partida sem nome",
+      organizer: matchItem.organizer_name ?? "Desconhecido",
+      playersPerTeam: matchItem.players_per_team ?? 5,
+      currentPlayers: matchItem.players?.length ?? 0,
+      maxPlayers: (matchItem.players_per_team ?? 5) * 2,
+      date: matchItem.match_date ?? new Date().toISOString(),
+      time: matchItem.match_time ?? "00:00",
+      location: matchItem.location ?? "Local não informado",
       endCriteria: { goals: 3 },
-      status: (match.status ?? "organizing").toLowerCase(),
+      status: (matchItem.status ?? "organizing").toLowerCase(),
       userRole: isOrganizer ? "organizer" : isParticipant ? "participant" : "none",
     };
-
   });
 
   const organizingMatches = MatchesWithRole.filter(m => m.userRole === "organizer");
   const participatingMatches = MatchesWithRole.filter(m => m.userRole === "participant");
   const filteredMatches = MatchesWithRole.filter(m => m.status === "organizing");
 
-
   // Handlers
   const handleJoinMatch = (matchId: string) => console.log("Joining match:", matchId);
   const handleViewMatch = (matchId: string) => onViewMatch?.(matchId);
+
   const handleManageMatch = (matchId: string) => {
     console.log("⚙️ handleManageMatch chamado com:", matchId);
     navigate(`/matches/${matchId}/manage`);
   };
+
   const handleJoinByCode = () => {
     if (inviteCode.trim()) {
       console.log("Joining match with code:", inviteCode);
@@ -83,11 +81,7 @@ export function MatchesModel({ onCreateMatch, onViewMatch, onManageMatch }: Matc
     }
   };
 
-
-
   const navigateToCreateMatch = () => navigate("/matches/create");
-
-
 
   return {
     handleJoinByCode,
@@ -102,5 +96,6 @@ export function MatchesModel({ onCreateMatch, onViewMatch, onManageMatch }: Matc
     filteredMatches,
     error,
     isLoading,
+    
   };
 }

@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { formatDate } from "@/utils/date";
 import { CalendarDays, Clock, MapPin, Users, Target, Timer } from "lucide-react";
 
 interface Match {
@@ -53,14 +54,6 @@ export function MatchCard({ match, onJoin, onView, onManage }: MatchCardProps) {
     }
   };
 
-  const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr);
-    return date.toLocaleDateString('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric'
-    });
-  };
 
   const getPlayersColor = () => {
     const percentage = (match.currentPlayers / match.maxPlayers) * 100;
@@ -68,7 +61,7 @@ export function MatchCard({ match, onJoin, onView, onManage }: MatchCardProps) {
     if (percentage >= 70) return "text-primary";
     return "text-muted-foreground";
   };
-  console.log("📦 Props recebidas no MatchCard:", { match, onManage });
+
 
 
   return (
