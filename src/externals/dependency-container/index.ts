@@ -1,10 +1,16 @@
 import type { IAuthRepository } from "@/contracts/i-auth-repository";
 import type { IPlayerRepository } from "@/contracts/i-player-repository";
 import type { IMatchRepository } from "@/contracts/i-match-repository";
+import type { IUserRepository } from "@/contracts/i-user-repository";
+import type { IRankingRepository } from "@/contracts/i-ranking-repository";
+import type { IAchievementRepository } from "@/contracts/i-achievement-repository";
 import type { IHttpClient } from "@/contracts/i-http-client";
 import { AuthRepositoryRest } from "@/externals/repositories/auth-repository-rest";
 import { PlayerRepositoryRest } from "@/externals/repositories/player-repository-rest";
 import { MatchRepositoryRest } from "@/externals/repositories/match-repository-rest";
+import { UserRepositoryRest } from "@/externals/repositories/user-repository-rest";
+import { RankingRepositoryRest } from "@/externals/repositories/ranking-repository-rest";
+import { AchievementRepositoryRest } from "@/externals/repositories/achievement-repository-rest";
 import { AxiosAdapter } from "@/externals/http-client/axios-adapter";
 
 export type BaseUrl = string;
@@ -16,6 +22,9 @@ export interface IDependencyContainer {
     authRepository: (context: AuthContext) => IAuthRepository;
     playerRepository: (context: AuthContext) => IPlayerRepository;
     matchRepository: (context: AuthContext) => IMatchRepository;
+    userRepository: (context: AuthContext) => IUserRepository;
+    rankingRepository: (context: AuthContext) => IRankingRepository;
+    achievementRepository: (context: AuthContext) => IAchievementRepository;
   };
   httpClient: Repository<AxiosAdapter>;
 }
@@ -50,6 +59,9 @@ export const DC: IDependencyContainer = {
     authRepository: createAuthServiceInstance(),
     playerRepository: createServiceInstance(PlayerRepositoryRest),
     matchRepository: createServiceInstance(MatchRepositoryRest),
+    userRepository: createServiceInstance(UserRepositoryRest),
+    rankingRepository: createServiceInstance(RankingRepositoryRest),
+    achievementRepository: createServiceInstance(AchievementRepositoryRest),
   },
   httpClient,
 };

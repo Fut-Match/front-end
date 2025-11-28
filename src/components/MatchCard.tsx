@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { formatDate } from "@/utils/date";
 import { CalendarDays, Clock, MapPin, Users, Target, Timer } from "lucide-react";
 
 interface Match {
@@ -17,7 +18,8 @@ interface Match {
     goals?: number;
     time?: number;
   };
-  status: "organizing" | "playing" | "finished";
+  // New properties
+  status: "organizing" | "playing" | "finished" | "waiting";
   userRole: "organizer" | "participant" | "none";
 }
 
@@ -26,6 +28,7 @@ interface MatchCardProps {
   onJoin?: (matchId: string) => void;
   onView?: (matchId: string) => void;
   onManage?: (matchId: string) => void;
+  className?: string;
 }
 
 export function MatchCard({ match, onJoin, onView, onManage }: MatchCardProps) {
@@ -51,14 +54,6 @@ export function MatchCard({ match, onJoin, onView, onManage }: MatchCardProps) {
     }
   };
 
-  const formatDate = (dateStr: string) => {
-    const date = new Date(dateStr);
-    return date.toLocaleDateString('pt-BR', { 
-      day: '2-digit', 
-      month: '2-digit', 
-      year: 'numeric' 
-    });
-  };
 
   const getPlayersColor = () => {
     const percentage = (match.currentPlayers / match.maxPlayers) * 100;
@@ -67,8 +62,12 @@ export function MatchCard({ match, onJoin, onView, onManage }: MatchCardProps) {
     return "text-muted-foreground";
   };
 
+
+
   return (
+
     <Card className="p-4 space-y-4 hover:shadow-card transition-shadow">
+
       {/* Header */}
       <div className="flex items-start justify-between">
         <div className="space-y-1">
@@ -127,28 +126,41 @@ export function MatchCard({ match, onJoin, onView, onManage }: MatchCardProps) {
       </div>
 
       {/* Actions */}
-      <div className="flex gap-2 pt-2">
-        <Button 
-          variant="outline" 
-          size="sm" 
-          onClick={() => onView?.(match.id)}
-          className="flex-1"
-        >
-          Ver Detalhes
-        </Button>
-        {match.userRole === "organizer" && match.status === "organizing" && (
-          <Button 
-            size="sm" 
-            onClick={() => onManage?.(match.id)}
-            className="flex-1"
-          >
-            Gerenciar
-          </Button>
-        )}
+      <div className="flex gap-2 justify-center pt-2">
+        <div className="flex gap-2   pt-2">
+          {match.userRole === "organizer" &&
+            (match.status === "organizing" || match.status === "waiting") && (
+              <Button
+                size="sm"
+                onClick={() => {
+                  console.log("Gerenciando partida:", match.id);
+                  onManage?.(match.id);
+                }}
+                className="flex-1"
+              >
+                Gerenciar
+              </Button>
+            )}
+
+          {match.userRole === "participant" && match.status === "playing" && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onView?.(match.id)}
+              className="flex-1"
+            >
+              Ver Detalhes
+            </Button>
+          )}
+        </div>
+
         {match.userRole === "none" && match.status === "organizing" && (
-          <Button 
-            size="sm" 
-            onClick={() => onJoin?.(match.id)}
+          <Button
+            size="sm"
+            onClick={() => {
+              console.log("Gerenciando partida:", match.id);
+              onJoin?.(match.id)
+            }}
             className="flex-1"
             disabled={match.currentPlayers >= match.maxPlayers}
           >

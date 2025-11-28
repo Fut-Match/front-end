@@ -1,3 +1,5 @@
+
+
 import { MatchCard } from "@/components/MatchCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,7 +27,7 @@ export function MatchesView(props: MatchesViewProps) {
 
   return (
     <div className="p-4 space-y-6">
-      {/* Quick Actions */}
+      {/* === AÇOES RAPIDAS === */}
       <div className="space-y-3">
         <Button className="w-full h-12 gap-2" onClick={navigateToCreateMatch}>
           <Plus className="h-5 w-5" />
@@ -48,13 +50,14 @@ export function MatchesView(props: MatchesViewProps) {
         </div>
       </div>
 
-      {/* Matches Tabs */}
+      {/* ===VISUALIZAR PARTIDAS === */}
       <Tabs defaultValue="participating" className="w-full">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="participating">Participando</TabsTrigger>
           <TabsTrigger value="organizing">Organizando</TabsTrigger>
         </TabsList>
 
+        {/* === EXIBIR PARTIDAS === */}
         <TabsContent value="participating" className="space-y-4 mt-4">
           {participatingMatches.length > 0 ? (
             participatingMatches.map((match) => (
@@ -74,13 +77,13 @@ export function MatchesView(props: MatchesViewProps) {
           )}
         </TabsContent>
 
+
         <TabsContent value="organizing" className="space-y-4 mt-4">
           {organizingMatches.length > 0 ? (
             organizingMatches.map((match) => (
               <MatchCard
                 key={match.id}
                 match={match}
-                onJoin={handleJoinMatch}
                 onView={handleViewMatch}
                 onManage={handleManageMatch}
               />

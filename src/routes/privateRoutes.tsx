@@ -1,13 +1,15 @@
-import { Route, useNavigate } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 import { ProtectedRoute } from './ProtectedRoute';
-import { CreateMatch } from '@/pages/CreateMatch';
+import { CreateMatchWrapper, MatchesLive } from './CreateMatchWrapper';
+import { MatchesManage } from './CreateMatchWrapper';
 import Achievements from '@/pages/Achievements';
 import { PrivateLayout } from './PrivateLayout';
 import { Matches } from '@/pages/Matchs/index';
-import { Settings } from '@/pages/Settings';
-import { Ranking } from '@/pages/Ranking';
-import { Home } from '@/pages/Home/index';
+import Settings from '@/pages/Settings';
+import EditProfile from '@/pages/EditProfile';
+import Ranking from '@/pages/Ranking';
+import Home from '@/pages/Home';
 
 export const privateRoutes = (
   <>
@@ -22,13 +24,12 @@ export const privateRoutes = (
       <Route path="/achievements" element={<Achievements />} />
       <Route path="/matches" element={<Matches />} />
       <Route path="/matches/create" element={<CreateMatchWrapper />} />
+      {/* Adicionando rota de manage  */}
+      <Route path="/matches/:matchId/manage" element={<MatchesManage />} />
+      <Route path="/matches/:id/live" element={<MatchesLive />} />
       <Route path="/ranking" element={<Ranking />} />
       <Route path="/settings" element={<Settings />} />
+      <Route path="/settings/edit-profile" element={<EditProfile />} />
     </Route>
   </>
 );
-
-function CreateMatchWrapper() {
-  const navigate = useNavigate();
-  return <CreateMatch onBack={() => navigate('/matches')} />;
-}

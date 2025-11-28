@@ -35,6 +35,19 @@ export const PrivateLayout = () => {
   const navigate = useNavigate();
 
   const activeTab = pathToTab(location.pathname);
+  
+  // Rotas que devem mostrar botão voltar (detalhes, edições, criações)
+  const backButtonRoutes = [
+    '/settings/edit-profile',
+    '/matches/create',
+  ];
+  
+  const currentPath = location.pathname.replace(/\/$/, ''); // Remove trailing slash
+  const showBackButton = backButtonRoutes.includes(currentPath);
+  
+  const handleBack = () => {
+    navigate(-1); // Volta para a página anterior no histórico
+  };
 
   const handleTabChange = (tab: string) => {
     const to = tabToPath(tab);
@@ -69,6 +82,8 @@ export const PrivateLayout = () => {
       activeTab={activeTab}
       onTabChange={handleTabChange}
       onLogout={handleLogout}
+      showBackButton={showBackButton}
+      onBack={handleBack}
     >
       <Outlet />
     </Layout>
